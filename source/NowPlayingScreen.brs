@@ -121,7 +121,7 @@ Function RefreshNowPlayingScreen()
   ' Album placeholder.  Only recreate it if we have to move it.
   albumPlaceholderY = 210 + NowPlayingScreen.YOffset
   if NowPlayingScreen.albumPlaceholder = invalid OR NowPlayingScreen.albumPlaceholder.y <> albumPlaceholderY
-    NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0, false)
+    NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0)
   end if
 
   NowPlayingScreen.UpdateBackgroundImage = true
