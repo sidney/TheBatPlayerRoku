@@ -20,7 +20,6 @@ End Sub
 Sub HandleSaveRequestForLightIp(request as Object)
 	data = GetDataFromRequest(request)
 	RegWrite("lightip", data, "batplayer")
-	'print "Saved data: " + data
 
 	lightData = ParseJSON(data)
 	if lightData <> invalid AND lightData.DoesExist("brightness")
@@ -111,34 +110,6 @@ Sub GetStations() as Object
 	 end if
 
 	return stationsArray
-End Sub
-
-Sub GetLights(returnAsJson as Boolean) as Object
-	lightsJson = RegRead("lights", "batplayer")
-
-	if lightsJson = invalid
-		lightsJson = FormatJson(CreateObject("roAssociativeArray"))
-	end if
-
-	if NOT returnAsJson then
-		return ParseJSON(lightsJson)
-	end if
-
-	return lightsJson
-
-End Sub
-
-Sub GetLightsIp(returnAsJson as Boolean) as dynamic
-	ip = RegRead("lightip", "batplayer")
-
-	if not returnAsJson then
-		return ip
-	end if
-
-	json = CreateObject("roAssociativeArray")
-	json.ip = ip
-
-	return FormatJson(json)
 End Sub
 
 Sub GetNowPlayingJson(returnAsJson as Boolean) as string
