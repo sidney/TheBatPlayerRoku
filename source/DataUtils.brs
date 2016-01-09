@@ -39,45 +39,6 @@ Sub HandleSaveRequestForLastFM(request as Object)
 	print "saved data: " + data
 End Sub
 
-Sub HandleSaveRdio(request as Object)
-	print "Running HandleSaveRdio"
-
-	data = GetDataFromRequest(request)
-	data = urlunescape(data)
-
-	RegWrite("rdioAuthToken", data, "batplayer")
-	print "saved data: " + data
-
-	if data <> invalid
-		'FindRdioPlaylist()
-	end if
-End Sub
-
-Sub GetRdioAuthToken(returnAsJson as Boolean) as dynamic
-	rdioAuthToken = RegRead("rdioAuthToken", "batplayer")
-
-	if rdioAuthToken = invalid then
-		rdioAuthToken = "{}"
-	end if
-
-	if returnAsJson then
-		return rdioAuthToken
-	end if
-
-	if rdioAuthToken <> invalid
-		rdioAuthToken = ParseJSON(rdioAuthToken)
-		if rdioAuthToken.DoesExist("rdioAuthToken")
-			return rdioAuthToken.rdioAuthToken
-		else
-			return invalid
-		end if
-	else
-		return invalid
-	end if
-
-End Sub
-
-
 Sub GetLastFMData(returnAsJson as Boolean) as Object
 	lastfmData = RegRead("lastfmData", "batplayer")
 
