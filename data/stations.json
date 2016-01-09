@@ -48,10 +48,4 @@
   "stream": "http://stream-dc1.radioparadise.com/mp3-192",
   "format": "mp3",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/radio-paradise.jpg"
-}, {
-  "name": "Electropop",
-  "provider": "Digitally Imported",
-  "stream": "http://pub5.di.fm/di_electropop",
-  "format": "mp3",
-  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/di-electropop.jpg"
 }]
