@@ -20,14 +20,8 @@ End Sub
 Sub HandleSaveRequestForLightIp(request as Object)
 	data = GetDataFromRequest(request)
 	RegWrite("lightip", data, "batplayer")
-	'print "Saved data: " + data
 
 	lightData = ParseJSON(data)
-	if lightData <> invalid AND lightData.DoesExist("brightness")
-		brightness = lightData.brightness
-		GetSession().Brightness.DefaultMinimum = brightness[0]
-		GetSession().Brightness.DefaultMaximum = brightness[1]
-	end if
 End Sub
 
 Sub HandleSaveRequestForLastFM(request as Object)
@@ -39,45 +33,6 @@ Sub HandleSaveRequestForLastFM(request as Object)
 	RegWrite("lastfmData", data, "batplayer")
 	print "saved data: " + data
 End Sub
-
-Sub HandleSaveRdio(request as Object)
-	print "Running HandleSaveRdio"
-
-	data = GetDataFromRequest(request)
-	data = urlunescape(data)
-
-	RegWrite("rdioAuthToken", data, "batplayer")
-	print "saved data: " + data
-
-	if data <> invalid
-		'FindRdioPlaylist()
-	end if
-End Sub
-
-Sub GetRdioAuthToken(returnAsJson as Boolean) as dynamic
-	rdioAuthToken = RegRead("rdioAuthToken", "batplayer")
-
-	if rdioAuthToken = invalid then
-		rdioAuthToken = "{}"
-	end if
-
-	if returnAsJson then
-		return rdioAuthToken
-	end if
-
-	if rdioAuthToken <> invalid
-		rdioAuthToken = ParseJSON(rdioAuthToken)
-		if rdioAuthToken.DoesExist("rdioAuthToken")
-			return rdioAuthToken.rdioAuthToken
-		else
-			return invalid
-		end if
-	else
-		return invalid
-	end if
-
-End Sub
-
 
 Sub GetLastFMData(returnAsJson as Boolean) as Object
 	lastfmData = RegRead("lastfmData", "batplayer")
@@ -135,34 +90,6 @@ Function AddStation(station as Object)
 	end if
 
 End Function
-
-Sub GetLights(returnAsJson as Boolean) as Object
-	lightsJson = RegRead("lights", "batplayer")
-
-	if lightsJson = invalid
-		lightsJson = FormatJson(CreateObject("roAssociativeArray"))
-	end if
-
-	if NOT returnAsJson then
-		return ParseJSON(lightsJson)
-	end if
-
-	return lightsJson
-
-End Sub
-
-Sub GetLightsIp(returnAsJson as Boolean) as dynamic
-	ip = RegRead("lightip", "batplayer")
-
-	if not returnAsJson then
-		return ip
-	end if
-
-	json = CreateObject("roAssociativeArray")
-	json.ip = ip
-
-	return FormatJson(json)
-End Sub
 
 Sub GetNowPlayingJson(returnAsJson as Boolean) as string
 	NowPlayingScreen = GetGlobalAA().Lookup("NowPlayingScreen")

@@ -125,7 +125,7 @@ Function RefreshNowPlayingScreen()
   ' Album placeholder.  Only recreate it if we have to move it.
   albumPlaceholderY = 230 + NowPlayingScreen.YOffset
   if NowPlayingScreen.albumPlaceholder = invalid OR NowPlayingScreen.albumPlaceholder.y <> albumPlaceholderY
-    NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0, false)
+    NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0)
   end if
 
   NowPlayingScreen.UpdateBackgroundImage = true
@@ -227,9 +227,7 @@ Function UpdateScreen()
   'Album Image
   if type(song.album) = "roAssociativeArray" AND song.album.DoesExist("name") AND song.album.name <> invalid AND FileExists("album-" + makemdfive(song.album.name + song.artist)) AND NowPlayingScreen.UpdateAlbumImage = true then
     albumImageFilePath = "tmp:/album-" + makemdfive(song.album.name + song.artist)
-    'Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade = true as Boolean, maxAlpha = 225 as Integer, overlayColor = 0 as Integer, DrawGrunge = true as Boolean) as Object
-'
-    NowPlayingScreen.albumImage = AlbumImage(albumImageFilePath, 830, 230 + NowPlayingScreen.YOffset, true, 255, CreateAlbumOverlayColor(song))
+    NowPlayingScreen.albumImage = AlbumImage(albumImageFilePath, 830, 220, true, 250 + NowPlayingScreen.YOffset, CreateAlbumOverlayColor(song))
     NowPlayingScreen.UpdateAlbumImage = false
   endif
 

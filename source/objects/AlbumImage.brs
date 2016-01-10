@@ -1,4 +1,4 @@
-Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade = true as Boolean, maxAlpha = 225 as Integer, overlayColor = 0 as Integer, DrawGrunge = true as Boolean) as Object
+Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade = true as Boolean, maxAlpha = 225 as Integer, overlayColor = 0 as Integer) as Object
 
 	this = {
 		bitmap: invalid
@@ -8,12 +8,6 @@ Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade =
 
 		x: ResolutionX(x)
 		y: ResolutionY(y)
-
-		DrawGrunge: DrawGrunge
-		grunge: invalid
-		GrungeAngle: 0
-		GrungeX: 0
-		GrungeY: 0
 
 		width: ResolutionY(210)
 		height: ResolutionY(210)
@@ -36,28 +30,10 @@ Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade =
 	this.image = RlGetScaledImage(this.bitmap, this.width, this.height, 1)
 	this.bitmap = invalid
 
-	this.GrungeX = this.x
-	this.GrungeY = this.y
-	angles = CreateObject("roArray", 4, false)
-	angles[0] = 0
-	angles[1] = 90
-	angles[2] = 180
-	angles[3] = 270
-	this.GrungeAngle = angles[Rnd(3)]
-
-	if this.GrungeAngle = 90
-		this.GrungeY = this.GrungeY + this.height
-	else if this.GrungeAngle = 180
-		this.GrungeY = this.GrungeY + this.height
-		this.GrungeX = this.GrungeX + this.width
-	else if this.GrungeAngle = 270
-		this.GrungeX = this.GrungeX + this.width
-	end if
-
 	' Add the subtle overlay color
 	if this.overlayColor <> 0 AND this.image <> invalid
 		this.image.SetAlphaEnable(true)
-		this.image.DrawRect(0, 0, this.image.GetWidth(), this.image.GetHeight(), this.overlayColor + 20)
+		this.image.DrawRect(0, 0, this.image.GetWidth(), this.image.GetHeight(), this.overlayColor + 17)
 		this.image.finish()
 		this.image.SetAlphaEnable(false)
 	end if
@@ -66,11 +42,6 @@ Function AlbumImage(filePath as String, x as Integer, y as Integer, enableFade =
 	if NOT SupportsAdvancedFeatures()
 		this.alpha = this.alpha + this.MaxFade
 		this.enableFade = false
-	end if
-
-	if this.DrawGrunge = true
-		random = 0
-		this.grunge = RlGetScaledImage(CreateObject("roBitmap", "pkg:/images/album-grunge" + ToStr(random) + ".png"), this.width, this.height, 1)
 	end if
 
 	return this
@@ -113,12 +84,5 @@ Function albumImage_draw(screen as Object)
 		end if
 
 		screen.DrawObject(m.x, m.y, m.image, m.alpha)
-
-
-		'if m.DrawGrunge = true AND m.isFadingOut = false
-		''	screen.DrawRotatedObject(m.GrungeX, m.GrungeY, m.GrungeAngle, m.grunge, m.alpha)
-		'end if
-
-
 	end if
 End Function

@@ -97,8 +97,18 @@ Function selection_getStations()
         if NOT FileExists(makemdfive(stationObject.stationimage))
           ASyncGetFile(stationObject.stationimage, "tmp:/" + makemdfive(stationObject.stationimage))
         end if
-
       end if
+
+      'Download custom poster images
+      if NOT FileExists(makemdfive(stationObject.hdposterurl))
+        SyncGetFile(stationObject.hdposterurl, "tmp:/" + makemdfive(stationObject.hdposterurl))
+      end if
+      if NOT FileExists(makemdfive(stationObject.stationimage))
+        SyncGetFile(stationObject.stationimage, "tmp:/" + makemdfive(stationObject.stationimage))
+      end if
+      m.Screen.SetContentList(0, SelectableStations)
+      m.SelectableStations = SelectableStations
+      FetchMetadataForStreamUrlAndName(station.stream, station.name, true, i)
   end for
 
   m.Screen.SetContentList(0, SelectableStations)
