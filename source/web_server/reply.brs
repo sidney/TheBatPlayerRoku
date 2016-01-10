@@ -247,7 +247,7 @@ function reply_process_get() as Boolean
             m.send_string(GetSession().userId)
             return true
         end if
-        
+
         if request_endpoint = "savestations.html" then
             HandleSaveRequestForStations(req)
             m.send_string("saved")
@@ -276,20 +276,6 @@ function reply_process_get() as Boolean
             m.send_string("saved")
             return true
         end if
-
-        if request_endpoint = "saverdioauthtoken.html" then
-            HandleSaveRdio(req)
-            m.send_string("saved")
-            return true
-        end if
-
-        if request_endpoint = "rdioauthtoken.json" then
-            data = GetRdioAuthToken(true)
-            if data <> invalid
-                m.send_string(data)
-            end if
-                return true
-        end if 
 
         if request_endpoint = "lastfmdata.html" then
             data = GetLastFMData(true)
@@ -363,7 +349,7 @@ function reply_process_get() as Boolean
 
     m.source = m.FROMFILE
     m.lastmod = Now() ' stat.mtime (mod date not yet available)
-    fileFinish = m.fileLength - 1 
+    fileFinish = m.fileLength - 1
 
     ' check for If-Modified-Since, may not have to send */
     if_mod_since = req.fields["If-Modified-Since"]

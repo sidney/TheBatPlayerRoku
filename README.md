@@ -7,7 +7,6 @@ A [BrightScript](http://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Re
 2. Can take advantage of your Philips Hue connected lighting system to surround yourself in the colors that are on the screen.
 3. Uses a web-based configuration page to configure the application instead of the remote and on-screen keyboards.
 4. Can Scrobble to two different Last.FM accounts to keep your listening history up to date.
-5. Add the track that you're currently hearing to a custom Rdio playlist.
 6. Uses a server-side component for image processing and metadata caching.
 
 ###**Dependencies**
