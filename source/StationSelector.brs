@@ -19,10 +19,6 @@ Function StationSelectionScreen()
     GetSomaFMStations: selection_getSomaFMStations
     FetchingSomaFmStations: false
 
-    DIStations: invalid
-    GetDIStations: selection_getDIStations
-    FetchingDIStations: false
-
     FeaturedStations: invalid
     GetFeaturedStations: selection_getFeaturedStations
     FetchingFeturedStations: false
@@ -38,18 +34,16 @@ Function StationSelectionScreen()
   this.Screen.SetGridStyle("four-column-flat-landscape")
   this.Screen.SetLoadingPoster("pkg:/images/icon-hd.png", "pkg:/images/icon-sd.png")
 
-  this.Screen.SetupLists(5)
+  this.Screen.SetupLists(4)
   this.Screen.SetListName(0, "Your Stations")
   this.Screen.SetListName(1, "Stations from SomaFM")
-  this.Screen.SetListName(2, "Stations from Digitally Imported")
-  this.Screen.SetListName(3, "Featured Stations")
-  this.Screen.SetListName(4, "Gabe's Current Favorites")
+  this.Screen.SetListName(2, "Featured Stations")
+  this.Screen.SetListName(3, "Gabe's Current Favorites")
 
   this.Screen.SetListVisible(0, true)
   this.Screen.SetListVisible(1, false)
   this.Screen.SetListVisible(2, false)
   this.Screen.SetListVisible(3, false)
-  this.Screen.SetListVisible(4, false)
 
   port = GetPort()
   this.Screen.SetMessagePort(port)
@@ -239,10 +233,8 @@ Function selection_handle(msg as Object)
       if row = 1
         station = m.SomaFMStations[item]
       else if row = 2
-        station = m.DIStations[item]
-      else if row = 3
         station = m.FeaturedStations[item]
-      else if row = 4
+      else if row = 3
         station = m.GabeStations[item]
       end if
 
@@ -253,13 +245,10 @@ Function selection_handle(msg as Object)
     end if
   else if msg.isListItemFocused()
     ' Download the content for the next row in the directory'
-    if row = 1 AND m.DIStations = invalid AND m.FetchingDIStations = false
-      m.FetchingDIStations = true
-      m.GetDIStations()
-    else if row = 2 AND m.FeaturedStations = invalid AND m.FetchingFeturedStations = false
+    if row = 1 AND m.FeaturedStations = invalid AND m.FetchingFeturedStations = false
       m.FetchingFeturedStations = true
       m.GetFeaturedStations()
-    else if row = 3 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
+    else if row = 2 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
       m.FetchingGabeStations = true
       m.GetGabeStations()
     end if

@@ -8,22 +8,12 @@ Function selection_getSomaFMStations()
   m.SomaFMStations = stations
 End Function
 
-Function selection_getDIStations()
-  url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/diStations.json"
-  stations = GetStationsAtUrl(url)
-
-  m.Screen.SetContentList(2, stations)
-  m.Screen.SetListVisible(2, true)
-
-  m.DIStations = stations
-End Function
-
 Function selection_getFeaturedStations()
   url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/featured.json"
   stations = GetStationsAtUrl(url)
 
-  m.Screen.SetContentList(3, stations)
-  m.Screen.SetListVisible(3, true)
+  m.Screen.SetContentList(2, stations)
+  m.Screen.SetListVisible(2, true)
 
   m.FeaturedStations = stations
 End Function
@@ -32,8 +22,8 @@ Function selection_getGabeStations()
   url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/gabeFavorites.json"
   stations = GetStationsAtUrl(url)
 
-  m.Screen.SetContentList(4, stations)
-  m.Screen.SetListVisible(4, true)
+  m.Screen.SetContentList(3, stations)
+  m.Screen.SetListVisible(3, true)
 
   m.GabeStations = stations
 End Function
