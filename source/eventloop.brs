@@ -29,10 +29,6 @@ Sub HandleNowPlayingScreenEvent (msg as Object)
 	  else if key = 10 then
 	  	ToggleLastFMAccounts()
 
-	  else if key = 4 then
-	  	song = GetGlobalAA().SongObject
-	  	'if song <> invalid then AttemptToAddToRdioPlaylist(song.artist, song.title)
-
 	  else if key = 0 then
 	    'Exit
       RefreshStationScreen()
@@ -182,35 +178,6 @@ Sub HandleDownloadEvents(msg)
 			if GetGlobalAA().DoesExist(Identity) THEN
 				GetGlobalAA().Delete(Identity)
 			End if
-
-
-			'Rdio Playlist search result
-			if GetGlobalAA().DoesExist("RdioPlaylistSearchRequest")
-				transfer = GetGlobalAA().RdioPlaylistSearchRequest
-				if ToStr(transfer.GetIdentity()) = Identity
-					RdioPlaylistSearchResult(msg.GetString())
-				end if
-			end if
-
-
-			'Rdio search results
-			if GetGlobalAA().DoesExist("RdioRequest")
-				transfer = GetGlobalAA().RdioRequest
-				if ToStr(transfer.GetIdentity()) = Identity
-					RdioSearchResult(msg.GetString())
-				end if
-			end if
-
-      'Rdio refresh auth token
-      if GetGlobalAA().DoesExist("RdioRefreshRequest")
-        transfer = GetGlobalAA().RdioRefreshRequest
-        if ToStr(transfer.GetIdentity()) = Identity
-          result = msg.GetString()
-          print result
-          GetGlobalAA().Delete("RdioRefreshRequest")
-        end if
-      end if
-
 
 			'Downloads for what other stations are playing
 			if (IsOtherStationsValidDownload(msg))

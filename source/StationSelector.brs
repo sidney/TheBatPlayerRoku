@@ -178,7 +178,7 @@ Function ShowConfigurationMessage(StationSelectionScreen as object)
     port = GetPort()
     ipAddress = GetSession().IPAddress
 
-    message = "Thanks for checking out The Bat Player.  Jump on your computer and visit http://" + ipAddress + ":9999 to customize your Bat Player experience by adding stations, enabling lighting, Last.FM, Rdio support and more."
+    message = "Thanks for checking out The Bat Player.  Jump on your computer and visit http://" + ipAddress + ":9999 to customize your Bat Player experience by adding stations, enabling lighting and Last.FM support."
 
     dialog = CreateObject("roMessageDialog")
     dialog.SetMessagePort(port)
