@@ -20,8 +20,6 @@ Function InitBatPlayer()
     Analytics = GetSession().Analytics
     Analytics.AddEvent("Application Launched")
 
-    print "------ Finding Rdio Playlist ------"
-    FindRdioPlaylist()
     print "------ Initializing LastFM ------"
     InitLastFM()
     print "------ Initializing fonts ------"
