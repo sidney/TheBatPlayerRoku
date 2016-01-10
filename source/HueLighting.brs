@@ -6,7 +6,9 @@ Sub SetLightsToColor(rgb as Object)
 
 	lightsArray = GetLights(false)
 	ip = lightsArray.ip
-	if ip = invalid OR lightsArray.lights.count() = 0
+	username = GetLightsUsername()
+
+	if ip = invalid OR lightsArray.lights.count() = 0 OR username = invalid
 		return
 	end if
 
@@ -19,7 +21,7 @@ Sub SetLightsToColor(rgb as Object)
 	Analytics.AddEvent("Updated Lighting For Song")
 
 	for each light in lightsArray.lights
-		url = "http://" + ip + "/api/thebatplayer/lights/" + light + "/state"
+		url = "http://" + ip + "/api/" + username + "/lights/" + light + "/state"
 	    request = CreateObject("roUrlTransfer")
 	    request.RetainBodyOnError(true)
 	    request.EnablePeerVerification(false)
@@ -71,19 +73,30 @@ Sub GetLightsIp(returnAsJson as Boolean) as dynamic
 	return FormatJson(json)
 End Sub
 
+Sub GetLightsUsername() as string
+	lightsArray = GetLights(false)
+	username = lightsArray.hueUsername
+
+	if username = invalid
+		username = "thebatplayer"
+	end if
+
+	return username
+End Sub
+
 Function ChangeBrightnessTo(brightness as Integer)
 	GetSession().Lighting.Brightness.Current = brightness
 	lightsArray = GetLights(false)
 	ip = lightsArray.ip
+	username = GetLightsUsername()
 
-	if ip = invalid
+	if ip = invalid OR username = invalid
 		return false
 	end if
 
 	for each light in lightsArray.lights
 
-		url = "http://" + ip + "/api/thebatplayer/lights/" + light + "/state"
-
+		url = "http://" + ip + "/api/" + username + "/lights/" + light + "/state"
 	    request = CreateObject("roUrlTransfer")
 	    request.RetainBodyOnError(true)
 	    request.EnablePeerVerification(false)
@@ -97,7 +110,6 @@ Function ChangeBrightnessTo(brightness as Integer)
 	    requestBody.on = true
 	    requestBody.bri = brightness
 	    json = FormatJson(requestBody)
-			print json
 		request.PostFromString(json)
 	end for
 
@@ -106,7 +118,7 @@ End Function
 Function ToggleBrightnessMode(direction as String)
 	lights = GetLights(false)
 
-	if NOT lights.DoesExist("brightness")
+	if lights.count() = 0
 		Analytics = GetSession().Analytics
 		Analytics.AddEvent("Attempted to toggle brightness mode without bulbs configured")
 
