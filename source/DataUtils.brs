@@ -22,11 +22,6 @@ Sub HandleSaveRequestForLightIp(request as Object)
 	RegWrite("lightip", data, "batplayer")
 
 	lightData = ParseJSON(data)
-	if lightData <> invalid AND lightData.DoesExist("brightness")
-		brightness = lightData.brightness
-		GetSession().Brightness.DefaultMinimum = brightness[0]
-		GetSession().Brightness.DefaultMaximum = brightness[1]
-	end if
 End Sub
 
 Sub HandleSaveRequestForLastFM(request as Object)
