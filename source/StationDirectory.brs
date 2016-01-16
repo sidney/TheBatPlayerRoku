@@ -1,5 +1,5 @@
 Function selection_getSomaFMStations()
-  url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/somaFMStations.json"
+  url = GetConfig().BatUtils + "somafm"
   stations = GetStationsAtUrl(url)
 
   m.Screen.SetContentList(1, stations)
@@ -75,16 +75,27 @@ Function selection_showDirectoryPopup(station as object)
             if msg.GetIndex() = 2
                 ' Add Station'
                 stationObject = CreateObject("roAssociativeArray")
-                stationObject.format = updatedStation.streamformat
+                if updatedStation.DoesExist("streamformat")
+                  stationObject.format = updatedStation.streamformat
+                else
+                  stationObject.format = "mp3"
+                end if
                 stationObject.image = updatedStation.stationimage
                 stationObject.name = updatedStation.stationname
                 stationObject.provider = updatedStation.stationprovider
                 stationObject.stream = updatedStation.feedurl
                 AddStation(stationObject)
               else if msg.GetIndex() = 1
-                ' Play Station
                 dialog.close()
-                PlayStation(updatedStation)
+
+                if station.DoesExist("feedurl")
+                ' Play Station
+                  PlayStation(updatedStation)
+                else
+                  ' Parse playlist'
+                  GetDirectoryStation(station)
+                end if
+
                 exit while
               end if
 
@@ -100,6 +111,7 @@ Function selection_showDirectoryPopup(station as object)
 End Function
 
 Function GetDirectoryStation(station) as Object
+
   ' If we can play it, then just play it'
   if station.DoesExist("feedurl") AND station.feedurl <> invalid AND station.feedurl <> ""
     PlayStation(station)
@@ -113,23 +125,26 @@ Function GetDirectoryStation(station) as Object
     Request = GetRequest()
     Request.SetUrl(station.playlist)
     playlistString = Request.GetToString()
-    splitStringArray = playlistString.tokenize(CHR(10))
+    index = playlistString.Instr("File1=")
 
-    audiourl = invalid
+    ' If File= doesn't exist treat as a m3u playlist
+    if index = -1
+      splitStringArray = playlistString.tokenize(CHR(10))
+      station.feedurl = splitStringArray[0]
+      return station
+    end if
 
-    for i = 0 to splitStringArray.Count()
-      singleString = splitStringArray[i]
-      if singleString <> invalid
-        if singleString.Instr(0, "File1=") <> -1
-          startAtCharIndex = singleString.Instr(0, "=") + 1
-          audiourl = singleString.Mid(startAtCharIndex)
-          station.feedurl = audiourl
-          return station
-        else
-          audiourl = singleString
-        end if
-      end if
-    end for
+    ' Otherwise parse as a pls playlist
+    index = index + 6
+    endOfLine = playlistString.InStr(index, CHR(10))
+    numOfChars = endOfLine - index
+    audiourl = playlistString.Mid(index, numOfChars)
+    print "Parsed out: " + audiourl
+    if audiourl <> invalid
+      station.feedurl = audiourl
+      return station
+    end if
+
   end if
 
 End Function
