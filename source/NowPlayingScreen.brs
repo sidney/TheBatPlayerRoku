@@ -123,7 +123,7 @@ Function RefreshNowPlayingScreen()
   end if
 
   ' Album placeholder.  Only recreate it if we have to move it.
-  albumPlaceholderY = 230 + NowPlayingScreen.YOffset
+  albumPlaceholderY = 240 + NowPlayingScreen.YOffset
   if NowPlayingScreen.albumPlaceholder = invalid OR NowPlayingScreen.albumPlaceholder.y <> albumPlaceholderY
     NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0)
   end if
@@ -227,7 +227,7 @@ Function UpdateScreen()
   'Album Image
   if type(song.album) = "roAssociativeArray" AND song.album.DoesExist("name") AND song.album.name <> invalid AND FileExists("album-" + makemdfive(song.album.name + song.artist)) AND NowPlayingScreen.UpdateAlbumImage = true then
     albumImageFilePath = "tmp:/album-" + makemdfive(song.album.name + song.artist)
-    NowPlayingScreen.albumImage = AlbumImage(albumImageFilePath, 830, 220, true, 250 + NowPlayingScreen.YOffset, CreateAlbumOverlayColor(song))
+    NowPlayingScreen.albumImage = AlbumImage(albumImageFilePath, 830, 240 + NowPlayingScreen.YOffset, true, 255, CreateAlbumOverlayColor(song))
     NowPlayingScreen.UpdateAlbumImage = false
   endif
 
@@ -297,7 +297,7 @@ Function UpdateScreen()
       NowPlayingScreen.PreviousAlbumNameLabel = NowPlayingScreen.albumNameLabel
       NowPlayingScreen.PreviousAlbumNameLabel.FadeOut()
     end if
-    NowPlayingScreen.albumNameLabel = DropShadowLabel(albumTitle, ResolutionX(740), ResolutionY(440 + NowPlayingScreen.YOffset), ResolutionX(400), ResolutionY(200), NowPlayingScreen.smallFont, GetBoldColorForSong(song), "center", 2, 2, 2)
+    NowPlayingScreen.albumNameLabel = DropShadowLabel(albumTitle, ResolutionX(740), ResolutionY(450 + NowPlayingScreen.YOffset), ResolutionX(400), ResolutionY(200), NowPlayingScreen.smallFont, GetBoldColorForSong(song), "center", 2, 2, 2)
     NowPlayingScreen.albumNameLabel.FadeIn()
   end if
 
