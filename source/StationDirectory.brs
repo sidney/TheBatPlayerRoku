@@ -115,10 +115,9 @@ End Function
 
 Function GetDirectoryStation(station) as Object
 
-  ' If we can play it, then just play it'
+  ' If we can play it, then just return
   if station.DoesExist("feedurl") AND station.feedurl <> invalid AND station.feedurl <> ""
-    PlayStation(station)
-    return true
+    return station
   end if
 
   ' Otherwise we need to download the playlist and get an audio stream from it
