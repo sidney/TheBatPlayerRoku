@@ -68,6 +68,20 @@ Sub GetStations() as Object
 	return stationsArray
 End Sub
 
+Function SaveStationCollectionJson(name as String, json as Object)
+	RegWrite(name, json, "batplayer")
+End Function
+
+Function GetStationCollection(name) as Object
+	json = RegRead(name, "batplayer")
+
+	if json = invalid
+		return invalid
+	end if
+
+	return ParseJSON(json)
+End Function
+
 Function AddStation(station as Object)
 
 	Analytics = GetSession().Analytics

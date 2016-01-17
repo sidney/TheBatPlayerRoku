@@ -1,38 +1,40 @@
 Function selection_getSomaFMStations()
   url = GetConfig().BatUtils + "somafm"
   stations = GetStationsAtUrl(url)
-
   m.Screen.SetContentList(1, stations)
   m.Screen.SetListVisible(1, true)
-
   m.SomaFMStations = stations
 End Function
 
 Function selection_getFeaturedStations()
   url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/featured.json"
   stations = GetStationsAtUrl(url)
-
   m.Screen.SetContentList(2, stations)
   m.Screen.SetListVisible(2, true)
-
   m.FeaturedStations = stations
 End Function
 
 Function selection_getGabeStations()
   url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/gabeFavorites.json"
   stations = GetStationsAtUrl(url)
-
   m.Screen.SetContentList(3, stations)
   m.Screen.SetListVisible(3, true)
-
   m.GabeStations = stations
 End Function
 
 Function GetStationsAtUrl(url as String) as object
-  Request = GetRequest()
-  Request.SetUrl(url)
-  jsonString = Request.GetToString()
-  stationsJsonArray = ParseJSON(jsonString)
+  stationsKey = makemdfive(url)
+  stationsJsonArray = GetStationCollection(stationsKey)
+  shouldSaveStations = false
+
+  if stationsJsonArray = invalid
+    Request = GetRequest()
+    Request.SetUrl(url)
+    jsonString = Request.GetToString()
+    stationsJsonArray = ParseJSON(jsonString)
+    stationsKey = makemdfive(url)
+    SaveStationCollectionJson(stationsKey, jsonString)
+  end if
 
   stationsArray = CreateObject("roArray", stationsJsonArray.count(), true)
 
@@ -43,6 +45,7 @@ Function GetStationsAtUrl(url as String) as object
     ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
     stationsArray.push(singleStationItem)
   end for
+
 
   return stationsArray
 End Function
