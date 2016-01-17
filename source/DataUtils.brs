@@ -69,11 +69,11 @@ Sub GetStations() as Object
 End Sub
 
 Function SaveStationCollectionJson(name as String, json as Object)
-	RegWrite(name, json, "batplayer")
+	RegWrite(name, json, "batplayerdirectory")
 End Function
 
 Function GetStationCollection(name) as Object
-	json = RegRead(name, "batplayer")
+	json = RegRead(name, "batplayerdirectory")
 
 	if json = invalid
 		return invalid
@@ -81,6 +81,35 @@ Function GetStationCollection(name) as Object
 
 	return ParseJSON(json)
 End Function
+
+Function BumpOrResetSavedDirectoryCacheValue()
+	value = 0
+	maxValue = 5
+	sectionKey = "batplayerdirectory"
+
+	key = "DirectoryCacheCounter"
+	savedValue = RegRead(key, sectionKey)
+
+	if savedValue <> invalid
+		print "**** Cache: " + savedValue + " of "+ ToStr(maxValue) + " launches"
+		savedValue = savedValue.ToInt()
+	end if
+
+	if savedValue <> invalid AND savedValue > maxValue
+		print "**** Clearing Cache."
+		registry = CreateObject("roRegistry")
+		registry.Delete(sectionKey)
+		return true
+	end if
+
+	if savedValue <> Invalid
+		value = savedValue + 1
+	else
+		value = 1
+	end if
+
+	RegWrite(key, ToStr(value), "batplayerdirectory")
+End function
 
 Function AddStation(station as Object)
 
