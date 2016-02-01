@@ -27,6 +27,8 @@ Function StationSelectionScreen()
     GetGabeStations: selection_getGabeStations
     FetchingGabeStations: false
 
+    SetupBrowse: selection_setupBrowse
+
     DisplayStationPopup: selection_showDirectoryPopup
     Handle: selection_handle
   }
@@ -34,16 +36,18 @@ Function StationSelectionScreen()
   this.Screen.SetGridStyle("four-column-flat-landscape")
   this.Screen.SetLoadingPoster("pkg:/images/icon-hd.png", "pkg:/images/icon-sd.png")
 
-  this.Screen.SetupLists(4)
+  this.Screen.SetupLists(5)
   this.Screen.SetListName(0, "Your Stations")
-  this.Screen.SetListName(1, "Stations from SomaFM")
-  this.Screen.SetListName(2, "Featured Stations")
-  this.Screen.SetListName(3, "Gabe's Current Favorites")
+  this.Screen.SetListName(1, "Browse Stations")
+  this.Screen.SetListName(2, "Stations from SomaFM")
+  this.Screen.SetListName(3, "Featured Stations")
+  this.Screen.SetListName(4, "Gabe's Current Favorites")
 
   this.Screen.SetListVisible(0, true)
-  this.Screen.SetListVisible(1, false)
+  this.Screen.SetListVisible(1, true)
   this.Screen.SetListVisible(2, false)
   this.Screen.SetListVisible(3, false)
+  this.Screen.SetListVisible(4, false)
 
   port = GetPort()
   this.Screen.SetMessagePort(port)
@@ -56,6 +60,7 @@ Function StationSelectionScreen()
 
   GetGlobalAA().AddReplace("StationSelectionScreen", this)
 
+  this.setupBrowse()
   this.Screen.Show()
   this.RefreshStations()
 
@@ -227,14 +232,22 @@ Function selection_handle(msg as Object)
       m.SelectedIndex = item
       Station = m.SelectableStations[item]
       PlayStation(Station)
+    else if row = 1
+      if item = 0
+        ' Go to search
+        NavigateToSearch()
+      else if item = 1
+        ' Go to browse
+        NavigateToBrowse()
+      end if
     else
       station = invalid
 
-      if row = 1
+      if row = 2
         station = m.SomaFMStations[item]
-      else if row = 2
-        station = m.FeaturedStations[item]
       else if row = 3
+        station = m.FeaturedStations[item]
+      else if row = 4
         station = m.GabeStations[item]
       end if
 
@@ -245,10 +258,16 @@ Function selection_handle(msg as Object)
     end if
   else if msg.isListItemFocused()
     ' Download the content for the next row in the directory'
-    if row = 1 AND m.FeaturedStations = invalid AND m.FetchingFeturedStations = false
+    if row = 1
+      m.Screen.SetDescriptionVisible(false)
+    else
+      m.Screen.SetDescriptionVisible(true)
+    end if
+
+    if row = 2 AND m.FeaturedStations = invalid AND m.FetchingFeturedStations = false
       m.FetchingFeturedStations = true
       m.GetFeaturedStations()
-    else if row = 2 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
+    else if row = 3 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
       m.FetchingGabeStations = true
       m.GetGabeStations()
     end if

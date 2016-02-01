@@ -33,6 +33,11 @@ Sub SetTheme()
   	theme.GridScreenFocusBorderSD = "pkg:/images/StationSelectionBorder-SD.png"
   	theme.GridScreenBorderOffsetSD = "(-8,-5)"
 
+    theme.BackgroundColor = "#000000"
+    theme.ListItemText = "#CC0000"
+    theme.OverhangPrimaryLogoHD = "tmp:/headerImage.jpg"
+    theme.OverhangPrimaryLogoOffsetHD_Y = "18"
+
     app.SetTheme(theme)
 
 End Sub
