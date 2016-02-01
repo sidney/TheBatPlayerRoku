@@ -7,7 +7,7 @@ Function selection_getSomaFMStations()
 End Function
 
 Function selection_getFeaturedStations()
-  url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/featured.json"
+  url = GetConfig().BatUtils + "featured"
   stations = GetStationsAtUrl(url)
   m.Screen.SetContentList(2, stations)
   m.Screen.SetListVisible(2, true)
@@ -15,7 +15,7 @@ Function selection_getFeaturedStations()
 End Function
 
 Function selection_getGabeStations()
-  url = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/gabeFavorites.json"
+  url = GetConfig().BatUtils + "gabeFavorites"
   stations = GetStationsAtUrl(url)
   m.Screen.SetContentList(3, stations)
   m.Screen.SetListVisible(3, true)
@@ -45,7 +45,6 @@ Function GetStationsAtUrl(url as String) as object
     ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
     stationsArray.push(singleStationItem)
   end for
-
 
   return stationsArray
 End Function
