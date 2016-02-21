@@ -1,12 +1,16 @@
 Function DisplayStationLoading(station as Object)
 	this = {
 		close: Loading_close
-		stationImage: "tmp:/" + makemdfive(station.StationImage)
+		stationImage: invalid
 		stationName: station.stationName
 		canvas: invalid
 		init: initStationLoadingScreen
 	}
 
+	if station.stationImage <> invalid
+		this.stationImage = "tmp:/" + makemdfive(station.StationImage)
+	end if
+	
 	this.init()
 	GetNowPlayingScreen().loadingScreen = this
 	GetGlobalAA().StationLoadingScreen = this
@@ -64,7 +68,7 @@ Function Loading_close()
 		m.canvas = invalid
 		m = invalid
 		GetGlobalAA().StationLoadingScreen = invalid
-	end if 
+	end if
 End Function
 
 Function HandleStationLoadingScreenEvent(msg)

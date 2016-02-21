@@ -38,7 +38,7 @@ Function StationSelectionScreen()
 
   this.Screen.SetupLists(5)
   this.Screen.SetListName(0, "Your Stations")
-  this.Screen.SetListName(1, "Browse Stations")
+  this.Screen.SetListName(1, "Discover Stations")
   this.Screen.SetListName(2, "Stations from SomaFM")
   this.Screen.SetListName(3, "Featured Stations")
   this.Screen.SetListName(4, "Gabe's Current Favorites")

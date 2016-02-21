@@ -42,7 +42,6 @@ End Function
 Function GetStationsAtUrl(url as String) as object
   stationsKey = makemdfive(url)
   stationsJsonArray = GetStationCollection(stationsKey)
-  shouldSaveStations = false
 
   if stationsJsonArray = invalid
     Request = GetRequest()
@@ -57,8 +56,25 @@ Function GetStationsAtUrl(url as String) as object
 
   for i = 0 to stationsJsonArray.Count() -1
     singleStation = stationsJsonArray[i]
-    singleStationItem = CreateSong(singleStation.name, singleStation.provider, "", "mp3", "", singleStation.image)
+
+    format = "mp3"
+    if singleStation.DoesExist("format")
+      format = singleStation.format
+    end if
+
+    stream = ""
+    if singleStation.DoesExist("stream")
+      stream = singleStation.stream
+    end if
+
+    image = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/album-placeholder.png"
+    if singleStation.DoesExist("image")
+      image = singleStation.image
+    end if
+
+    singleStationItem = CreateSong(singleStation.name, singleStation.provider, "", format, stream, image)
     singleStationItem.playlist = singleStation.playlist
+
     ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
     stationsArray.push(singleStationItem)
   end for
@@ -111,10 +127,10 @@ Function selection_showDirectoryPopup(station as object)
               else if msg.GetIndex() = 1
                 dialog.close()
 
-                if station.DoesExist("feedurl")
+                if station.DoesExist("feedurl") AND station.feedurl <> invalid AND station.feedurl <> ""
                 ' Play Station
                   PlayStation(updatedStation)
-                else
+                else if station.DoesExist("playlist") AND station.playlist <> invalid AND station.playlist <> ""
                   ' Parse playlist'
                   GetDirectoryStation(station)
                 end if
@@ -224,9 +240,7 @@ Function NavigateToBrowseCategory(category as Integer)
 
   stations = GetStationsForCategory(category)
   screen.SetContent(stations)
-
   screen.show()
-
   done = false
 
   while True
@@ -236,7 +250,13 @@ Function NavigateToBrowseCategory(category as Integer)
       if msg.isListItemSelected()
         index = msg.GetIndex()
         station = stations[index]
-        stationObject = CreateSong(station.title, station.description, "", station.StreamFormat, "", station.image)
+
+        image = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/album-placeholder.png"
+        if station.DoesExist("image") AND station.image <> invalid
+          image = station.image
+        end if
+
+        stationObject = CreateSong(station.title, "", "", station.StreamFormat, "", image)
         stationObject.feedurl = station.stream
 
         selection_showDirectoryPopup(stationObject)
@@ -247,23 +267,72 @@ Function NavigateToBrowseCategory(category as Integer)
           exit while
 
       end if
-
-
     end if
+  end while
+End Function
 
+Function NavigateToSearchResults(stations as Object)
+  screen = CreateObject("roListScreen")
+  screen.SetTitle("Search Results")
+  port = CreateObject("roMessagePort")
+  screen.SetMessagePort(port)
+  screen.SetContent(stations)
+  screen.show()
+
+  while True
+    msg = wait(0, screen.GetMessagePort())
+
+    if type(msg) = "roListScreenEvent"
+      if msg.isListItemSelected()
+        index = msg.GetIndex()
+        station = stations[index]
+
+        if station.image = invalid
+          station.image = GetConfig().BatUtils + "imageSearch?query=" + urlencode(station.title) + "&display=true"
+        end if
+
+        stationObject = CreateSong(station.title, "", "", station.StreamFormat, "", "")
+        stationObject.playlist = station.playlist
+
+        selection_showDirectoryPopup(stationObject)
+        screen.close()
+
+        SearchScreen = GetGlobalAA().SearchScreen
+        if SearchScreen <> invalid
+          SearchScreen.close()
+        end if
+
+      else if msg.isScreenClosed()
+          print "screen closed"
+          GetGlobalAA().CategoryScreen = invalid
+          exit while
+
+      end if
+    end if
   end while
 
 End Function
 
 Function NavigateToSearch()
-  displayHistory = false
+  results = CreateObject("roArray", 1, true)
 
-  history = CreateObject("roArray", 1, true)
   screen = CreateObject("roSearchScreen")
-  screen.SetBreadcrumbText("", "search")
+  screen.SetBreadcrumbText("", "Search")
+  screen.SetClearButtonEnabled(false)
+  screen.SetEmptySearchTermsText("Search for stations")
+  screen.SetSearchTermHeaderText("Search:")
+  screen.SetSearchButtonText("Search")
+
+  screen.AddSearchTerm("rock")
+  screen.AddSearchTerm("jazz")
+  screen.AddSearchTerm("hip hop")
+  screen.AddSearchTerm("Radio Paradise")
+  screen.AddSearchTerm("1.FM")
+  screen.AddSearchTerm("Goth")
 
   port = CreateObject("roMessagePort")
   screen.SetMessagePort(port)
+  GetGlobalAA().SearchScreen = screen
 
   screen.show()
   done = false
@@ -275,24 +344,14 @@ Function NavigateToSearch()
             print "screen closed"
             done = true
 
-        else if msg.isCleared()
-          print "search terms cleared"
-          history.Clear()
-
         else if msg.isPartialResult()
-          print "partial search: "; msg.GetMessage()
-          if not displayHistory
-              screen.SetSearchTerms((msg.GetMessage()))
-          endif
+          query = msg.GetMessage()
 
           else if msg.isFullResult()
-              print "full search: "; msg.GetMessage()
-              history.Push(msg.GetMessage())
-              if displayHistory
-                  screen.AddSearchTerm(msg.GetMessage())
-              end if
-              'uncomment to exit the screen after a full search result:
-              'done = true
+          query = msg.GetMessage()
+          results = GetSearchResults(query)
+          'Navigate to full list of results
+          NavigateToSearchResults(results)
           else
               print "Unknown event: "; msg.GetType(); " msg: "; msg.GetMessage()
           endif
@@ -300,8 +359,43 @@ Function NavigateToSearch()
     endwhile
 End Function
 
-Function PerformSearch(query) as Object
-  url = GetConfig().BatUtils + "keywordSearch?search=" + query
+Function FindStationInArrayWithName(name, stationArray) as Object
+  For Each station in stationArray
+    if station.stationname = name
+      return station
+    end if
+  End For
+
+  return invalid
+End Function
+
+Function GetSearchResults(query) as Object
+  if query.Len() < 3
+    return false
+  end if
+
+  print "Searching: " + query
+  url = GetConfig().BatUtils + "jsonSearch?search=" + query
+
+  Request = GetRequest()
+  Request.SetUrl(url)
+  jsonString = Request.GetToString()
+  searchResults = ParseJSON(jsonString)
+  results = CreateObject("roArray", 1, true)
+
+  For Each singleStation in searchResults
+    singleStationItem = CreateSong(singleStation.name, singleStation.name, "", singleStation.codec, "", "")
+    singleStationItem.playlist = singleStation.playlist
+    if singleStation.codec = "audio/mpeg"
+      singleStationItem.streamformat = "mp3"
+    else
+      singleStationItem.streamformat = "es.aac-adts"
+    end if
+
+    results.push(singleStationItem)
+  End For
+
+  return results
 End Function
 
 Function GetBrowseCategories() as Object
@@ -345,7 +439,6 @@ Function GetStationsForCategory(category as Integer) as Object
     item.hdposterurl = station.image
     item.StreamBitrates = [station.bitrate]
     item.StreamFormat = "mp3"
-    item.Description = station.category
     item.Categories = [station.category]
 
     stations.push(item)

@@ -35,6 +35,8 @@ Sub SetTheme()
 
     theme.BackgroundColor = "#000000"
     theme.ListItemText = "#CC0000"
+    theme.ButtonMenuNormalText = "#BBBBBB"
+
     theme.OverhangPrimaryLogoHD = "tmp:/headerImage.jpg"
     theme.OverhangPrimaryLogoOffsetHD_Y = "18"
 
