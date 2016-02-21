@@ -27,13 +27,14 @@ Function selection_setupBrowse()
 
   browseItem = CreateObject("roAssociativeArray")
   browseItem.name = "Browse"
+  browseItem.hdposterurl = "pkg:/images/SearchIcon.png"
+  browseItem.sdposterurl = browseItem.hdposter
   itemsArray.push(browseItem)
 
   searchItem = CreateObject("roAssociativeArray")
   searchItem.name = "Search"
-  searchItem.hdposter = "pkg:/images/searchIcon.png"
-  searchItem.sdposter = "pkg:/images/searchIcon.png"
-
+  searchItem.hdposterurl = "pkg:/images/BrowseIcon.png"
+  searchItem.sdposterurl = searchItem.hdposter
   itemsArray.push(searchItem)
 
   m.Screen.SetContentList(1, itemsArray)
