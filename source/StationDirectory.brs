@@ -85,7 +85,7 @@ End Function
 
 Function selection_showDirectoryPopup(station as object)
   if station.image <> invalid
-    ASyncGetFile(station.image, "tmp:/" + makemdfive(station.image))
+    ASyncGetFile(station.hdposterurl, "tmp:/" + makemdfive(station.hdposterurl))
   end if
 
   Analytics = GetSession().Analytics
