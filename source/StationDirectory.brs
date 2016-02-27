@@ -190,6 +190,10 @@ Function GetDirectoryStation(station) as Object
     if index = -1
       splitStringArray = playlistString.tokenize(CHR(10))
       audiourl = splitStringArray[0]
+      if audiourl = invalid
+        return false
+      end if
+
       audiourl = audiourl.trim()
 
       print "Parsed out: " + audiourl
