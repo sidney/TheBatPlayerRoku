@@ -58,9 +58,12 @@ Function GetStationsAtUrl(url as String) as object
   for i = 0 to stationsJsonArray.Count() -1
     singleStation = stationsJsonArray[i]
 
+    'Is it MP3 or AAC?  If it's not mp3 we'll call it aac.
     format = "mp3"
     if singleStation.DoesExist("format")
-      format = singleStation.format
+      if format <> "mp3"
+        format = "es.aac-adts"
+      end if
     end if
 
     stream = ""
@@ -74,7 +77,9 @@ Function GetStationsAtUrl(url as String) as object
     end if
 
     singleStationItem = CreateSong(singleStation.name, singleStation.provider, "", format, stream, image)
+    singleStationItem.provider = singleStation.stationProvider
     singleStationItem.playlist = singleStation.playlist
+    singleStationItem.description = singleStation.description
 
     ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
     stationsArray.push(singleStationItem)
@@ -96,7 +101,13 @@ Function selection_showDirectoryPopup(station as object)
   dialog = CreateObject("roMessageDialog")
   dialog.SetMessagePort(port)
   dialog.SetTitle(station.stationname)
-  dialog.SetText("Add or Play this station.")
+
+  text = "Add or Play this station."
+  if station.DoesExist("description") AND station.description <> "" AND station.description <> invalid
+    text = station.description
+  end if
+  
+  dialog.SetText(text)
 
   dialog.AddButton(1, "Play")
   dialog.AddButton(2, "Add To My Stations")
@@ -178,7 +189,12 @@ Function GetDirectoryStation(station) as Object
     ' If File= doesn't exist treat as a m3u playlist
     if index = -1
       splitStringArray = playlistString.tokenize(CHR(10))
-      station.feedurl = splitStringArray[0]
+      audiourl = splitStringArray[0]
+      audiourl = audiourl.trim()
+
+      print "Parsed out: " + audiourl
+
+      station.feedurl = audiourl
       return station
     end if
 
@@ -187,6 +203,8 @@ Function GetDirectoryStation(station) as Object
     endOfLine = playlistString.InStr(index, CHR(10))
     numOfChars = endOfLine - index
     audiourl = playlistString.Mid(index, numOfChars)
+    audiourl = audiourl.trim()
+
     print "Parsed out: " + audiourl
     if audiourl <> invalid
       station.feedurl = audiourl
