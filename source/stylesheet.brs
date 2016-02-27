@@ -37,8 +37,8 @@ Sub SetTheme()
     theme.ListItemText = "#CC0000"
     theme.ButtonMenuNormalText = "#BBBBBB"
 
-    theme.OverhangPrimaryLogoHD = "tmp:/headerImage.jpg"
-    theme.OverhangPrimaryLogoOffsetHD_Y = "18"
+    theme.OverhangPrimaryLogoHD = "pkg:/images/header-placeholder.jpg"
+    theme.OverhangPrimaryLogoOffsetHD_Y = "0"
 
     app.SetTheme(theme)
 
