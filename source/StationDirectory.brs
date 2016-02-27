@@ -71,7 +71,7 @@ Function GetStationsAtUrl(url as String) as object
       stream = singleStation.stream
     end if
 
-    image = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/album-placeholder.png"
+    image = "pkg:/images/album-placeholder.png"
     if singleStation.DoesExist("image")
       image = singleStation.image
     end if
@@ -106,7 +106,7 @@ Function selection_showDirectoryPopup(station as object)
   if station.DoesExist("description") AND station.description <> "" AND station.description <> invalid
     text = station.description
   end if
-  
+
   dialog.SetText(text)
 
   dialog.AddButton(1, "Play")
@@ -270,13 +270,14 @@ Function NavigateToBrowseCategory(category as Integer)
         index = msg.GetIndex()
         station = stations[index]
 
-        image = "https://s3-us-west-2.amazonaws.com/batserver-static-assets/directory/album-placeholder.png"
+        image = "pkg:/images/album-placeholder.png"
         if station.DoesExist("image") AND station.image <> invalid
           image = station.image
         end if
 
         stationObject = CreateSong(station.title, "", "", station.StreamFormat, "", image)
         stationObject.feedurl = station.stream
+        stationObject.stationProvider = station.title
 
         selection_showDirectoryPopup(stationObject)
 
@@ -312,6 +313,7 @@ Function NavigateToSearchResults(stations as Object)
 
         stationObject = CreateSong(station.title, "", "", station.StreamFormat, "", "")
         stationObject.playlist = station.playlist
+        stationObject.stationProvider = station.title
 
         selection_showDirectoryPopup(stationObject)
         screen.close()
@@ -346,7 +348,6 @@ Function NavigateToSearch()
   screen.AddSearchTerm("jazz")
   screen.AddSearchTerm("hip hop")
   screen.AddSearchTerm("Radio Paradise")
-  screen.AddSearchTerm("1.FM")
   screen.AddSearchTerm("Goth")
 
   port = CreateObject("roMessagePort")
@@ -403,8 +404,16 @@ Function GetSearchResults(query) as Object
   results = CreateObject("roArray", 1, true)
 
   For Each singleStation in searchResults
-    singleStationItem = CreateSong(singleStation.name, singleStation.name, "", singleStation.codec, "", "")
+    image = "pkg:/images/album-placeholder.png"
+
+    nowPlaying = ""
+    if singleStation.DoesExist("nowPlaying") AND singleStation.nowPlaying <> invalid
+      nowPlaying = singleStation.nowPlaying
+    end if
+
+    singleStationItem = CreateSong(singleStation.name, nowPlaying, "", singleStation.codec, "", image)
     singleStationItem.playlist = singleStation.playlist
+
     if singleStation.codec = "audio/mpeg"
       singleStationItem.streamformat = "mp3"
     else
@@ -448,14 +457,19 @@ Function GetStationsForCategory(category as Integer) as Object
   For Each station in stationsArray
     item = CreateObject("roAssociativeArray")
 
+    image = "pkg:/images/album-placeholder.png"
+    if station.DoesExist("image") AND station.image <> invalid
+      image = station.image
+    end if
+
     item.title = station.name
-    item.provider = station.name
+    item.stationProvider = station.name
     item.category = station.category
     item.stream = station.stream
-    item.image = station.image
-    item.url = station.image
-    item.sdposterurl = station.image
-    item.hdposterurl = station.image
+    item.image = image
+    item.url = image
+    item.sdposterurl = image
+    item.hdposterurl = image
     item.StreamBitrates = [station.bitrate]
     item.StreamFormat = "mp3"
     item.Categories = [station.category]
