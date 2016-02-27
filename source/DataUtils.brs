@@ -69,11 +69,11 @@ Sub GetStations() as Object
 End Sub
 
 Function SaveStationCollectionJson(name as String, json as Object)
-	RegWrite(name, json, "batplayerdirectory")
+	RegWrite(name, json, "Transient")
 End Function
 
 Function GetStationCollection(name) as Object
-	json = RegRead(name, "batplayerdirectory")
+	json = RegRead(name, "Transient")
 
 	if json = invalid
 		return invalid
