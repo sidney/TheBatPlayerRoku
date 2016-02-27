@@ -15,20 +15,22 @@ Function BatBioLabel(text as string, song as object, enableFade = true as Boolea
 		MaxFade: 255
 		MinFade: 0
 
+		Font: GetMediumFont()
+
 		x: ResolutionX(90)
 		y: ResolutionY(510)
-		width: ResolutionX(1080)
+		width: ResolutionX(1090)
 		height: ResolutionY(200)
 
 		draw: bioLabel_draw
 
 	}
 
-	this.labelObject = RlTextArea(this.text, GetMediumFont(), GetRegularColorForSong(song), 0, 0, this.width, this.height, 8, 1.15, "left", true, true)
+	this.labelObject = RlTextArea(this.text, this.Font, GetRegularColorForSong(song), 0, 0, this.width, this.height, 8, 1.14, "left", true, true)
 
 	dropShadowColor = GetDropShadowColorForSong(song)
 	if dropShadowColor <> 0
-		this.dropShadowObject = RlTextArea(this.text, GetMediumFont(), dropShadowColor, 1.0, 2.0, this.width, this.height, 8, 1.15, "left", true, true)
+		this.dropShadowObject = RlTextArea(this.text, this.Font, dropShadowColor, 1.0, 2.0, this.width, this.height, 8, 1.14, "left", true, true)
 	end if
 
 	' Create the bitmap

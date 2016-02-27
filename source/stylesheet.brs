@@ -64,7 +64,7 @@ End Function
 
 Function GetMediumFont() as Object
 	reg = GetGlobalAA().FontRegistry
-  size = 21
+  size = 22
   deviceSize = GetSession().deviceInfo.GetDisplaySize()
 
   if deviceSize.W = 720
