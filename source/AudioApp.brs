@@ -39,7 +39,7 @@ Sub Show_Audio_Screen(station as Object)
     GetGlobalAA().AddReplace("SongObject", Station)
 
     Audio.setPlayState(0)
-    Audio.setupSong(station.feedurl, station.streamformat)
+    Audio.setupSong(station.feedurl.trim(), station.streamformat)
     Audio.audioplayer.setNext(0)
     Audio.setPlayState(2)		' start playing
     Audio.audioplayer.Seek(-180000)
@@ -49,7 +49,7 @@ Function PlayStation(station)
   if station.DoesExist("feedurl") AND station.feedurl <> ""
     Analytics_StationSelected(Station.stationName, Station.feedurl)
 
-    metadataUrl = GetConfig().Batserver + "metadata/" + UrlEncode(Station.feedurl)
+    metadataUrl = GetConfig().Batserver + "metadata/" + UrlEncode(Station.feedurl.trim())
     print "JSON for selected station: " + metadataUrl
 
     DisplayStationLoading(Station)
