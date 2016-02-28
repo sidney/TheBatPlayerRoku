@@ -408,7 +408,8 @@ Function GetSearchResults(query) as Object
   results = CreateObject("roArray", 1, true)
 
   For Each singleStation in searchResults
-    image = "pkg:/images/album-placeholder.png"
+    encodedSearch = urlencode(singleStation.name)
+    image = GetConfig().BatUtils + "imageSearch?query=" + encodedSearch + "&display=true"
 
     nowPlaying = ""
     if singleStation.DoesExist("nowPlaying") AND singleStation.nowPlaying <> invalid
@@ -464,7 +465,12 @@ Function GetStationsForCategory(category as Integer) as Object
     image = "pkg:/images/album-placeholder.png"
     if station.DoesExist("image") AND station.image <> invalid
       image = station.image
+    else
+      encodedSearch = urlencode(station.name)
+      image = GetConfig().BatUtils + "imageSearch?query=" + encodedSearch + "&display=true"
     end if
+
+    item = CreateSong(station.name, "", "", "mp3", "", image)
 
     item.title = station.name
     item.stationProvider = station.name
