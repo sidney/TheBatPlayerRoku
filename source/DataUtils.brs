@@ -85,7 +85,7 @@ End Function
 Function BumpOrResetSavedDirectoryCacheValue()
 	value = 0
 	maxValue = 5
-	sectionKey = "batplayerdirectory"
+	sectionKey = "Transient"
 
 	key = "DirectoryCacheCounter"
 	savedValue = RegRead(key, sectionKey)

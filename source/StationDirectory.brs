@@ -445,12 +445,18 @@ Function GetSearchResults(query) as Object
 End Function
 
 Function GetBrowseCategories() as Object
-  url = GetConfig().BatUtils + "categories"
-  Request = GetRequest()
-  Request.SetUrl(url)
-  jsonString = Request.GetToString()
-  categoriesArray = ParseJSON(jsonString)
+  categoriesJsonString = GetStationCollectionJsonFromCache()
+  if categoriesJsonString = invalid
+    print "Categories not in cache.  Fetching."
+    url = GetConfig().BatUtils + "categories"
+    Request = GetRequest()
+    Request.SetUrl(url)
+    categoriesJsonString = Request.GetToString()
+    RegWrite("StationCategories", categoriesJsonString, "Transient")
 
+  end if
+
+  categoriesArray = ParseJSON(categoriesJsonString)
   categories = CreateObject("roArray", 1, true)
 
   For Each category in categoriesArray
@@ -461,6 +467,16 @@ Function GetBrowseCategories() as Object
   End For
 
   return categories
+End Function
+
+Function GetStationCollectionJsonFromCache() as Object
+	json = RegRead("StationCategories", "Transient")
+
+	if json = invalid
+		return invalid
+	end if
+
+	return json
 End Function
 
 Function GetStationsForCategory(category as Integer) as Object
