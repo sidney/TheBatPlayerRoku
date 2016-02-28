@@ -1,16 +1,16 @@
 Function selection_getSomaFMStations()
   url = GetConfig().BatUtils + "somafm"
   stations = GetStationsAtUrl(url)
-  m.Screen.SetContentList(2, stations)
-  m.Screen.SetListVisible(2, true)
+  m.Screen.SetContentList(3, stations)
+  m.Screen.SetListVisible(3, true)
   m.SomaFMStations = stations
 End Function
 
 Function selection_getFeaturedStations()
   url = GetConfig().BatUtils + "featured"
   stations = GetStationsAtUrl(url)
-  m.Screen.SetContentList(3, stations)
-  m.Screen.SetListVisible(3, true)
+  m.Screen.SetContentList(1, stations)
+  m.Screen.SetListVisible(1, true)
   m.FeaturedStations = stations
 End Function
 
@@ -20,6 +20,14 @@ Function selection_getGabeStations()
   m.Screen.SetContentList(4, stations)
   m.Screen.SetListVisible(4, true)
   m.GabeStations = stations
+End Function
+
+Function selection_getDashStations()
+  url = GetConfig().BatUtils + "dashradio"
+  stations = GetStationsAtUrl(url)
+  m.Screen.SetContentList(2, stations)
+  m.Screen.SetListVisible(2, true)
+  m.DashStations = stations
 End Function
 
 Function selection_setupBrowse()
@@ -37,7 +45,7 @@ Function selection_setupBrowse()
   searchItem.sdposterurl = searchItem.hdposter
   itemsArray.push(searchItem)
 
-  m.Screen.SetContentList(1, itemsArray)
+  m.Screen.SetContentList(5, itemsArray)
 End Function
 
 Function GetStationsAtUrl(url as String) as object

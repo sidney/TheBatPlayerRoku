@@ -165,3 +165,12 @@ Function SanitizeStreamUrl(url)
 
   return url
 end function
+
+Function GetTruncatedString(str as String) as String
+  maxLength = 63
+  if str.len() < maxLength
+    return str
+  end if
+
+  return str.left(maxLength) + "..."
+End function
