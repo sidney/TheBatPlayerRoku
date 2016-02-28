@@ -360,7 +360,11 @@ Function NavigateToSearch()
   screen.AddSearchTerm("jazz")
   screen.AddSearchTerm("hip hop")
   screen.AddSearchTerm("Radio Paradise")
-  screen.AddSearchTerm("Goth")
+  screen.AddSearchTerm("goth")
+  screen.AddSearchTerm("1.fm")
+  screen.AddSearchTerm("alternative")
+  screen.AddSearchTerm("80s")
+  screen.AddSearchTerm("new wave")
 
   port = CreateObject("roMessagePort")
   screen.SetMessagePort(port)
@@ -407,6 +411,7 @@ Function GetSearchResults(query) as Object
   end if
 
   print "Searching: " + query
+  query = urlencode(query)
   url = GetConfig().BatUtils + "jsonSearch?search=" + query
 
   Request = GetRequest()
