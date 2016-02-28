@@ -125,12 +125,12 @@ End Function
 Function GetStationSelectionHeader()
     print "------ Downloading header ------"
     ipAddress = GetSession().IPAddress
-    text = urlescape("Configure your Bat Player at http://" + ipAddress + ":9999")
+    text = urlescape("Configure your Bat Player on the web at http://" + ipAddress + ":9999")
     device = GetSession().deviceInfo
     width = ToStr(device.GetDisplaySize().w)
 
     originalHeaderFile = "selection_bat_logo-HD.png"
-    query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=26&txtfit=max&txtpad=52&txt=" + text + "&w=" + width
+    query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=25&txtfit=max&txtpad=52&txt=" + text + "&w=" + width
 
     imgixHost = GetConfig().ImgixHost
     url = imgixHost + "/" + urlescape(originalHeaderFile) + query
