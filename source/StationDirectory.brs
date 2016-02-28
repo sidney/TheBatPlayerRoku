@@ -227,6 +227,9 @@ Function GetDirectoryStation(station) as Object
 End Function
 
 Function NavigateToBrowse()
+  Analytics = GetSession().Analytics
+  Analytics.AddEvent("Viewed Browse Screen")
+
   screen = CreateObject("roListScreen")
   screen.SetTitle("Browse Stations")
 
@@ -262,6 +265,9 @@ Function NavigateToBrowse()
 End Function
 
 Function NavigateToBrowseCategory(category as Integer)
+  Analytics = GetSession().Analytics
+  Analytics.AddEvent("Viewed Browse Screen Category")
+
   screen = CreateObject("roListScreen")
   screen.SetTitle("Browse Stations")
 
@@ -304,6 +310,9 @@ Function NavigateToBrowseCategory(category as Integer)
 End Function
 
 Function NavigateToSearchResults(stations as Object)
+  Analytics = GetSession().Analytics
+  Analytics.AddEvent("Viewed Search Results")
+
   screen = CreateObject("roListScreen")
   screen.SetTitle("Search Results")
   port = CreateObject("roMessagePort")
@@ -347,6 +356,9 @@ Function NavigateToSearchResults(stations as Object)
 End Function
 
 Function NavigateToSearch()
+  Analytics = GetSession().Analytics
+  Analytics.AddEvent("Viewed Search Screen")
+
   results = CreateObject("roArray", 1, true)
 
   screen = CreateObject("roSearchScreen")
