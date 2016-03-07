@@ -130,7 +130,9 @@ Function GetStationSelectionHeader()
     width = ToStr(device.GetDisplaySize().w)
 
     originalHeaderFile = "selection_bat_logo-HD.png"
-    query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=25&txtfit=max&txtpad=52&txt=" + text + "&w=" + width
+    bottomPadding = ResolutionY(45)
+    fontSize = ResolutionY(25)
+    query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=" + ToStr(fontSize) + "&txtfit=max&txtpad=" + ToStr(bottomPadding) + "&txt=" + text + "&w=" + width
 
     imgixHost = GetConfig().ImgixHost
     url = imgixHost + "/" + urlescape(originalHeaderFile) + query

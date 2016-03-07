@@ -88,7 +88,9 @@ Function RefreshNowPlayingScreen()
   song = NowPlayingScreen.song
 
   if song = invalid
-    NowPlayingScreen.screen.close()
+    if NowPlayingScreen <> invalid AND NowPlayingScreen.DoesExist("screen")
+      NowPlayingScreen.screen.close()
+    end if
   end if
 
   GetGlobalAA().lastSongTitle = invalid
