@@ -17,7 +17,7 @@ End Sub
 
 Function InitBatPlayer()
   BumpOrResetSavedDirectoryCacheValue()
-  
+
 	GetGlobalAA().lastSongTitle = ""
     Analytics = GetSession().Analytics
     Analytics.AddEvent("Application Launched")

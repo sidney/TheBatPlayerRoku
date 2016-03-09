@@ -134,6 +134,7 @@ Sub HandleAudioPlayerEvent(msg as Object)
 	        	Audio.failCounter = Audio.failCounter + 1
 	        else
 	        	BatLog("Failed playing station: " + Station.url)
+            GetGlobalAA().SongObject = invalid
 	        	Audio.AudioPlayer.stop()
 	        	Audio.failCounter = 0
 	        	ListStations()

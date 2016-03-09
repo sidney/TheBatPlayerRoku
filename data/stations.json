@@ -2,7 +2,7 @@
   "name": "Groove Salad",
   "provider": "soma fm",
   "format": "mp3",
-  "stream": "http://uwstream1.somafm.com/",
+  "stream": "http://ice1.somafm.com/groovesalad-128.mp3",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/groovesalad.png",
   "genres": ["chill", "lounge"]
 }, {
@@ -19,17 +19,11 @@
   "stream": "http://107.155.126.58:8590/",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/bateslogo.png"
 }, {
-  "name": "Goth Industrial Electro",
-  "provider": "Sanctuary Radio",
+  "name": "Radio Paradise",
+  "provider": "Radio Paradise",
   "format": "mp3",
-  "stream": "http://23.27.51.2:6699/",
-  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/sanctuaryradiologo.png"
-}, {
-  "name": "80s Retro",
-  "provider": "Sanctuary Radio",
-  "format": "mp3",
-  "stream": "http://23.27.51.2:1330/",
-  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/sanctuaryradiologo2.png"
+  "stream": "http://stream-dc1.radioparadise.com/mp3-192",
+  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/radio-paradise.jpg"
 }, {
   "name": "Classic Rock",
   "provider": "Best Net Radio",
@@ -37,12 +31,6 @@
   "format": "mp3",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/bestnetradio.png"
 }, {
-  "name": "Somehow Jazz",
-  "provider": "Somehow Jazz",
-  "stream": "http://72.55.137.198:3200/",
-  "format": "mp3",
-  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/somehowjazz.png"
-  }, {
   "name": "Radio Paradise",
   "provider": "Radio Paradise",
   "stream": "http://stream-dc1.radioparadise.com/mp3-192",
