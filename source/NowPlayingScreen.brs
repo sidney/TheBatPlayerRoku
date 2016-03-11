@@ -89,7 +89,8 @@ Function RefreshNowPlayingScreen()
 
   if song = invalid
     if NowPlayingScreen <> invalid AND NowPlayingScreen.DoesExist("screen")
-      NowPlayingScreen.screen.close()
+      NowPlayingScreen.screen = invalid
+      return false
     end if
   end if
 

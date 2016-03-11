@@ -33,6 +33,8 @@ Sub HandleNowPlayingScreenEvent (msg as Object)
 	    'Exit
 			NowPlayingScreen = GetNowPlayingScreen()
 			NowPlayingScreen.screen = invalid
+      NowPlayingScreen = invalid
+      GetGlobalAA().NowPlayingScreen = invalid
 
       StationSelectionScreen = GetGlobalAA().StationSelectionScreen
       StationSelectionScreen.RefreshNowPlayingData()
