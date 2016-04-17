@@ -64,7 +64,7 @@ End Function
 
 Function GetMediumFont() as Object
 	reg = GetGlobalAA().FontRegistry
-  size = 22
+  size = 24
   deviceSize = GetSession().deviceInfo.GetDisplaySize()
 
   if deviceSize.W = 720
@@ -85,7 +85,7 @@ Function GetSongNameFont() as Object
     size = 13
   end if
 
-  Font = reg.GetFont("Lato Light", size, false, false)
+  Font = reg.GetFont("Lato", size, false, false)
   return Font
 End Function
 
@@ -115,7 +115,7 @@ End Function
 
 Function GetLargeFont() as Object
 	reg = GetGlobalAA().FontRegistry
-  Font = reg.GetFont("Lato Light", ResolutionY(43), false, false)
+  Font = reg.GetFont("Lato", ResolutionY(43), false, false)
   return Font
 End Function
 

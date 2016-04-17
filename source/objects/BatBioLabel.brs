@@ -17,9 +17,9 @@ Function BatBioLabel(text as string, song as object, enableFade = true as Boolea
 
 		Font: GetMediumFont()
 
-		x: ResolutionX(90)
+		x: ResolutionX(60)
 		y: ResolutionY(510)
-		width: ResolutionX(1090)
+		width: ResolutionX(1180)
 		height: ResolutionY(200)
 
 		draw: bioLabel_draw
