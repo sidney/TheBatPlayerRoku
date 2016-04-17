@@ -59,7 +59,7 @@ Function HandleJSON(jsonString as String)
 
     song.Title = jsonObject.song
     song.Artist = jsonObject.artist
-    song.Description = jsonObject.bio
+    'song.Description = jsonObject.bio
     song.bio = jsonObject.bio
     song.Genres = jsonObject.tags
     song.isOnTour = jsonObject.isOnTour
