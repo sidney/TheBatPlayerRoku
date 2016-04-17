@@ -19,17 +19,23 @@
   "stream": "http://107.155.126.58:8590/",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/bateslogo.png"
 }, {
-  "name": "Radio Paradise",
-  "provider": "Radio Paradise",
-  "format": "mp3",
-  "stream": "http://stream-dc1.radioparadise.com/mp3-192",
-  "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/radio-paradise.jpg"
-}, {
   "name": "Classic Rock",
   "provider": "Best Net Radio",
   "stream": "http://107.155.126.58:7150/",
   "format": "mp3",
   "image": "https://s3-us-west-2.amazonaws.com/batserver-static-assets/roku-client/station-icons/bestnetradio.png"
+}, {
+  "name": "The Bat Station",
+  "provider": "The Bat Player",
+  "stream": "http://us1.internet-radio.com:8370/",
+  "format": "mp3",
+  "image": "http://thebatplayer.fm/station/thebatstation.png"
+  }, {
+  "name": "The Ranch",
+  "format": "mp3",
+  "image": "http://54.191.183.105/~uploads/now_playing_artwork/TheRanch.jpg",
+  "provider": "Dash Radio",
+  "stream": "http://ice65.securenetsystems.net:80/DASH13"
 }, {
   "name": "Radio Paradise",
   "provider": "Radio Paradise",
