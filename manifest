@@ -16,4 +16,4 @@ splash_screen_sd=pkg:/images/launch_image-SD.png
 splash_min_time=0
 major_version=1
 minor_version=5
-build_version=0
+build_version=1
