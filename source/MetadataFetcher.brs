@@ -102,10 +102,28 @@ Function HandleJSON(jsonString as String)
     song.artistImage = song.hdposterurl
     song.UsedFallbackImage = true
   end if
-  NowPlayingScreen.song = song
 
-  if song.artist = invalid then song.artist = song.stationName
-  if song.Title = invalid then song.Title = jsonObject.track
+  if isnullorempty(song.artist) then
+    song.artist = song.stationName
+    shouldRefresh = true
+  endif
+
+  if isnullorempty(song.Title) then
+    song.Title = song.stationName
+    shouldRefresh = true
+  endif
+
+  if isnullorempty(song.artistImage) then
+    song.artistImage = song.hdposterurl
+    shouldRefresh = true
+  endif
+
+  if isnullorempty(song.backgroundImage) then
+    song.backgroundImage = song.hdposterurl
+    shouldRefresh = true
+  endif
+
+  NowPlayingScreen.song = song
 
   ' Refresh because of a successful update
   if GetGlobalAA().lastSongTitle <> song.Title AND song.metadataFault = false
