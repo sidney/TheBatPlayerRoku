@@ -32,6 +32,10 @@ Function HandleJSON(jsonString as String)
   song = GetGlobalAA().Lookup("SongObject")
   NowPlayingScreen = GetNowPlayingScreen()
 
+  if song = invalid
+    return false
+  end if
+
   song.backgroundimage = song.hdposterurl
   song.artistimage = song.stationimage
   song.UsedFallbackImage = true
