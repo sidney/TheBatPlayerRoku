@@ -14,7 +14,6 @@ Function CreateNowPlayingScreen() as Object
   NowPlayingScreen.defaultFont = GetMediumFont()
   NowPlayingScreen.smallFont = GetSmallFont()
   NowPlayingScreen.songNameFont = GetSongNameFont()
-  NowPlayingScreen.genreFont = GetGenreFont()
 
   NowPlayingScreen.HeaderLogo = CreateObject("roBitmap", "pkg:/images/bat.png")
   NowPlayingScreen.HeaderHeight = ResolutionY(90)
@@ -43,9 +42,6 @@ Function CreateNowPlayingScreen() as Object
 
   NowPlayingScreen.albumNameLabel = invalid
   NowPlayingScreen.PreviousAlbumNameLabel = invalid
-
-  NowPlayingScreen.genresLabel = invalid
-  NowPlayingScreen.PreviousGenresLabel = invalid
 
   NowPlayingScreen.lastfmlogo = CreateObject("roBitmap", "pkg:/images/audioscrobbler_black.png")
   NowPlayingScreen.albumPlaceholder = invalid
@@ -156,7 +152,6 @@ Function UpdateScreen()
 
   albumTitle = ""
   songTitle = ""
-  genreText = ""
   bioText = GetBioTextForSong(song)
 
   if NowPlayingScreen.screen = invalid
@@ -280,7 +275,7 @@ Function UpdateScreen()
   end if
   NowPlayingScreen.StationTitleLabel = RlTextArea(NowPlayingScreen.stationTitle, NowPlayingScreen.headerFont, &hDDDDDD00 + 200, 180, headerTitleY, NowPlayingScreen.screen.GetWidth() - 200, 90, 1, 1.0, "left", true, false)
 
-  songNameHeight = GetTextHeight(songTitle, 570, NowPlayingScreen.songNameFont)
+  songNameHeight = GetTextHeight(songTitle, 600, NowPlayingScreen.songNameFont)
   artistNameLocation = 160 - songNameHeight + NowPlayingScreen.YOffset
   songNameLocation = artistNameLocation + 45
 
@@ -315,37 +310,6 @@ Function UpdateScreen()
   end if
 
   if NowPlayingScreen.artistImage <> invalid then verticalOffset = NowPlayingScreen.artistImage.verticalOffset else verticalOffset = 0
-
-  if GetSession().deviceInfo.GetDisplaySize().W = 1280
-    genreX = ResolutionX(110)
-    genreY = 465 - verticalOffset
-  else
-    genreX = ResolutionX(110)
-    genreY = ResolutionY(465)
-  end if
-
-  genreY = genreY + NowPlayingScreen.YOffset + 10
-  if song.UsedFallbackImage = true then genreY = genreY + 20
-
-  'Genre Text
-  if song.DoesExist("Genres") AND song.Genres <> invalid AND song.Genres.count() > 0 then
-    for i=0 to song.Genres.count()-1
-      if song.Genres[i] <> invalid
-          genreText = genreText + song.Genres[i] + " "
-      end if
-    end for
-  end if
-
-  'Genres label
-  if NowPlayingScreen.genresLabel = invalid OR (NowPlayingScreen.genresLabel <> invalid AND NowPlayingScreen.genresLabel.text <> genreText) OR genreY <> NowPlayingScreen.genresLabel.y
-    if NowPlayingScreen.genresLabel <> invalid
-      NowPlayingScreen.PreviousGenresLabel = NowPlayingScreen.genresLabel
-      NowPlayingScreen.PreviousGenresLabel.FadeOut()
-    end if
-    NowPlayingScreen.genresLabel = DropShadowLabel(genreText, genreX, genreY, ResolutionX(480), ResolutionY(35), NowPlayingScreen.genreFont, GetRegularColorForSong(song), "center", 1, 2, 2, false)
-    NowPlayingScreen.genresLabel.FadeIn()
-  end if
-
 
   if NowPlayingScreen.artistImage <> invalid then horizontalOffset = NowPlayingScreen.artistImage.horizontalOffset else horizontalOffset = 0
 
@@ -425,15 +389,6 @@ Function DrawScreen()
     if NowPlayingScreen.PreviousBioLabel <> invalid
       NowPlayingScreen.PreviousBioLabel.Draw(NowPlayingScreen.screen)
     end if
-
-    'Genres
-    if NowPlayingScreen.genresLabel <> invalid
-      NowPlayingScreen.genresLabel.draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.PreviousGenresLabel <> invalid
-      NowPlayingScreen.PreviousGenresLabel.draw(NowPlayingScreen.screen)
-    end if
-
 
 		'Album image
     NowPlayingScreen.albumPlaceholder.Draw(NowPlayingScreen.screen)
