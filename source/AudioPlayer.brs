@@ -41,6 +41,11 @@ REM Setup song
 REM
 REM ******************************************************
 Sub audioPlayer_setup(song As string, format as string)
+	' If the stream URL has "aac" in it, let's assume it's an AAC stream
+	if song.InStr("aac") > -1
+		format = "es.aac-adts"
+	end if
+
 	m.setPlayState(0)
 	item = CreateObject("roAssociativeArray")
 	item.Url = song
