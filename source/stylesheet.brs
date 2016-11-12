@@ -226,6 +226,7 @@ Function OpacityForSong(song) as integer
     baseAlpha = 100
     alpha = RlMin(baseAlpha * difference, targetBrightness)
 	end if
+  
   return alpha
 End Function
 

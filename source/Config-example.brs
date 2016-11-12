@@ -10,7 +10,6 @@
 ''		ImgixHost: "HOSTNAME-FROM-IMGIX-FOR-HEADER-IMG-CREATION"
 
 ''		Batserver: "http://thebatserver.thebatplayer.fm/"
-''		BatserverCDN: "http://apicdn.thebatplayer.fm/"
 
 ''    SyslogServer: "A-SYSLOG-SERVER"
 ''		SyslogPort: 12345
