@@ -122,12 +122,12 @@ Sub HandleAudioPlayerEvent(msg as Object)
 	    else if msg.isRequestSucceeded() OR msg.isRequestFailed()
 	    	if Audio.failCounter < 5 then
 
-						if Audio.FailCounter > 2 AND (Station.url.Right(1) <> "/" OR Station.url.Right(2) <> "/;")
-							url = Station.url
-							print "Attempting to sanitize url: " + url
-							url = SanitizeStreamUrl(url)
-							Audio.updateStreamUrl(url)
-						end if
+				if Audio.FailCounter > 2
+					url = Station.url
+					print "Attempting to sanitize url: " + url
+					url = SanitizeStreamUrl(url)
+					Audio.updateStreamUrl(url)
+				end if
 
 	        	print "FullResult: End of Stream. " + Station.url + "  Restarting.  Failures: " + str(Audio.failCounter)
 	        	Audio.AudioPlayer.stop()

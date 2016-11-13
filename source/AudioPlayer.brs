@@ -46,6 +46,7 @@ Sub audioPlayer_setup(song As string, format as string)
 		format = "es.aac-adts"
 	end if
 
+	print "Setting up " + format + " stream: " + song + ""
 	m.setPlayState(0)
 	item = CreateObject("roAssociativeArray")
 	item.Url = song
@@ -55,9 +56,12 @@ Sub audioPlayer_setup(song As string, format as string)
 End Sub
 
 Sub audioPlayer_updateStreamUrl(url as String)
+	print "Trying URL: " + url
+	
 	m.station.url = url
-	m.audioPlayer.ClearContent()
+	m.audioPlayer.clearContent()
 	m.audioPlayer.AddContent(m.station)
+	m.audioPlayer.play()
 end sub
 
 Sub audioPlayer_reset()
