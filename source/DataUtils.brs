@@ -61,7 +61,7 @@ Sub GetStations() as Object
     end if
 
 	if stationsArray = invalid then
-		json = ReadAsciiFile("pkg:/data/stations.json")
+		json = ReadAsciiFile("tmp:/stations.json")
 	    stationsArray = ParseJSON(json)
 	 end if
 
@@ -151,7 +151,7 @@ Sub GetStationsJson() as string
 
 	if json = invalid then
 		print "Invalid stations json"
-		json = ReadAsciiFile("pkg:/data/stations.json")
+		json = ReadAsciiFile("tmp:/stations.json")
 	end if
 
 	return json

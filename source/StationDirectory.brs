@@ -66,14 +66,6 @@ Function GetStationsAtUrl(url as String) as object
   for i = 0 to stationsJsonArray.Count() -1
     singleStation = stationsJsonArray[i]
 
-    'Is it MP3 or AAC?  If it's not mp3 we'll call it aac.
-    format = "mp3"
-    if singleStation.DoesExist("format")
-      if format <> "mp3"
-        format = "es.aac-adts"
-      end if
-    end if
-
     stream = ""
     if singleStation.DoesExist("stream")
       stream = singleStation.stream
@@ -82,6 +74,11 @@ Function GetStationsAtUrl(url as String) as object
     image = "pkg:/images/album-placeholder.png"
     if singleStation.DoesExist("image")
       image = singleStation.image
+    end if
+
+    format = "mp3"
+    if singleStation.DoesExist("format")
+      format = singleStation.format
     end if
 
     singleStationItem = CreateSong(singleStation.name, singleStation.provider, "", format, stream, image)

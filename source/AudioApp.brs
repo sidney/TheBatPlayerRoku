@@ -58,11 +58,18 @@ Function PlayStation(station)
 End Function
 
 
-Function CreateSong(title as string, description as string, artist as string, streamformat as string, feedurl as string, imagelocation as string) as Object
+Function CreateSong(title as string, description as string, artist as string, streamformat as dynamic, feedurl as string, imagelocation as string) as Object
     item = CreatePosterItem("", title, description)
+    
     url = imageLocation
+
+    if streamformat = invalid
+      streamformat = "mp3"
+    end if
+
     item.Artist = artist
     item.Title = title    ' Song name
+    item.name = title
     item.feedurl = feedurl
     item.streamformat = streamformat
     item.picture = url      ' default audioscreen picture to PosterScreen Image

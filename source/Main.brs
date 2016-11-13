@@ -1,6 +1,8 @@
 Sub RunUserInterface(aa as Object)
     'DeleteRegistry()
     SetTheme()
+    DownloadDefaultStationsIfNeeded()
+
     GetGlobalAA().IsStationSelectorDisplayed = true
 
     print "------ Starting web server ------"
@@ -16,7 +18,7 @@ Sub RunUserInterface(aa as Object)
 End Sub
 
 Function InitBatPlayer()
-  BumpOrResetSavedDirectoryCacheValue()
+    BumpOrResetSavedDirectoryCacheValue()
 
 	GetGlobalAA().lastSongTitle = ""
     Analytics = GetSession().Analytics
@@ -26,4 +28,14 @@ Function InitBatPlayer()
     InitLastFM()
     print "------ Initializing fonts ------"
     InitFonts()
+End Function
+
+
+Function DownloadDefaultStationsIfNeeded()
+    storedStations = RegRead("stations", "batplayer")
+    if storedStations = invalid
+        print "------ Downloading Default Stations ------"
+        url = GetConfig().BatUtils + "defaultStations"
+        SyncGetFile(url, "tmp:/stations.json", true)
+    end if
 End Function

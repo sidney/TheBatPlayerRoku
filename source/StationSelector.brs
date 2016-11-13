@@ -87,13 +87,18 @@ Function selection_getStations()
   print "------ Updating list of stations ------"
   SelectableStations = CreateObject("roArray", m.Stations.Count(), true)
 
+  stationAddedIndex = 0
   for i = 0 to m.Stations.Count()-1
 
       station = m.Stations[i]
       if station.DoesExist("stream") AND station.stream <> ""
         stationObject = CreateSong(station.name,station.provider,"", station.format, station.stream, station.image)
-        SelectableStations.Push(stationObject)
-        FetchMetadataForStreamUrlAndName(station.stream, station.name, true, i)
+
+        if stationObject.feedurl <> invalid AND stationObject.name <> invalid
+          SelectableStations.Push(stationObject)
+          FetchMetadataForStreamUrlAndName(station.stream, station.name, true, stationAddedIndex)
+          stationAddedIndex++
+        end if
 
         'Download custom poster images
         if NOT FileExists(makemdfive(stationObject.hdposterurl))
@@ -102,18 +107,16 @@ Function selection_getStations()
         if NOT FileExists(makemdfive(stationObject.stationimage))
           ASyncGetFile(stationObject.stationimage, "tmp:/" + makemdfive(stationObject.stationimage))
         end if
-      end if
 
-      'Download custom poster images
-      if NOT FileExists(makemdfive(stationObject.hdposterurl))
-        ASyncGetFile(stationObject.hdposterurl, "tmp:/" + makemdfive(stationObject.hdposterurl))
+        'Download custom poster images
+        if NOT FileExists(makemdfive(stationObject.hdposterurl))
+          ASyncGetFile(stationObject.hdposterurl, "tmp:/" + makemdfive(stationObject.hdposterurl))
+        end if
+        if NOT FileExists(makemdfive(stationObject.stationimage))
+          ASyncGetFile(stationObject.stationimage, "tmp:/" + makemdfive(stationObject.stationimage))
+        end if
+
       end if
-      if NOT FileExists(makemdfive(stationObject.stationimage))
-        ASyncGetFile(stationObject.stationimage, "tmp:/" + makemdfive(stationObject.stationimage))
-      end if
-      m.Screen.SetContentList(0, SelectableStations)
-      m.SelectableStations = SelectableStations
-      FetchMetadataForStreamUrlAndName(station.stream, station.name, true, i)
   end for
 
   m.Screen.SetContentList(0, SelectableStations)
@@ -181,8 +184,10 @@ Function StationSelectorNowPlayingTrackReceived(track as dynamic, index as dynam
       end if
 
       station = Stations[index]
-      station.Description = track
-      Screen.SetContentListSubset(0, Stations, index, 1)
+      if station <> invalid
+        station.Description = track
+        Screen.SetContentListSubset(0, Stations, index, 1)
+      end if
     end if
 
 End Function
