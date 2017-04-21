@@ -81,7 +81,12 @@ Function GetStationsAtUrl(url as String) as object
       format = singleStation.format
     end if
 
-    singleStationItem = CreateSong(singleStation.name, singleStation.provider, "", format, stream, image)
+    provider = singleStation.provider
+    if singleStation.provider = invalid
+      provider = singleStation.name
+    end if
+
+    singleStationItem = CreateSong(singleStation.name, provider, "", format, stream, image)
     singleStationItem.provider = singleStation.stationProvider
     singleStationItem.playlist = singleStation.playlist
     singleStationItem.description = singleStation.description
