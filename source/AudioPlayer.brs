@@ -53,7 +53,7 @@ Sub audioPlayer_setup(song As string, format as string)
 	item.StreamFormat = format
 	m.station = item
 	m.audioPlayer.AddHeader("Icy-MetaData", "0")
-	m.audioPlayer.AddHeader("icy-metadata", "0")
+	m.audioPlayer.AddHeader("User-Agent", "The Bat Player/Roku")
 	m.audioPlayer.AddContent(item)
 End Sub
 
