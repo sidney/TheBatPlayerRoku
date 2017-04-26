@@ -1,8 +1,8 @@
 Function selection_getSomaFMStations()
   url = GetConfig().BatUtils + "somafm"
   stations = GetStationsAtUrl(url)
-  m.Screen.SetContentList(3, stations)
-  m.Screen.SetListVisible(3, true)
+  m.Screen.SetContentList(4, stations)
+  m.Screen.SetListVisible(4, true)
   m.SomaFMStations = stations
 End Function
 
@@ -17,17 +17,25 @@ End Function
 Function selection_getGabeStations()
   url = GetConfig().BatUtils + "gabeFavorites"
   stations = GetStationsAtUrl(url)
-  m.Screen.SetContentList(4, stations)
-  m.Screen.SetListVisible(4, true)
+  m.Screen.SetContentList(5, stations)
+  m.Screen.SetListVisible(5, true)
   m.GabeStations = stations
 End Function
 
 Function selection_getDashStations()
   url = GetConfig().BatUtils + "dashradio"
   stations = GetStationsAtUrl(url)
+  m.Screen.SetContentList(3, stations)
+  m.Screen.SetListVisible(3, true)
+  m.DashStations = stations
+End Function
+
+Function selection_getLongtailStations()
+  url = "https://longtail.fm/api/external/stations"
+  stations = GetStationsAtUrl(url)
   m.Screen.SetContentList(2, stations)
   m.Screen.SetListVisible(2, true)
-  m.DashStations = stations
+  m.LongtailStations = stations
 End Function
 
 Function selection_setupBrowse()
@@ -45,7 +53,7 @@ Function selection_setupBrowse()
   searchItem.sdposterurl = "pkg:/images/BrowseIcon-SD.png"
   itemsArray.push(searchItem)
 
-  m.Screen.SetContentList(5, itemsArray)
+  m.Screen.SetContentList(6, itemsArray)
 End Function
 
 Function GetStationsAtUrl(url as String) as object

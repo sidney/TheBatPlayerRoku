@@ -15,6 +15,10 @@ Function StationSelectionScreen()
     RefreshStations: selection_getStations
     RefreshNowPlayingData: selection_refreshNowPlayingData
 
+    LongtailStations: invalid
+    GetLongtailStations: selection_getLongtailStations
+    FetchingLongtailStations: false
+
     SomaFMStations: invalid
     GetSomaFMStations: selection_getSomaFMStations
     FetchingSomaFmStations: false
@@ -40,20 +44,22 @@ Function StationSelectionScreen()
   this.Screen.SetGridStyle("four-column-flat-landscape")
   this.Screen.SetLoadingPoster("pkg:/images/icon-hd.png", "pkg:/images/icon-sd.png")
 
-  this.Screen.SetupLists(6)
+  this.Screen.SetupLists(7)
   this.Screen.SetListName(0, "Your Stations")
   this.Screen.SetListName(1, "Featured Stations")
-  this.Screen.SetListName(2, "Stations from Dash Radio")
-  this.Screen.SetListName(3, "Stations from SomaFM")
-  this.Screen.SetListName(4, "Gabe's Current Favorites")
-  this.Screen.SetListName(5, "Discover Stations")
+  this.Screen.SetListName(2, "Stations on Longtail Music")
+  this.Screen.SetListName(3, "Stations from Dash Radio")
+  this.Screen.SetListName(4, "Stations from SomaFM")
+  this.Screen.SetListName(5, "Gabe's Current Favorites")
+  this.Screen.SetListName(6, "Discover Stations")
 
   this.Screen.SetListVisible(0, true)
   this.Screen.SetListVisible(1, false)
   this.Screen.SetListVisible(2, false)
   this.Screen.SetListVisible(3, false)
   this.Screen.SetListVisible(4, false)
-  this.Screen.SetListVisible(5, true)
+  this.Screen.SetListVisible(5, false)
+  this.Screen.SetListVisible(6, true)
 
   port = GetPort()
   this.Screen.SetMessagePort(port)
@@ -243,7 +249,7 @@ Function selection_handle(msg as Object)
       m.SelectedIndex = item
       Station = m.SelectableStations[item]
       PlayStation(Station)
-    else if row = 5
+    else if row = 6
       if item = 0
         ' Go to search
         NavigateToSearch()
@@ -254,14 +260,16 @@ Function selection_handle(msg as Object)
     else
       station = invalid
 
-      if row = 3
-        station = m.SomaFMStations[item]
-      else if row = 1
+      if row = 1
         station = m.FeaturedStations[item]
-      else if row = 4
-        station = m.GabeStations[item]
       else if row = 2
+        station = m.LongtailStations[item]
+      else if row = 3
         station = m.DashStations[item]
+      else if row = 4
+        station = m.SomaFMStations[item]
+      else if row = 5
+        station = m.GabeStations[item]
       end if
 
       if station <> invalid
@@ -271,24 +279,24 @@ Function selection_handle(msg as Object)
     end if
   else if msg.isListItemFocused()
     ' Download the content for the next row in the directory'
-    if row = 5
+    if row = 6
       m.Screen.SetDescriptionVisible(false)
     else
       m.Screen.SetDescriptionVisible(true)
     end if
 
-    if row = 1 AND m.FeaturedStations = invalid AND m.FetchingFeturedStations = false
-      m.FetchingSomaFmStations = true
-      m.GetSomaFMStations()
-    else if row = 3 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
-      m.FetchingGabeStations = true
-      m.GetGabeStations()
-    else if row = 1 AND m.DashStations = invalid AND m.FetchingDashStasions = false
+    if row = 1 AND m.LongtailStations = invalid AND m.FetchingLongtailStations = false
+      m.FetchingLongtailStations = true
+      m.GetLongtailStations()
+    else if row = 2 AND m.DashStations = invalid AND m.FetchingDashStasions = false
       m.FetchingDashStasions = true
       m.GetDashStations()
-    else if row = 2 AND m.SomaFMStations = invalid AND m.FetchingSomaFmStations = false
+    else if row = 3 AND m.SomaFMStations = invalid AND m.FetchingSomaFmStations = false
       m.FetchingSomaFmStations = true
       m.GetSomaFMStations()
+    else if row = 4 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
+      m.FetchingGabeStations = true
+      m.GetGabeStations()
     end if
 
 	end if
