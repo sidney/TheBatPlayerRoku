@@ -46,15 +46,19 @@ Sub audioPlayer_setup(song As string, format as string)
 		format = "es.aac-adts"
 	end if
 
+	song = "http://14123.live.streamtheworld.com/SAM04AAC147_SC"
+
 	print "Setting up " + format + " stream: " + song + ""
 	m.setPlayState(0)
 	item = CreateObject("roAssociativeArray")
 	item.Url = song
 	item.StreamFormat = format
 	m.station = item
+	print item
 	m.audioPlayer.AddHeader("Icy-MetaData", "0")
 	m.audioPlayer.AddHeader("User-Agent", "The Bat Player/Roku")
 	m.audioPlayer.AddContent(item)
+	m.audioPlayer.play()
 End Sub
 
 Sub audioPlayer_updateStreamUrl(url as String)

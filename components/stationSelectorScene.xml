@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+ 
+<component name="stationSelectorScene" extends="Scene" >
+ 
+<script type="text/brightscript" >
+<![CDATA[
+ 
+ 
+sub init()
+    print "stationSelectorScene loaded"
+end sub
+]]>
+</script>
+ 
+<children>
+
+<Poster
+  id="headerPoster"
+  uri="https://batplayerrokuheader.imgix.net/selection_bat_logo-HD.png?fm=jpg&amp;q=90&amp;txtfont=Helvetica+Neue&amp;txtclr=aaffffff&amp;txtalign=center&amp;txtsize=25&amp;txtfit=max&amp;txtpad=45&amp;txt=Configure%20your%20Bat%20Player%20on%20the%20web%20at%20http%3A%2F%2F10.0.1.83%3A9999&amp;w=1280"
+  width="1280"
+  height="200"
+  translation="[0,0]"
+/>
+
+<RowList 
+    id = "exampleRowList"
+    translation = "[ 130, 160 ]" 
+    itemComponentName = "stationSelectorCell" 
+    numRows = "1" 
+    itemSize = "[ 1608, 308 ]" 
+    rowItemSize = "[ [536, 308] ]" 
+    itemSpacing = "[ 0, 40 ]" 
+    showRowLabel = "[ true ]" 
+    drawFocusFeedback = "false" 
+    vertFocusAnimationStyle = "fixedFocusWrap" 
+    rowFocusAnimationStyle = "fixedFocusWrap" />
+</children>
+ 
+</component>

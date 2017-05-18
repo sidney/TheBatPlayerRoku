@@ -28,7 +28,7 @@ Function CreateSession() as Object
 	Session.Lighting.Brightness.Maximum = Session.Lighting.Brightness.DefaultMaximum
 	Session.Lighting.Brightness.Mode = 2
 
-	Session.Analytics = Analytics(Session.userId, GetConfig().AmplitudeApiKey, GetPort())
+	Session.Analytics = Analytics(Session.userId, GetConfig().AmplitudeApiKey, createObject("roMessagePort"))
 	Session.IsDev = CreateObject("roAppInfo").IsDev()
 
 	Session.deviceInfo = CreateObject("roDeviceInfo")

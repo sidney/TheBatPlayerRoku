@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RowListExample" extends="Scene" initialFocus="exampleRowList">
+
+	<interface>
+	    <field id = "closeWaitingDialog" type = "bool" />
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		sub init()
+			'm.top.backgroundURI = "pkg:/images/background-grunge.png"
+			m.top.closeWaitingDialog = true
+
+			m.content = createObject("roSGNode", "RowListContent")
+
+			m.rowlist = m.top.findNode("exampleRowList")
+			m.rowlist.ObserveField("rowItemFocused", "rowItemFocused")
+			m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
+			m.rowlist.content = m.content
+
+			m.top.ObserveField("closeWaitingDialog", "closeWaitingDialog")
+
+			m.getStationsTask = createObject("roSGNode", "GetStationsTask")
+			m.getStationsTask.observeField("stations", "stationsUpdated")
+			m.getStationsTask.functionName = "taskGetStations"
+			m.getStationsTask.control = "RUN"
+
+			m.currentRow = 0
+			m.currentItem = 0
+
+		    audio = createObject("roSGNode", "Audio")
+			m.global.audio = audio
+			m.top.setFocus(true)
+		end sub
+
+		sub stationsUpdated(event)
+			stations = event.getData()
+			m.content.appendChild(stations)
+			m.stations = stations
+		end sub
+
+		sub rowItemSelected(item)
+			print "rowItemSelected"
+			currentItemLocation = item.getData()
+			currentRow = currentItemLocation[0]
+			currentItem = currentItemLocation[1]
+
+			'print "Selected row: " + currentRow.toStr() + " item: " + currentItem.toStr()
+
+			station = m.stations.getChild(currentItem)
+
+			m.global.audio.content = station
+			m.global.audio.control = "play"
+
+			'showWaitingDialog(station)
+			showNowPlayingScreen(station)
+		end sub
+
+		sub rowItemFocused(item)
+			index = item.getData()
+			m.currentRow = index[0]
+			m.currentItem = index[1]
+
+			focusedCell = item.getData()
+			cell = item.getRoSGNode()
+			'if cell <> invalid
+			'	cell.itemlabel.text = index[0].ToStr()
+			'end if
+		end sub
+
+		sub showNowPlayingScreen(station)
+			m.global.station = station
+			m.global.displayNowPlayingScreen = true
+		end sub
+
+		' sub startMetadataFetching(station)
+		' 	m.metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
+		' 	m.metadataTask.streamurl = station.url
+		' 	m.metadataTask.functionName = "start"
+		' 	m.metadataTask.control = "RUN"
+		' end sub
+
+		function showWaitingDialog(station)
+			print "showWaitingDialog(station)"
+
+			dialog = createObject("roSGNode", "ProgressDialog")
+			'dialog.backgroundUri = "pkg:/images/rsgde_dlg_bg_hd.9.png"
+			dialog.title = "station.name"
+			dialog.message = "Please wait while we try to find what is playing on "
+			dialog.graphicUri = station.image
+			dialog.graphicWidth = 100
+			dialog.graphicHeight = 100
+			m.dialog = dialog
+		end function
+
+		' function closeWaitingDialog(event)
+		' 	print "closeWaitingDialog(event)"
+		' 	print event
+			
+		' 	if m.waitingDialog = invalid
+		' 		return false
+		' 	end if
+
+		' 	close = event.getData()
+		' 	m.global.waitingDialog.close = close
+
+		' end function
+
+		]]>
+	</script>
+	<children>
+		<Rectangle id="background" color="0x000000" opacity="1.0" width="1280" height="720" />
+		<RowList
+			id="exampleRowList"
+			translation="[ 40, 30 ]"
+			itemComponentName="RowListItem"
+			numRows="4"
+			itemSize="[ 1580, 350 ]"
+			rowItemSize="[ [610, 300], [290, 290] ]"
+			itemSpacing="[ 0, 20 ]"
+			showRowLabel="[ true ]"
+			drawFocusFeedback="true" 
+			vertFocusAnimationStyle="fixedFocusWrap"
+			rowFocusAnimationStyle="floatingFocus" 
+		/>
+			
+	</children>
+</component>

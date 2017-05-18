@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name = "fetchStationMetadataTask" extends = "Task" >
+  <interface>
+    <field id = "track" type = "assocarray" />
+    <field id = "station" type = "assocarray" />
+  </interface>
+
+<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/MathUtils.brs" />
+<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
+<script type="text/brightscript" uri="pkg:/source/Amplitude-Brightscript/Analytics.brs" />
+<script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
+<script type="text/brightscript" uri="pkg:/source/Analytics_events.brs" />
+<script type="text/brightscript" uri="pkg:/source/web_server/utils.brs" />
+<script type="text/brightscript" uri="pkg:/source/Stylesheet.brs" />
+<script type="text/brightscript" uri="pkg:/source/session.brs" />
+<script type="text/brightscript" uri="pkg:/source/Config.brs" />
+<script type="text/brightscript" uri="pkg:/source/HueLighting.brs" />
+<script type="text/brightscript" uri="pkg:/source/utils.brs" />
+<script type="text/brightscript" uri="pkg:/components/tasks/fetchStationMetadataTask.brs" />
+
+  <script type = "text/brightscript" >
+    <![CDATA[
+        sub init()
+            m.top.functionName = "start"
+            m.timer = CreateObject("roTimespan")
+            m.top.ObserveField("station", "stationChanged")
+            ' m.ObserveField("currentTrack", "trackChanged")
+        end sub
+
+        sub start()
+            print "Starting timer"
+           fetch(m.top)
+
+           m.timer.mark()
+           while true
+                if m.timer.TotalSeconds() >= 8
+                    fetch(m.top)
+                    m.timer.mark()
+                end if
+            end while
+        end sub
+
+        sub stationChanged(event)
+            m.station = event.getData()
+        end sub
+
+        ' sub trackChanged(event)
+        '     m.top.track = event.getData()
+        ' end sub
+    ]]>
+  </script>
+</component>

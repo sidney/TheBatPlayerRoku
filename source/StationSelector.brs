@@ -129,6 +129,12 @@ Function selection_getStations()
   m.SelectableStations = SelectableStations
   m.Screen.SetListVisible(0, true)
   m.Stations = SelectableStations
+
+  m.GetFeaturedStations()
+  m.GetLongtailStations()
+  m.GetSomaFMStations()
+  m.GetGabeStations()
+  m.GetDashStations()
 End Function
 
 Function selection_refreshNowPlayingData()
@@ -287,16 +293,16 @@ Function selection_handle(msg as Object)
 
     if row = 1 AND m.LongtailStations = invalid AND m.FetchingLongtailStations = false
       m.FetchingLongtailStations = true
-      m.GetLongtailStations()
+      ' m.GetLongtailStations()
     else if row = 2 AND m.DashStations = invalid AND m.FetchingDashStasions = false
       m.FetchingDashStasions = true
-      m.GetDashStations()
+      'm.GetDashStations()
     else if row = 3 AND m.SomaFMStations = invalid AND m.FetchingSomaFmStations = false
       m.FetchingSomaFmStations = true
-      m.GetSomaFMStations()
+      'm.GetSomaFMStations()
     else if row = 4 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
       m.FetchingGabeStations = true
-      m.GetGabeStations()
+      'm.GetGabeStations()
     end if
 
 	end if

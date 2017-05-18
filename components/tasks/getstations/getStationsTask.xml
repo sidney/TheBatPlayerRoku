@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+  
+<component name = "GetStationsTask" extends = "Task" >
+ 	<script type="text/brightscript" uri="pkg:/source/DataUtils.brs" />
+	<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
+
+  <interface>
+    <field id = "stations" type = "node" />
+  </interface>
+ 
+  <script type = "text/brightscript" >
+    <![CDATA[
+ 
+    sub init()
+      m.top.functionName = "taskGetStations"
+      m.top.addField("stations", "object", true)
+    end sub
+ 
+    sub taskGetStations()
+      stationsContentNode = createObject("RoSGNode","ContentNode")
+      stationsContentNode.title = "My Stations 123"
+
+      stations = GetStations()
+
+      for each station in stations 
+        item = createObject("roSGNode", "SingleStationContentNode")
+        item.name = station.name
+        item.image = station.image
+        item.url = station.stream
+        item.streamformat = station.format
+        stationsContentNode.appendChild(item)
+      end for
+ 
+      m.top.stations = stationsContentNode
+    end sub
+ 
+    ]]>
+  </script>
+ 
+</component>

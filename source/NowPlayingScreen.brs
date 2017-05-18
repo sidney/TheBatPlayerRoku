@@ -74,81 +74,86 @@ Function ResetNowPlayingScreen()
 End Function
 
 Function RefreshNowPlayingScreen()
+  print "RefreshNowPlayingScreen()"
 
   NowPlayingScreen = GetNowPlayingScreen()
 
-  if GetGlobalAA().IsStationSelectorDisplayed = true
-    return false
-  end if
+  ' if GetGlobalAA().IsStationSelectorDisplayed = true
+  '   return false
+  ' end if
 
-  song = NowPlayingScreen.song
+  ' song = NowPlayingScreen.song
 
-  if song = invalid
-    if NowPlayingScreen <> invalid AND NowPlayingScreen.DoesExist("screen")
-      NowPlayingScreen.screen = invalid
-      return false
-    end if
-  end if
+  ' if song = invalid
+  '   if NowPlayingScreen <> invalid AND NowPlayingScreen.DoesExist("screen")
+  '     NowPlayingScreen.screen = invalid
+  '     return false
+  '   end if
+  ' end if
 
-  GetGlobalAA().lastSongTitle = invalid
+  ' GetGlobalAA().lastSongTitle = invalid
 
-  NowPlayingScreen.YOffset = 0
-  bioText = GetBioTextForSong(song)
-  if bioText = invalid OR bioText = ""
-    NowPlayingScreen.YOffset = 60
-  end if
+  ' NowPlayingScreen.YOffset = 0
+  ' bioText = GetBioTextForSong(song)
+  ' if bioText = invalid OR bioText = ""
+  '   NowPlayingScreen.YOffset = 60
+  ' end if
 
-  if NowPlayingScreen.artistImage <> invalid
-    if SupportsAdvancedFeatures()
-      NowPlayingScreen.previousArtistImage = NowPlayingScreen.artistImage
-      NowPlayingScreen.previousArtistImage.FadeIn()
-    end if
-    NowPlayingScreen.artistImage.FadeOut()
-  end if
+  ' if NowPlayingScreen.artistImage <> invalid
+  '   if SupportsAdvancedFeatures()
+  '     NowPlayingScreen.previousArtistImage = NowPlayingScreen.artistImage
+  '     NowPlayingScreen.previousArtistImage.FadeIn()
+  '   end if
+  '   NowPlayingScreen.artistImage.FadeOut()
+  ' end if
 
-  if NowPlayingScreen.albumImage <> invalid
-    if SupportsAdvancedFeatures()
-      NowPlayingScreen.previousAlbumImage = NowPlayingScreen.albumImage
-      NowPlayingScreen.previousAlbumImage.FadeIn()
-    end if
-    NowPlayingScreen.albumImage.FadeOut()
-  end if
+  ' if NowPlayingScreen.albumImage <> invalid
+  '   if SupportsAdvancedFeatures()
+  '     NowPlayingScreen.previousAlbumImage = NowPlayingScreen.albumImage
+  '     NowPlayingScreen.previousAlbumImage.FadeIn()
+  '   end if
+  '   NowPlayingScreen.albumImage.FadeOut()
+  ' end if
 
-  if NowPlayingScreen.BackgroundImage <> invalid
-    if SupportsAdvancedFeatures()
-      NowPlayingScreen.PreviousBackgroundImage = NowPlayingScreen.BackgroundImage
-      NowPlayingScreen.PreviousBackgroundImage.FadeOut()
-    end if
-  end if
+  ' if NowPlayingScreen.BackgroundImage <> invalid
+  '   if SupportsAdvancedFeatures()
+  '     NowPlayingScreen.PreviousBackgroundImage = NowPlayingScreen.BackgroundImage
+  '     NowPlayingScreen.PreviousBackgroundImage.FadeOut()
+  '   end if
+  ' end if
 
-  ' Album placeholder.  Only recreate it if we have to move it.
-  albumPlaceholderY = 240 + NowPlayingScreen.YOffset
-  if NowPlayingScreen.albumPlaceholder = invalid OR NowPlayingScreen.albumPlaceholder.y <> albumPlaceholderY
-    NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0)
-  end if
+  ' ' Album placeholder.  Only recreate it if we have to move it.
+  ' albumPlaceholderY = 240 + NowPlayingScreen.YOffset
+  ' if NowPlayingScreen.albumPlaceholder = invalid OR NowPlayingScreen.albumPlaceholder.y <> albumPlaceholderY
+  '   NowPlayingScreen.albumPlaceholder = AlbumImage("pkg:/images/album-placeholder.png", 830, albumPlaceholderY, true, 255, 0)
+  ' end if
 
-  NowPlayingScreen.UpdateBackgroundImage = true
-  NowPlayingScreen.UpdateArtistImage = true
-  NowPlayingScreen.UpdateAlbumImage = true
+  ' NowPlayingScreen.UpdateBackgroundImage = true
+  ' NowPlayingScreen.UpdateArtistImage = true
+  ' NowPlayingScreen.UpdateAlbumImage = true
 
-  NowPlayingScreen.stationTitle = song.stationName
+  NowPlayingScreen.stationTitle = GetGlobalAA().station.name'song.stationName
 
   RunGarbageCollector()
   UpdateScreen()
 
-  if song.metadataFault <> true AND song.artist <> invalid AND song.title <> invalid
-    Analytics_TrackChanged(song.artist, song.title, song.stationName)
-  end if
+  ' if song.metadataFault <> true AND song.artist <> invalid AND song.title <> invalid
+  '   Analytics_TrackChanged(song.artist, song.title, song.stationName)
+  ' end if
 End Function
 
 'Called whenever the data for the screen changes (song)
 Function UpdateScreen()
-	NowPlayingScreen = GetNowPlayingScreen()
-  song = NowPlayingScreen.song
+  print "UpdateScreen()"
+	
+  NowPlayingScreen = GetNowPlayingScreen()
+  song = GetGlobalAA().track
+  station = GetGlobalAA().station
 
-  if song = invalid
-    return false
-  end if
+  NowPlayingScreen.song = song
+  ' if song = invalid
+  '   return false
+  ' end if
 
   albumTitle = ""
   songTitle = ""
@@ -165,11 +170,24 @@ Function UpdateScreen()
     GetGlobalAA().IsStationSelectorDisplayed = false
     GetGlobalAA().IsStationLoadingDisplayed = false
 
-    StationLoadingScreen = GetGlobalAA().StationLoadingScreen
-    if StationLoadingScreen <> invalid
-      StationLoadingScreen.close()
-    end if
+    ' StationLoadingScreen = GetGlobalAA().StationLoadingScreen
+    ' if StationLoadingScreen <> invalid
+    '   StationLoadingScreen.close()
+    ' end if
   end if
+
+  	'Station Name
+    ' if song.stationProvider <> song.stationName then
+    '   NowPlayingScreen.stationTitle = song.stationName + " - " + song.stationProvider
+    ' else if song.stationTitle <> invalid
+    '   NowPlayingScreen.stationTitle = song.stationName
+    ' end if
+
+    if station <> invalid AND station.name <> invalid
+      stationName = station.name
+      headerTitleY = 28
+      NowPlayingScreen.StationTitleLabel = RlTextArea(stationName, NowPlayingScreen.headerFont, &hDDDDDD00 + 200, 180, headerTitleY, NowPlayingScreen.screen.GetWidth() - 200, 90, 1, 1.0, "left", true, false)
+    end if
 
   'Lighting
   if GetGlobalAA().lookup("song") <> song.Title AND song.DoesExist("image") AND song.image.DoesExist("color") AND song.image.color <> invalid AND song.image.color.DoesExist("rgb") then
@@ -199,7 +217,7 @@ Function UpdateScreen()
 
   'Artist Image
   if song.UseFallbackArtistImage = true
-    NowPlayingScreen.artistImage = ArtistImage("tmp:/" + makemdfive(song.StationImage), NowPlayingScreen.yOffset)
+    NowPlayingScreen.artistImage = ArtistImage("tmp:/" + makemdfive(station.image), NowPlayingScreen.yOffset)
   else if isstr(song.artistimage) AND FileExists(makemdfive(song.artistimage)) then
     artistImageFilePath = "tmp:/" + makemdfive(song.artistimage)
 
@@ -261,19 +279,6 @@ Function UpdateScreen()
     NowPlayingScreen.bioLabel = BatBioLabel(bioText, song)
     NowPlayingScreen.bioLabel.FadeIn()
   end if
-
-	'Station Name
-	stationTitle = ""
-	if song.stationProvider <> song.stationName then
-		NowPlayingScreen.stationTitle = song.stationName + " - " + song.stationProvider
-	else if song.stationTitle <> invalid
-		NowPlayingScreen.stationTitle = song.stationName
-	end if
-  headerTitleY = 28
-  if NowPlayingScreen.song.stationDetails <> invalid AND NowPlayingScreen.song.stationDetails.Listeners <> invalid
-    headerTitleY = 22
-  end if
-  NowPlayingScreen.StationTitleLabel = RlTextArea(NowPlayingScreen.stationTitle, NowPlayingScreen.headerFont, &hDDDDDD00 + 200, 180, headerTitleY, NowPlayingScreen.screen.GetWidth() - 200, 90, 1, 1.0, "left", true, false)
 
   songNameHeight = GetTextHeight(songTitle, 600, NowPlayingScreen.songNameFont)
   artistNameLocation = 160 - songNameHeight + NowPlayingScreen.YOffset
@@ -346,26 +351,26 @@ Function DrawScreen()
 		NowPlayingScreen.screen.Clear(&h000000FF)
 		NowPlayingScreen.screen.setalphaenable(true)
 
-		'Background Image
-    if NowPlayingScreen.BackgroundImage <> invalid then
-      NowPlayingScreen.BackgroundImage.Draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.PreviousBackgroundImage <> invalid
-      NowPlayingScreen.PreviousBackgroundImage.Draw(NowPlayingScreen.screen)
-    end if
+		' 'Background Image
+    ' if NowPlayingScreen.BackgroundImage <> invalid then
+    '   NowPlayingScreen.BackgroundImage.Draw(NowPlayingScreen.screen)
+    ' end if
+    ' if NowPlayingScreen.PreviousBackgroundImage <> invalid
+    '   NowPlayingScreen.PreviousBackgroundImage.Draw(NowPlayingScreen.screen)
+    ' end if
 
-    'Overlays
-    NowPlayingScreen.screen.DrawObject(NowPlayingScreen.albumPlaceholder.x + 4, NowPlayingScreen.albumPlaceholder.y + 5, NowPlayingScreen.AlbumShadow)
+    ' 'Overlays
+    ' NowPlayingScreen.screen.DrawObject(NowPlayingScreen.albumPlaceholder.x + 4, NowPlayingScreen.albumPlaceholder.y + 5, NowPlayingScreen.AlbumShadow)
 
-		'Artist
-    if NowPlayingScreen.artistImage <> invalid
-      NowPlayingScreen.artistImage.Draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.previousArtistImage <> invalid
-      NowPlayingScreen.previousArtistImage.Draw(NowPlayingScreen.screen)
-    end if
+		' 'Artist
+    ' if NowPlayingScreen.artistImage <> invalid
+    '   NowPlayingScreen.artistImage.Draw(NowPlayingScreen.screen)
+    ' end if
+    ' if NowPlayingScreen.previousArtistImage <> invalid
+    '   NowPlayingScreen.previousArtistImage.Draw(NowPlayingScreen.screen)
+    ' end if
 
-    'All the text
+    ' 'All the text
     'Artist name'
     if NowPlayingScreen.artistNameLabel <> invalid
       NowPlayingScreen.artistNameLabel.draw(NowPlayingScreen.screen)
@@ -390,47 +395,49 @@ Function DrawScreen()
       NowPlayingScreen.PreviousBioLabel.Draw(NowPlayingScreen.screen)
     end if
 
-		'Album image
-    NowPlayingScreen.albumPlaceholder.Draw(NowPlayingScreen.screen)
-    if NowPlayingScreen.albumImage <> invalid AND NowPlayingScreen.albumImage.image <> invalid
-      NowPlayingScreen.albumImage.Draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.previousAlbumImage <> invalid
-      NowPlayingScreen.previousAlbumImage.Draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.albumNameLabel <> invalid
-      NowPlayingScreen.albumNameLabel.draw(NowPlayingScreen.screen)
-    end if
-    if NowPlayingScreen.PreviousAlbumNameLabel <> invalid
-      NowPlayingScreen.PreviousAlbumNameLabel.Draw(NowPlayingScreen.screen)
-    end if
+		' 'Album image
+    ' NowPlayingScreen.albumPlaceholder.Draw(NowPlayingScreen.screen)
+    ' if NowPlayingScreen.albumImage <> invalid AND NowPlayingScreen.albumImage.image <> invalid
+    '   NowPlayingScreen.albumImage.Draw(NowPlayingScreen.screen)
+    ' end if
+    ' if NowPlayingScreen.previousAlbumImage <> invalid
+    '   NowPlayingScreen.previousAlbumImage.Draw(NowPlayingScreen.screen)
+    ' end if
+    ' if NowPlayingScreen.albumNameLabel <> invalid
+    '   NowPlayingScreen.albumNameLabel.draw(NowPlayingScreen.screen)
+    ' end if
+    ' if NowPlayingScreen.PreviousAlbumNameLabel <> invalid
+    '   NowPlayingScreen.PreviousAlbumNameLabel.Draw(NowPlayingScreen.screen)
+    ' end if
 
-		'LastFM Logo
-    if GetGlobalAA().ActiveLastFM <> 0 THEN
-		  NowPlayingScreen.screen.DrawObject(NowPlayingScreen.screen.GetWidth() - 80 ,NowPlayingScreen.screen.GetHeight() - 60, NowPlayingScreen.lastfmlogo, &hFFFFFFFF)
-    end if
+		' 'LastFM Logo
+    ' if GetGlobalAA().ActiveLastFM <> 0 THEN
+		'   NowPlayingScreen.screen.DrawObject(NowPlayingScreen.screen.GetWidth() - 80 ,NowPlayingScreen.screen.GetHeight() - 60, NowPlayingScreen.lastfmlogo, &hFFFFFFFF)
+    ' end if
 
 
     'Header
     headerTitleY = 28
-    if NowPlayingScreen.song.stationDetails <> invalid AND NowPlayingScreen.song.stationDetails.Listeners <> invalid
-      headerTitleY = 22
-    end if
+    ' if NowPlayingScreen.song.stationDetails <> invalid AND NowPlayingScreen.song.stationDetails.Listeners <> invalid
+    '   headerTitleY = 22
+    ' end if
 		NowPlayingScreen.screen.DrawRect(0,0, NowPlayingScreen.Width, NowPlayingScreen.HeaderHeight, GetHeaderColor())
 		NowPlayingScreen.screen.DrawObject(ResolutionX(30),ResolutionY(13),NowPlayingScreen.HeaderLogo)
-    NowPlayingScreen.StationTitleLabel.Draw(NowPlayingScreen.screen)
+        
+    if NowPlayingScreen.StationTitleLabel <> invalid
+      NowPlayingScreen.StationTitleLabel.Draw(NowPlayingScreen.screen)
+    end if
 
-    DrawStationDetailsLabel(NowPlayingScreen)
     DrawHelpLabel(NowPlayingScreen)
 
-    'Possible UI Elements
-    if NowPlayingScreen.popup <> invalid then
-      NowPlayingScreen.popup.draw(NowPlayingScreen.screen)
-    End if
+    ' 'Possible UI Elements
+    ' if NowPlayingScreen.popup <> invalid then
+    '   NowPlayingScreen.popup.draw(NowPlayingScreen.screen)
+    ' End if
 
-    if NowPlayingScreen.OtherStationsNowPlaying <> invalid
-      NowPlayingScreen.OtherStationsNowPlaying.Draw(NowPlayingScreen.screen)
-    end if
+    ' if NowPlayingScreen.OtherStationsNowPlaying <> invalid
+    '   NowPlayingScreen.OtherStationsNowPlaying.Draw(NowPlayingScreen.screen)
+    ' end if
 
 		NowPlayingScreen.screen.SwapBuffers()
 	end if

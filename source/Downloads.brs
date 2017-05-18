@@ -122,29 +122,30 @@ Function IsArtistImageDownload(Identity as String) as Boolean
 
 End Function
 
-Function GetStationSelectionHeader()
-    print "------ Downloading header ------"
-    ipAddress = GetSession().IPAddress
-    text = urlescape("Configure your Bat Player on the web at http://" + ipAddress + ":9999")
-    device = GetSession().deviceInfo
-    width = ToStr(device.GetDisplaySize().w)
+' Function GetStationSelectionHeader()
+'     print "------ Downloading header ------"
+'     ipAddress = GetSession().IPAddress
+'     text = urlescape("Configure your Bat Player on the web at http://" + ipAddress + ":9999")
+'     device = GetSession().deviceInfo
+'     width = ToStr(device.GetDisplaySize().w)
 
-    originalHeaderFile = "selection_bat_logo-HD.png"
-    bottomPadding = ResolutionY(45)
-    fontSize = ResolutionY(25)
-    query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=" + ToStr(fontSize) + "&txtfit=max&txtpad=" + ToStr(bottomPadding) + "&txt=" + text + "&w=" + width
+'     originalHeaderFile = "selection_bat_logo-HD.png"
+'     bottomPadding = ResolutionY(45)
+'     fontSize = ResolutionY(25)
+'     query = "?fm=jpg&q=90&txtfont=Helvetica+Neue&txtclr=aaffffff&txtalign=center&txtsize=" + ToStr(fontSize) + "&txtfit=max&txtpad=" + ToStr(bottomPadding) + "&txt=" + text + "&w=" + width
 
-    imgixHost = GetConfig().ImgixHost
-    url = imgixHost + "/" + urlescape(originalHeaderFile) + query
-    SyncGetFile(url, "tmp:/headerImage.jpg", true)
-    print "------ Downloading header complete------"
-End Function
+'     imgixHost = GetConfig().ImgixHost
+'     url = imgixHost + "/" + urlescape(originalHeaderFile) + query
+'     SyncGetFile(url, "tmp:/headerImage.jpg", true)
+'     print url
+'     print "------ Downloading header complete------"
+' End Function
 
 Function UrlTransferRequest() as object
   request = CreateObject("roUrlTransfer")
   request.EnablePeerVerification(false)
   request.EnableHostVerification(false)
-  request.SetPort(GetPort())
+  'request.SetPort(GetPort())
   request.setCertificatesFile("common:/certs/ca-bundle.crt")
   return request
 End Function

@@ -1,33 +1,84 @@
 Sub RunUserInterface(aa as Object)
     'DeleteRegistry()
+    InitFonts()
     SetTheme()
-    DownloadDefaultStationsIfNeeded()
+    'DownloadDefaultStationsIfNeeded()
+    '
+    'GetGlobalAA().IsStationSelectorDisplayed = true
 
-    GetGlobalAA().IsStationSelectorDisplayed = true
-
-    print "------ Starting web server ------"
+    'print "------ Starting web server ------"
     StartServerWithPort(GetPort())
 
-    GetStationSelectionHeader()
+    'GetStationSelectionHeader()
 
-    print "------ Listing stations ------"
-    ListStations()
+    'ListStations()
     InitBatPlayer()
-    print "------ Starting Loop ------"
-    StartEventLoop()
+
+    showChannelSGScreen()
+    'StartEventLoop()
+End Sub
+
+Sub showChannelSGScreen()
+  screen = CreateObject("roSGScreen")
+  m.global = screen.getGlobalNode()
+  GetGlobalAA().global = m.global
+
+  m.global.addField("audio", "node", false)
+  m.global.addField("station", "node", false)
+  m.global.addField("song", "node", false)
+  m.global.addField("metadataTask", "node", false)
+  m.global.addField("displayNowPlayingScreen", "bool", false)
+
+  screen.setMessagePort(GetPort())
+  m.scene = screen.CreateScene("RowListExample")
+
+  screen.show()
+  m.global.ObserveField("displayNowPlayingScreen", GetPort())
+  m.global.ObserveField("station", GetPort())
+  'm.global.ObserveField("song", GetPort())
+
+  m.global.metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
+  m.global.metadataTask.ObserveField("track", GetPort())
+
+  StartEventLoop()
+End Sub
+
+Sub stationChanged(station)
+    print "stationChanged()"
+    startFetchingMetadata(GetGlobalAA().station)
+    'UpdateScreen()
+End Sub
+
+Sub trackChanged(track)
+    print "trackChanged()"
+    GetGlobalAA().track = track
+    'print "m.scene.closeWaitingDialog = true"
+    m.scene.closeWaitingDialog = true
+    UpdateScreen()
+End Sub
+
+Sub startFetchingMetadata(station)
+    print "startFetchingMetadata()"
+
+    task = m.global.metadataTask
+    task.station = station
+    task.control = "RUN"    
+End Sub
+
+Sub showNowPlayingScreen()
+    print "showNowPlayingScreen!!!"
 End Sub
 
 Function InitBatPlayer()
-    BumpOrResetSavedDirectoryCacheValue()
+    'BumpOrResetSavedDirectoryCacheValue()
 
 	GetGlobalAA().lastSongTitle = ""
     Analytics = GetSession().Analytics
     Analytics.AddEvent("Application Launched")
 
-    print "------ Initializing LastFM ------"
-    InitLastFM()
-    print "------ Initializing fonts ------"
-    InitFonts()
+    ' print "------ Initializing LastFM ------"
+    ' InitLastFM()
+    ' print "------ Initializing fonts ------"
 End Function
 
 

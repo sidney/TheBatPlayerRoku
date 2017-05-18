@@ -36,8 +36,8 @@ Sub HandleNowPlayingScreenEvent (msg as Object)
       NowPlayingScreen = invalid
       GetGlobalAA().NowPlayingScreen = invalid
 
-      StationSelectionScreen = GetGlobalAA().StationSelectionScreen
-      StationSelectionScreen.RefreshNowPlayingData()
+    '   StationSelectionScreen = GetGlobalAA().StationSelectionScreen
+    '   StationSelectionScreen.RefreshNowPlayingData()
 
       GetGlobalAA().lastSongTitle = invalid
 			GetGlobalAA().IsStationSelectorDisplayed = true
@@ -253,39 +253,61 @@ function StartEventLoop()
 	GetGlobalAA().AddReplace("endloop", false)
 
 	while NOT GetGlobalAA().lookup("endloop")
-		HandleTimers()
+		'HandleTimers()
 
 		msg = port.GetMessage() ' get a message, if available
 
 		HandleWebEvent(msg)
 
 		if msg <> invalid then
+		    msgType = type(msg)
+			print msg
 
-			if GetGlobalAA().IsStationLoadingDisplayed = true AND type(msg) = "roImageCanvasEvent"
-				HandleStationLoadingScreenEvent(msg)
-			end if
-
-			if GetGlobalAA().IsStationSelectorDisplayed = true AND type(msg) = "roGridScreenEvent"
-        StationSelectionScreen = GetGlobalAA().StationSelectionScreen
-				StationSelectionScreen.Handle(msg)
-			end if
-
-			HandleDownloadEvents(msg)
+		' 	HandleDownloadEvents(msg)
 			HandleNowPlayingScreenEvent(msg)
 			HandleAudioPlayerEvent(msg)
+
+			if msgType = "roSGNodeEvent"
+			' 	print "roSGNodeEvent@!@!!!!"
+			'    print "node "; msg.getNode()
+			'    print "field name "; msg.getField()
+			'    print "data "; msg.getData()
+
+			' Display Now Playing screen
+				if msg.getField() = "displayNowPlayingScreen" AND msg.getData() = true
+					'NowPlayingScreen = GetNowPlayingScreen()
+					'UpdateScreen()
+				end if
+
+				if msg.getField() = "station"
+					node = msg.getData()
+					stationAA = createObject("roAssociativeArray")
+					stationAA.name = node.name
+					stationAA.image = node.image
+					stationAA.url = node.url
+					GetGlobalAA().station = stationAA
+					stationChanged(station)					
+				end if
+
+				if msg.getField() = "track"
+					track = msg.getData()
+					trackChanged(track)
+				end if
+
+			end if
 		end if
 
-		song = GetGlobalAA().SongObject
-		if GetGlobalAA().IsStationSelectorDisplayed <> true
-			NowPlayingScreen = GetNowPlayingScreen()
+		' song = GetGlobalAA().SongObject
+		' if GetGlobalAA().IsStationSelectorDisplayed <> true
+		NowPlayingScreen = GetNowPlayingScreen()
+		'print NowPlayingScreen
 
-			if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid AND NowPlayingScreen.DoesExist("song")
-				DrawScreen()
-			end if
+		if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid'' AND NowPlayingScreen.DoesExist("song")
+			DrawScreen()
 		end if
 
     'Analytics
-    BatAnalytics_Handle(msg)
+    ' BatAnalytics_Handle(msg)
 
 	end while
 
