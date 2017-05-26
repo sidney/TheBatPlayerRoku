@@ -3,7 +3,8 @@
 <component name = "fetchStationMetadataTask" extends = "Task" >
   <interface>
     <field id = "track" type = "assocarray" />
-    <field id = "station" type = "assocarray" />
+    <field id = "station" type = "assocarray" onChange="stationChanged"/>
+    <field id = "test" type = "assocarray" />
   </interface>
 
 <script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/MathUtils.brs" />
@@ -24,30 +25,49 @@
         sub init()
             m.top.functionName = "start"
             m.timer = CreateObject("roTimespan")
-            m.top.ObserveField("station", "stationChanged")
-            ' m.ObserveField("currentTrack", "trackChanged")
+            ' m.top.ObserveField("station", "stationChanged")
+            m.top.ObserveField("state", "stateChanged")
+            m.top.ObserveField("control", "controlChanged")
         end sub
 
         sub start()
-            print "Starting timer"
-           fetch(m.top)
+           'track = fetch()
+           'trackFetched(track)
 
            m.timer.mark()
-           while true
-                if m.timer.TotalSeconds() >= 8
-                    fetch(m.top)
+           while m.top.control = "run"                
+                if m.timer.TotalSeconds() >= 5
                     m.timer.mark()
+                    print "TEST 1"
+                    print m.top
+                    print "TEST 2"
+                    m.top.test = createObject("roAssociativeArray")
+                    print "TEST 3"
+                    track = fetch()
+                    trackFetched(track)
                 end if
             end while
+        end sub
+
+        sub trackFetched(track)
+            if track <> invalid
+                'if m.currentTrack <> invalid AND m.currentTrack.title <> track.title
+                    'stop
+                    m.currentTrack = track                    
+                    m.top.track = track
+                'end if
+
+                ' if m.currentTrack = invalid
+                '     m.top.track = track
+                '     m.currentTrack = track
+                ' end if
+            end if
         end sub
 
         sub stationChanged(event)
             m.station = event.getData()
         end sub
 
-        ' sub trackChanged(event)
-        '     m.top.track = event.getData()
-        ' end sub
     ]]>
   </script>
 </component>

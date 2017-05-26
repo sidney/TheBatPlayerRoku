@@ -261,11 +261,10 @@ function StartEventLoop()
 
 		if msg <> invalid then
 		    msgType = type(msg)
-			print msg
 
 		' 	HandleDownloadEvents(msg)
 			HandleNowPlayingScreenEvent(msg)
-			HandleAudioPlayerEvent(msg)
+			'HandleAudioPlayerEvent(msg)
 
 			if msgType = "roSGNodeEvent"
 			' 	print "roSGNodeEvent@!@!!!!"
@@ -274,10 +273,10 @@ function StartEventLoop()
 			'    print "data "; msg.getData()
 
 			' Display Now Playing screen
-				if msg.getField() = "displayNowPlayingScreen" AND msg.getData() = true
+				' if msg.getField() = "displayNowPlayingScreen" AND msg.getData() = true
 					'NowPlayingScreen = GetNowPlayingScreen()
 					'UpdateScreen()
-				end if
+				' end if
 
 				if msg.getField() = "station"
 					node = msg.getData()
@@ -292,6 +291,7 @@ function StartEventLoop()
 				if msg.getField() = "track"
 					track = msg.getData()
 					trackChanged(track)
+					print "fired trackChanged"
 				end if
 
 			end if
@@ -303,7 +303,7 @@ function StartEventLoop()
 		'print NowPlayingScreen
 
 		if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid'' AND NowPlayingScreen.DoesExist("song")
-			DrawScreen()
+			NowPlayingScreen.DrawScreen()
 		end if
 
     'Analytics

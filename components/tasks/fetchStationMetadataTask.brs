@@ -1,21 +1,25 @@
-sub fetch(mtop)
-    jsonString = GetJSONAtUrl(m.station.url)
+sub fetch() as Object
+        jsonString = GetJSONAtUrl(m.station.url)
 
-    if jsonString = invalid
-        print "Invalid jsonString"
-        return
-    end if
+        if jsonString = invalid
+            print "Invalid jsonString"
+            return invalid
+        end if
 
-    track = HandleJson(jsonString)
+        track = HandleJson(jsonString)
+        print track.title
+        
+        ' if m.currentTrack <> invalid AND m.currentTrack.title = track.title
+        '     return invalid
+        ' end if
 
-    if m.currentTrack <> invalid AND m.currentTrack.name = track.name
-        return
-    end if
+        ' print "BLAHH"
+        ' print m.top
 
-    print "TRACK CHANGED"
-    m.currentTrack = track
-    m.top.track = track
-end sub
+        ' print m.top.track
+        
+        return track
+    end sub
 
 Function GetJSONAtUrl(url as String)
     if NOT m.DoesExist("jsontransfer") then
@@ -50,7 +54,8 @@ Function HandleJSON(jsonString as String)
     jsonObject = ParseJSON(jsonString)
     song = createObject("roAssociativeArray")
     song.JSONDownloadDelay = 0
-
+    song.MetadataFetchFailure = 0
+    
     ' song = GetGlobalAA().Lookup("track")
     ' NowPlayingScreen = GetNowPlayingScreen()
 
@@ -92,8 +97,6 @@ Function HandleJSON(jsonString as String)
         song.metadataFault = false
         song.brightness = 0
         song.metadataFetched = jsonObject.metaDataFetched
-        song.PopularityFetchCounter = 0
-        song.MetadataFetchFailure = 0
 
         if jsonObject.image <> invalid AND jsonObject.image.url <> "" AND jsonObject.image.url <> invalid
             song.image = jsonObject.image 'Used for colors
@@ -118,7 +121,7 @@ Function HandleJSON(jsonString as String)
         song.Artist = song.stationName
         song.Title = song.feedurl
         song.bio = CreateObject("roAssociativeArray")
-        song.bio.text = "The Bat Player displays additional information about the station and its songs when available.  " + song.stationName + " does not seem to have any data for The Bat to show you either due the Station not providing it or our services are experiencing difficulties.  Visit http://status.thebatplayer.fm for service updates."
+        song.bio.text = "The Bat Player displays additional information about the station and its songs when available.  " + m.top.station.name + " does not seem to have any data for The Bat to show you either due the Station not providing it or our services are experiencing difficulties.  Visit http://status.thebatplayer.fm for service updates."
         song.metadataFault = true
         song.metadataFetched = false
         song.album = invalid

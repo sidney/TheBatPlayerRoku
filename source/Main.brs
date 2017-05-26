@@ -26,7 +26,7 @@ Sub showChannelSGScreen()
   m.global.addField("audio", "node", false)
   m.global.addField("station", "node", false)
   m.global.addField("song", "node", false)
-  m.global.addField("metadataTask", "node", false)
+  'm.global.addField("metadataTask", "node", false)
   m.global.addField("displayNowPlayingScreen", "bool", false)
 
   screen.setMessagePort(GetPort())
@@ -37,8 +37,11 @@ Sub showChannelSGScreen()
   m.global.ObserveField("station", GetPort())
   'm.global.ObserveField("song", GetPort())
 
-  m.global.metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
-  m.global.metadataTask.ObserveField("track", GetPort())
+  metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
+  metadataTask.ObserveField("track", GetPort())
+  metadataTask.control = "WAIT"
+
+  GetGlobalAA().metadataTask = metadataTask
 
   StartEventLoop()
 End Sub
@@ -46,35 +49,31 @@ End Sub
 Sub stationChanged(station)
     print "stationChanged()"
     startFetchingMetadata(GetGlobalAA().station)
-    'UpdateScreen()
 End Sub
 
 Sub trackChanged(track)
-    print "trackChanged()"
+    print "Main#trackChanged()"
     GetGlobalAA().track = track
-    'print "m.scene.closeWaitingDialog = true"
-    m.scene.closeWaitingDialog = true
-    UpdateScreen()
+    nowPlayingScreen = GetNowPlayingScreen()
+    nowPlayingScreen.RefreshNowPlayingScreen()
+
+    print m.global
 End Sub
 
 Sub startFetchingMetadata(station)
     print "startFetchingMetadata()"
 
-    task = m.global.metadataTask
+    task = GetGlobalAA().metadataTask
     task.station = station
     task.control = "RUN"    
-End Sub
-
-Sub showNowPlayingScreen()
-    print "showNowPlayingScreen!!!"
 End Sub
 
 Function InitBatPlayer()
     'BumpOrResetSavedDirectoryCacheValue()
 
-	GetGlobalAA().lastSongTitle = ""
-    Analytics = GetSession().Analytics
-    Analytics.AddEvent("Application Launched")
+	'GetGlobalAA().lastSongTitle = ""
+    'Analytics = GetSession().Analytics
+    'Analytics.AddEvent("Application Launched")
 
     ' print "------ Initializing LastFM ------"
     ' InitLastFM()
