@@ -30,7 +30,7 @@ Sub showChannelSGScreen()
   'm.global.addField("displayNowPlayingScreen", "bool", false)
 
   screen.setMessagePort(GetPort())
-  m.scene = screen.CreateScene("RowListExample")
+  m.scene = screen.CreateScene("StationSelectorScene")
 
   screen.show()
   'm.global.ObserveField("displayNowPlayingScreen", GetPort())

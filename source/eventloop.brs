@@ -155,7 +155,8 @@ Sub HandleDownloadEvents(msg)
 		Identity = ToStr(msg.GetSourceIdentity())
 		Downloads = GetSession().Downloads
 		NowPlayingScreen = GetGlobalAA().SavedNowPlayingScreen
-
+		track = GetGlobalAA().track
+		
 		if NowPlayingScreen = invalid
 			return
 		end if

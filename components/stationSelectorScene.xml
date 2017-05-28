@@ -1,39 +1,101 @@
-<?xml version="1.0" encoding="utf-8" ?>
- 
-<component name="stationSelectorScene" extends="Scene" >
- 
-<script type="text/brightscript" >
-<![CDATA[
- 
- 
-sub init()
-    print "stationSelectorScene loaded"
-end sub
-]]>
-</script>
- 
-<children>
+<?xml version="1.0" encoding="utf-8"?>
+<component name="StationSelectorScene" extends="Scene" initialFocus="exampleRowList">
 
-<Poster
-  id="headerPoster"
-  uri="https://batplayerrokuheader.imgix.net/selection_bat_logo-HD.png?fm=jpg&amp;q=90&amp;txtfont=Helvetica+Neue&amp;txtclr=aaffffff&amp;txtalign=center&amp;txtsize=25&amp;txtfit=max&amp;txtpad=45&amp;txt=Configure%20your%20Bat%20Player%20on%20the%20web%20at%20http%3A%2F%2F10.0.1.83%3A9999&amp;w=1280"
-  width="1280"
-  height="200"
-  translation="[0,0]"
-/>
+	<script type="text/brightscript" uri="pkg:/components/StationSelectorScene.brs" />
 
-<RowList 
-    id = "exampleRowList"
-    translation = "[ 130, 160 ]" 
-    itemComponentName = "stationSelectorCell" 
-    numRows = "1" 
-    itemSize = "[ 1608, 308 ]" 
-    rowItemSize = "[ [536, 308] ]" 
-    itemSpacing = "[ 0, 40 ]" 
-    showRowLabel = "[ true ]" 
-    drawFocusFeedback = "false" 
-    vertFocusAnimationStyle = "fixedFocusWrap" 
-    rowFocusAnimationStyle = "fixedFocusWrap" />
-</children>
- 
+	<interface>
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		sub init()
+			m.content = createObject("roSGNode", "ContentNode")
+
+			m.rowlist = m.top.findNode("StationsRowList")
+			m.rowlist.ObserveField("rowItemFocused", "rowItemFocused")
+			m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
+			m.rowlist.content = m.content
+
+	    	m.rowlist.SetFocus(true)
+			m.currentRow = 0
+			m.currentItem = 0
+
+		    audio = createObject("roSGNode", "Audio")
+			m.global.audio = audio
+
+			getMyStations()
+			getFeaturedStations()
+		end sub
+
+		sub rowItemSelected(item)
+			print "rowItemSelected"
+
+			currentItemLocation = item.getData()
+			currentRow = currentItemLocation[0]
+			currentItem = currentItemLocation[1]
+
+			print "Selected row: " + currentRow.toStr() + " item: " + currentItem.toStr()
+
+			' if currentRow = 0
+			' 	station = m.featuredStations.getChild(currentItem)
+			' else if currentRow = 1
+			' 	station = m.myStations.getChild(currentItem)
+			' end if
+
+			rowData = m.rowlist.content.getChild(currentRow)
+			if rowData = invalid
+				return
+			end if
+
+			station = rowData.getChild(currentItem)
+
+			m.global.audio.content = station
+			m.global.audio.control = "play"
+
+			showNowPlayingScreen(station)
+		end sub
+
+		sub rowItemFocused(item)
+			index = item.getData()
+			m.currentRow = index[0]
+			m.currentItem = index[1]
+
+			focusedCell = item.getData()
+			cell = item.getRoSGNode()
+			'if cell <> invalid
+			'	cell.itemlabel.text = index[0].ToStr()
+			'end if
+		end sub
+
+		sub showNowPlayingScreen(station)
+			m.global.station = station
+		end sub
+
+		]]>
+	</script>
+	<children>
+		
+		<Poster
+			id="headerPoster"
+			uri="pkg:/images/StationSelectionBackgroundTexture.png"
+			width="1280" height="720"
+			translation="[0,0]"
+			opacity="0.8"
+		/>
+
+		<RowList
+			id="StationsRowList"
+			translation="[ 40, 30 ]"
+			itemComponentName="StationSelectorRowListItem"
+			numRows="3"
+			itemSize="[ 1180, 350 ]"
+			rowItemSize="[ [290, 290] ]"
+			itemSpacing="[ 0, 20 ]"
+			showRowLabel="[ true ]"
+			drawFocusFeedback="true" 
+			vertFocusAnimationStyle="fixedFocusWrap"
+			rowFocusAnimationStyle="floatingFocus" 
+			/>
+			
+	</children>
 </component>

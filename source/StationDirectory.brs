@@ -56,55 +56,55 @@ Function selection_setupBrowse()
   m.Screen.SetContentList(6, itemsArray)
 End Function
 
-Function GetStationsAtUrl(url as String) as object
-  stationsKey = makemdfive(url)
-  stationsJsonArray = GetStationCollection(stationsKey)
+' Function GetStationsAtUrl(url as String) as object
+'   stationsKey = makemdfive(url)
+'   stationsJsonArray = GetStationCollection(stationsKey)
 
-  if stationsJsonArray = invalid
-    Request = GetRequest()
-    Request.SetUrl(url)
-    jsonString = Request.GetToString()
-    stationsJsonArray = ParseJSON(jsonString)
-    stationsKey = makemdfive(url)
-    SaveStationCollectionJson(stationsKey, jsonString)
-  end if
+'   if stationsJsonArray = invalid
+'     Request = GetRequest()
+'     Request.SetUrl(url)
+'     jsonString = Request.GetToString()
+'     stationsJsonArray = ParseJSON(jsonString)
+'     stationsKey = makemdfive(url)
+'     SaveStationCollectionJson(stationsKey, jsonString)
+'   end if
 
-  stationsArray = CreateObject("roArray", stationsJsonArray.count(), true)
+'   stationsArray = CreateObject("roArray", stationsJsonArray.count(), true)
 
-  for i = 0 to stationsJsonArray.Count() -1
-    singleStation = stationsJsonArray[i]
+'   for i = 0 to stationsJsonArray.Count() -1
+'     singleStation = stationsJsonArray[i]
 
-    stream = ""
-    if singleStation.DoesExist("stream")
-      stream = singleStation.stream
-    end if
+'     stream = ""
+'     if singleStation.DoesExist("stream")
+'       stream = singleStation.stream
+'     end if
 
-    image = "pkg:/images/album-placeholder.png"
-    if singleStation.DoesExist("image")
-      image = singleStation.image
-    end if
+'     image = "pkg:/images/album-placeholder.png"
+'     if singleStation.DoesExist("image")
+'       image = singleStation.image
+'     end if
 
-    format = "mp3"
-    if singleStation.DoesExist("format")
-      format = singleStation.format
-    end if
+'     format = "mp3"
+'     if singleStation.DoesExist("format")
+'       format = singleStation.format
+'     end if
 
-    provider = singleStation.provider
-    if singleStation.provider = invalid
-      provider = singleStation.name
-    end if
+'     provider = singleStation.provider
+'     if singleStation.provider = invalid
+'       provider = singleStation.name
+'     end if
 
-    singleStationItem = CreateSong(singleStation.name, provider, "", format, stream, image)
-    singleStationItem.provider = singleStation.stationProvider
-    singleStationItem.playlist = singleStation.playlist
-    singleStationItem.description = singleStation.description
+'     singleStationItem = CreateSong(singleStation.name, provider, "", format, stream, image)
+'     singleStationItem.provider = singleStation.stationProvider
+'     singleStationItem.playlist = singleStation.playlist
+'     singleStationItem.description = singleStation.description
 
-    ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
-    stationsArray.push(singleStationItem)
-  end for
+'     ASyncGetFile(singleStation.image, "tmp:/" + makemdfive(singleStation.image))
+'     stationsArray.push(singleStationItem)
+'   end for
 
-  return stationsArray
-End Function
+'   return stationsArray
+' End Function
 
 Function selection_showDirectoryPopup(station as object)
   if station.image <> invalid
@@ -491,15 +491,15 @@ Function GetBrowseCategories() as Object
   return categories
 End Function
 
-Function GetStationCollectionJsonFromCache() as Object
-	json = RegRead("StationCategories", "Transient")
+' Function GetStationCollectionJsonFromCache() as Object
+' 	json = RegRead("StationCategories", "Transient")
 
-	if json = invalid
-		return invalid
-	end if
+' 	if json = invalid
+' 		return invalid
+' 	end if
 
-	return json
-End Function
+' 	return json
+' End Function
 
 Function GetStationsForCategory(category as Integer) as Object
   url = GetConfig().BatUtils + "category?categoryId=" + ToStr(category)
