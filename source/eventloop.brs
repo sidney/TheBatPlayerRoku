@@ -31,10 +31,10 @@ Sub HandleNowPlayingScreenEvent (msg as Object)
 
 	  else if key = 0 then
 	    'Exit
-			NowPlayingScreen = GetNowPlayingScreen()
-			NowPlayingScreen.screen = invalid
-      NowPlayingScreen = invalid
-      GetGlobalAA().NowPlayingScreen = invalid
+		NowPlayingScreen = GetNowPlayingScreen()
+		NowPlayingScreen.screen = invalid
+      	NowPlayingScreen = invalid
+      	GetGlobalAA().SavedNowPlayingScreen = invalid
 
     '   StationSelectionScreen = GetGlobalAA().StationSelectionScreen
     '   StationSelectionScreen.RefreshNowPlayingData()
@@ -52,58 +52,61 @@ Sub HandleNowPlayingScreenEvent (msg as Object)
 End Sub
 
 Sub HandleTimers()
-	song = GetGlobalAA().SongObject
-	NowPlayingScreen = GetNowPlayingScreen()
+	station = GetGlobalAA().station
+	track = GetGlobalAA().track
+	NowPlayingScreen = GetGlobalAA().SavedNowPlayingScreen
 	Session = GetSession()
 
-	if GetGlobalAA().IsStationSelectorDisplayed <> true then
-		timer = GetNowPlayingTimer()
-		if timer <> invalid
+	'LastFM Scrobbles should take place even if the
+	'now playing screen is not displayed.
+	' if NowPlayingScreen.scrobbleTimer <> invalid THEN
+	' 	if NowPlayingScreen.scrobbleTimer.totalSeconds() >= 15 then
+	' 		if track.Artist <> invalid and track.Title <> invalid
+	' 			NowPlayingScreen.scrobbleTimer = invalid
+	' 			ScrobbleTrack(track.artist, track.title)
+	' 		end if
+	' 	end if
+	' end if
 
-			if timer <> invalid and timer.totalSeconds() >= GetConfig().MetadataFetchTimer + song.JSONDownloadDelay then
-				Get_Metadata(song, GetPort())
+	if NowPlayingScreen <> invalid
+		timer = GetNowPlayingTimer()
+
+		if timer <> invalid
+			if timer <> invalid AND timer.totalSeconds() >= 5'GetConfig().MetadataFetchTimer + song.JSONDownloadDelay then
+				if station <> invalid
+					Get_Metadata(station, GetPort())
+				end if
+
 				timer.mark()
 			end if
 		end if
+'
+  	' 'Now Playing on other stations
+  	' if (Session.StationDownloads <> invalid AND Session.StationDownloads.Timer <> invalid AND Session.StationDownloads.Timer.totalSeconds() > GetConfig().MetadataFetchTimer)
+  	' 	CancelOtherStationsNowPlayingRequests()
+  	' end if
 
-
-		'LastFM Scrobbles
-		if NowPlayingScreen.scrobbleTimer <> invalid THEN
-			if NowPlayingScreen.scrobbleTimer.totalSeconds() >= 15 then
-				if song.Artist <> invalid and song.Title <> invalid
-					NowPlayingScreen.scrobbleTimer = invalid
-      				ScrobbleTrack(song.Artist, song.Title)
-      	end if
-      end if
-    end if
-
-  	'Now Playing on other stations
-  	if (Session.StationDownloads <> invalid AND Session.StationDownloads.Timer <> invalid AND Session.StationDownloads.Timer.totalSeconds() > GetConfig().MetadataFetchTimer)
-  		CancelOtherStationsNowPlayingRequests()
-  	end if
-
-  	if NowPlayingScreen.NowPlayingOtherStationsTimer <> invalid AND NowPlayingScreen.NowPlayingOtherStationsTimer.totalSeconds() > 1000
-	    NowPlayingScreen.NowPlayingOtherStationsTimer.mark()
-  		CreateOtherStationsNowPlaying()
-  	end if
+  	' if NowPlayingScreen.NowPlayingOtherStationsTimer <> invalid AND NowPlayingScreen.NowPlayingOtherStationsTimer.totalSeconds() > 1000
+	'     NowPlayingScreen.NowPlayingOtherStationsTimer.mark()
+  	' 	CreateOtherStationsNowPlaying()
+  	' end if
 
 		'Image download timeouts
-		if song.ArtistImageDownloadTimer <> invalid AND song.ArtistImageDownloadTimer.totalSeconds() > GetConfig().ImageDownloadTimeout
+		if track.ArtistImageDownloadTimer <> invalid AND track.ArtistImageDownloadTimer.totalSeconds() > GetConfig().ImageDownloadTimeout
 			if NowPlayingScreen.artistImage = invalid OR NowPlayingScreen.artistImage.valid <> true
-				song.UseFallbackArtistImage = true
-				song.ArtistImageDownloadTimer = invalid
-				UpdateScreen()
+				track.UseFallbackArtistImage = true
+				track.ArtistImageDownloadTimer = invalid
+				NowPlayingScreen.UpdateScreen()
 			end if
 		end if
 
-		if song.BackgroundImageDownloadTimer <> invalid AND song.BackgroundImageDownloadTimer.totalSeconds() > GetConfig().ImageDownloadTimeout
+		if track.BackgroundImageDownloadTimer <> invalid AND track.BackgroundImageDownloadTimer.totalSeconds() > GetConfig().ImageDownloadTimeout
 			if NowPlayingScreen.BackgroundImage = invalid OR NowPlayingScreen.BackgroundImage.valid <> true
-				song.UseFallbackBackgroundImage = true
-				song.BackgroundImageDownloadTimer = invalid
-				UpdateScreen()
+				track.UseFallbackBackgroundImage = true
+				track.BackgroundImageDownloadTimer = invalid
+				NowPlayingScreen.UpdateScreen()
 			end if
 		end if
-
 	end if
 
 End Sub
@@ -146,19 +149,22 @@ Sub HandleAudioPlayerEvent(msg as Object)
 End Sub
 
 Sub HandleDownloadEvents(msg)
+
 	if type(msg) = "roUrlEvent" then
+
 		Identity = ToStr(msg.GetSourceIdentity())
 		Downloads = GetSession().Downloads
-		TransferRequest = Downloads.lookup(Identity)
+		NowPlayingScreen = GetGlobalAA().SavedNowPlayingScreen
+
+		if NowPlayingScreen = invalid
+			return
+		end if
 
 		if msg.GetResponseCode() = 200 OR msg.GetFailureReason() = invalid then
 
 			IsDownloadingFile = IsDownloading(Identity)
 			if IsDownloadingFile = true then
-				song = GetGlobalAA().SongObject
-				if GetGlobalAA().IsStationSelectorDisplayed <> true
-					UpdateScreen()
-				end if
+				NowPlayingScreen.UpdateScreen()
 			end if
 
 			'JSON
@@ -185,11 +191,12 @@ Sub HandleDownloadEvents(msg)
 			End if
 
 			'Downloads for what other stations are playing
-			if (IsOtherStationsValidDownload(msg))
-				CompletedOtherStationsMetadata(msg)
-			end if
+			' if (IsOtherStationsValidDownload(msg))
+			' 	CompletedOtherStationsMetadata(msg)
+			' end if
 
 		else
+			TransferRequest = Downloads.lookup(Identity)
 			if TransferRequest <> invalid
 				errorUrl = TransferRequest.GetUrl()
 				'BatLog("Download failed. " + errorUrl + " " + str(msg.GetResponseCode()) + " : " + msg.GetFailureReason(), "error")
@@ -205,23 +212,21 @@ Sub HandleDownloadEvents(msg)
 				end if
 			end if
 
-			song = GetGlobalAA().SongObject
-
 			if IsBackgroundImageDownload(Identity)
 				'Background Image download failed
 				BatLog("Using background fallback image.")
-				song.UseFallbackBackgroundImage = true
+				track.UseFallbackBackgroundImage = true
 				GetSession().BackgroundImageDownload = invalid
-				UpdateScreen()
+				NowPlayingScreen.UpdateScreen()
 				return
 			end if
 
 			if IsArtistImageDownload(Identity)
 				'Artist Image download failed
 				BatLog("Using artist fallback image.")
-				song.UseFallbackArtistImage = true
+				track.UseFallbackArtistImage = true
 				GetSession().ArtistImageDownload = invalid
-				UpdateScreen()
+				NowPlayingScreen.UpdateScreen()
 				return
 			end if
 
@@ -231,8 +236,8 @@ Sub HandleDownloadEvents(msg)
 				jsonIdentity = ToStr(jsontransfer.GetIdentity())
 				if jsonIdentity = Identity then
 					GetGlobalAA().Delete("jsontransfer")
-					if song.MetadataFetchFailure = invalid then song.MetadataFetchFailure = 0
-					song.MetadataFetchFailure = song.MetadataFetchFailure + 1
+					if track.MetadataFetchFailure = invalid then track.MetadataFetchFailure = 0
+					track.MetadataFetchFailure = track.MetadataFetchFailure + 1
 					timer = GetNowPlayingTimer()
 					timer.mark()
 				End if
@@ -253,31 +258,22 @@ function StartEventLoop()
 	GetGlobalAA().AddReplace("endloop", false)
 
 	while NOT GetGlobalAA().lookup("endloop")
-		'HandleTimers()
+		HandleTimers()
 
 		msg = port.GetMessage() ' get a message, if available
 
 		HandleWebEvent(msg)
 
 		if msg <> invalid then
+			HandleDownloadEvents(msg)
+
 		    msgType = type(msg)
 
-		' 	HandleDownloadEvents(msg)
 			HandleNowPlayingScreenEvent(msg)
 			'HandleAudioPlayerEvent(msg)
 
 			if msgType = "roSGNodeEvent"
-			' 	print "roSGNodeEvent@!@!!!!"
-			'    print "node "; msg.getNode()
-			'    print "field name "; msg.getField()
-			'    print "data "; msg.getData()
-
-			' Display Now Playing screen
-				' if msg.getField() = "displayNowPlayingScreen" AND msg.getData() = true
-					'NowPlayingScreen = GetNowPlayingScreen()
-					'UpdateScreen()
-				' end if
-
+				' Display Now Playing screen
 				if msg.getField() = "station"
 					node = msg.getData()
 					stationAA = createObject("roAssociativeArray")
@@ -285,25 +281,25 @@ function StartEventLoop()
 					stationAA.image = node.image
 					stationAA.url = node.url
 					GetGlobalAA().station = stationAA
-					stationChanged(station)					
+					stationChanged(stationAA)					
 				end if
 
 				if msg.getField() = "track"
 					track = msg.getData()
 					trackChanged(track)
-					print "fired trackChanged"
 				end if
 
 			end if
 		end if
 
-		' song = GetGlobalAA().SongObject
-		' if GetGlobalAA().IsStationSelectorDisplayed <> true
-		NowPlayingScreen = GetNowPlayingScreen()
-		'print NowPlayingScreen
+		' If there is a station determine if we need to be drawing the
+		' now playing screen.
+		if GetGlobalAA().station <> invalid
+			NowPlayingScreen = GetGlobalAA().SavedNowPlayingScreen
 
-		if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid'' AND NowPlayingScreen.DoesExist("song")
-			NowPlayingScreen.DrawScreen()
+			if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid'' AND NowPlayingScreen.DoesExist("song")
+				NowPlayingScreen.DrawScreen()
+			end if
 		end if
 
     'Analytics

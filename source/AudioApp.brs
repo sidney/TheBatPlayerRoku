@@ -1,9 +1,5 @@
 
 
-Sub Get_Metadata(song as Object, port as Object)
-        GetJSONAtUrl(song.stream)
-End Sub
-
 REM ******************************************************
 REM
 REM Show audio screen

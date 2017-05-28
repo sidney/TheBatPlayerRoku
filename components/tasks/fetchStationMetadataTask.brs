@@ -1,4 +1,4 @@
-sub fetch() as Object
+sub aaaafetch() as Object
         jsonString = GetJSONAtUrl(m.station.url)
 
         if jsonString = invalid
@@ -21,7 +21,7 @@ sub fetch() as Object
         return track
     end sub
 
-Function GetJSONAtUrl(url as String)
+Function aaaaaGetJSONAtUrl(url as String)
     if NOT m.DoesExist("jsontransfer") then
         Request = GetRequest()
 
@@ -45,7 +45,7 @@ Function GetJSONAtUrl(url as String)
     end if
 End Function
 
-Function HandleJSON(jsonString as String)
+Function aaaaHandleJSON(jsonString as String)
 
     'Reset audio player counter on success
     'Audio = GetGlobalAA().AudioPlayer

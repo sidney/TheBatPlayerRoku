@@ -26,46 +26,39 @@ Sub showChannelSGScreen()
   m.global.addField("audio", "node", false)
   m.global.addField("station", "node", false)
   m.global.addField("song", "node", false)
-  'm.global.addField("metadataTask", "node", false)
-  m.global.addField("displayNowPlayingScreen", "bool", false)
+'   m.global.addField("metadataTask", "node", false)
+  'm.global.addField("displayNowPlayingScreen", "bool", false)
 
   screen.setMessagePort(GetPort())
   m.scene = screen.CreateScene("RowListExample")
 
   screen.show()
-  m.global.ObserveField("displayNowPlayingScreen", GetPort())
+  'm.global.ObserveField("displayNowPlayingScreen", GetPort())
   m.global.ObserveField("station", GetPort())
   'm.global.ObserveField("song", GetPort())
 
-  metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
-  metadataTask.ObserveField("track", GetPort())
-  metadataTask.control = "WAIT"
-
-  GetGlobalAA().metadataTask = metadataTask
+  'metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
+'   metadataTask.ObserveField("track", GetPort())
+'   metadataTask.control = "WAIT"
+  
+  'm.global.metadataTask = metadataTask
+  'GetGlobalAA().metadataTask = metadataTask
 
   StartEventLoop()
 End Sub
 
 Sub stationChanged(station)
-    print "stationChanged()"
-    startFetchingMetadata(GetGlobalAA().station)
+    print "stationChanged(station)"
+    GetNowPlayingScreen()
+    Get_Metadata(station, GetPort())
 End Sub
 
 Sub trackChanged(track)
     print "Main#trackChanged()"
+
     GetGlobalAA().track = track
     nowPlayingScreen = GetNowPlayingScreen()
     nowPlayingScreen.RefreshNowPlayingScreen()
-
-    print m.global
-End Sub
-
-Sub startFetchingMetadata(station)
-    print "startFetchingMetadata()"
-
-    task = GetGlobalAA().metadataTask
-    task.station = station
-    task.control = "RUN"    
 End Sub
 
 Function InitBatPlayer()

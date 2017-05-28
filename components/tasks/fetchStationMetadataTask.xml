@@ -23,6 +23,8 @@
   <script type = "text/brightscript" >
     <![CDATA[
         sub init()
+            print "fetchStationMetadataTask#init()"
+            
             m.top.functionName = "start"
             m.timer = CreateObject("roTimespan")
             ' m.top.ObserveField("station", "stationChanged")
@@ -35,17 +37,19 @@
            'trackFetched(track)
 
            m.timer.mark()
-           while m.top.control = "run"                
-                if m.timer.TotalSeconds() >= 5
-                    m.timer.mark()
-                    print "TEST 1"
-                    print m.top
-                    print "TEST 2"
-                    m.top.test = createObject("roAssociativeArray")
-                    print "TEST 3"
-                    track = fetch()
-                    trackFetched(track)
-                end if
+
+           timerPort = CreateObject("roMessagePort")
+
+           while true 'm.top.control = "run"                
+                wait(5000, timerPort)
+                  m.timer.mark()
+                  print "TEST 1"
+                  ' print m.top
+                  print "TEST 2"
+                  m.top.test = createObject("roAssociativeArray")
+                  print "TEST 3"
+                  track = fetch()
+                  trackFetched(track)
             end while
         end sub
 

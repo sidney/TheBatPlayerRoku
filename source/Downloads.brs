@@ -145,7 +145,7 @@ Function UrlTransferRequest() as object
   request = CreateObject("roUrlTransfer")
   request.EnablePeerVerification(false)
   request.EnableHostVerification(false)
-  'request.SetPort(GetPort())
+  request.SetPort(GetPort())
   request.setCertificatesFile("common:/certs/ca-bundle.crt")
   return request
 End Function
@@ -161,5 +161,6 @@ Function GetRequest() as Object
   request.EnableEncodings(True)
   request.AddHeader("Accept-Encoding","deflate")
   request.AddHeader("Accept-Encoding","gzip")
+  
   return request
 End Function
