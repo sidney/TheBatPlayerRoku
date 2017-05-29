@@ -68,6 +68,10 @@
 			end if
 
 			station = rowData.getChild(currentItem)
+			headers = createObject("roArray", 2, true)
+			headers.push("Icy-MetaData:0")
+			headers.push("User-Agent:The Bat Player/Roku")
+			station.HttpHeaders = headers
 
 			m.global.audio.content = station
 			m.global.audio.control = "play"
