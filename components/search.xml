@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="SearchResultsPanel" extends="ListPanel" initialFocus="exampleRowList">
+
+ <interface> 
+    <field id = "stations" type = "node" onChange = "setsearchresults"/>
+</interface>
+
+<script type = "text/brightscript" >
+    <![CDATA[
+
+    sub init()
+        m.stationlist = m.top.findNode("stationlist") 
+        m.top.setFocus(true)
+    end sub
+
+    sub shosearchresults()
+        m.stationlist.content = m.top.stations
+    end sub
+    ]]>
+
+  </script>
+
+<children>
+    <LabelList
+    id = "stationlist"
+    translation = "[160,92]"
+    itemSize = "[440,48]" >
+    
+    </LabelList>
+</children>
+
+</component>

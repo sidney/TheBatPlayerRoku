@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<component name = "RootPanelSet" extends = "Scene">
+    <script type = "text/brightscript">
+        <![CDATA[
+            sub init()
+                m.panelset = createObject("roSGNode", "PanelSet")
+                m.panel = m.panelset.createChild("StationSelectorPanel")
+                m.top.appendChild(m.panelset)
+                m.panel.setFocus(true)
+            end sub
+        ]]>
+    </script>
+</component>

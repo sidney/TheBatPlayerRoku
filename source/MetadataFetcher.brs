@@ -108,8 +108,8 @@ Function HandleJSON(jsonString as String)
     end if
 
   else
-    BatLog("There was an error processing or downloading metadata: " + track.feedurl, "error")
-    track.JSONDownloadDelay = song.JSONDownloadDelay + 1
+    BatLog("There was an error processing or downloading metadata: " + station.url, "error")
+   '' track.JSONDownloadDelay = song.JSONDownloadDelay + 1
     track.Artist = station.name
     track.Title = station.url
     track.bio = CreateObject("roAssociativeArray")
@@ -118,7 +118,7 @@ Function HandleJSON(jsonString as String)
     track.metadataFetched = false
     track.album = invalid
     track.brightness = 0
-    track.MetadataFetchFailure = station.MetadataFetchFailure + 1
+    'track.MetadataFetchFailure = station.MetadataFetchFailure + 1
     track.backgroundImage = station.image
     track.artistImage = station.image
     track.UsedFallbackImage = true

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="StationSelectorScene" extends="Scene" initialFocus="exampleRowList">
+<component name="StationSelectorPanel" extends="Panel" initialFocus="exampleRowList">
 
-	<script type="text/brightscript" uri="pkg:/components/StationSelectorScene.brs" />
+	<script type="text/brightscript" uri="pkg:/components/StationSelectorPanel.brs" />
+	<script type="text/brightscript" uri="pkg:/components/search.brs" />
 
 	<interface>
 	</interface>
@@ -9,6 +10,9 @@
 	<script type="text/brightscript">
 		<![CDATA[
 		sub init()
+			m.top.panelSize = "full"
+			m.top.leftPosition = 0
+
 			m.content = createObject("roSGNode", "ContentNode")
 
 			m.rowlist = m.top.findNode("StationsRowList")
@@ -23,8 +27,23 @@
 		    audio = createObject("roSGNode", "Audio")
 			m.global.audio = audio
 
-			getMyStations()
-			getFeaturedStations()
+			setupStations()
+		end sub
+
+		sub setupDirectoryButtons()
+			buttons = createObject("roSGNode", "ContentNode")
+			buttons.title = "More Stations"
+
+			browseButton = createObject("roSGNode", "ContentNode")
+			browseButton.title = "Browse"
+
+			searchButton = createObject("roSGNode", "ContentNode")
+			searchButton.title = "Search"
+
+			buttons.appendChild(browseButton)
+			buttons.appendChild(searchButton)
+
+			m.rowlist.content.insertChild(buttons, 3)
 		end sub
 
 		sub rowItemSelected(item)
@@ -34,13 +53,14 @@
 			currentRow = currentItemLocation[0]
 			currentItem = currentItemLocation[1]
 
-			print "Selected row: " + currentRow.toStr() + " item: " + currentItem.toStr()
-
-			' if currentRow = 0
-			' 	station = m.featuredStations.getChild(currentItem)
-			' else if currentRow = 1
-			' 	station = m.myStations.getChild(currentItem)
-			' end if
+			if currentRow = 3
+				if currentItem = 0
+					navigateToSearch()
+				else if currentItem = 1
+					navigateToBrowse()
+				end if
+				return
+			end if
 
 			rowData = m.rowlist.content.getChild(currentRow)
 			if rowData = invalid
@@ -80,14 +100,14 @@
 			uri="pkg:/images/StationSelectionBackgroundTexture.png"
 			width="1280" height="720"
 			translation="[0,0]"
-			opacity="0.8"
+			opacity="0.75"
 		/>
 
 		<RowList
 			id="StationsRowList"
 			translation="[ 40, 30 ]"
 			itemComponentName="StationSelectorRowListItem"
-			numRows="3"
+			numRows="5"
 			itemSize="[ 1180, 350 ]"
 			rowItemSize="[ [290, 290] ]"
 			itemSpacing="[ 0, 20 ]"

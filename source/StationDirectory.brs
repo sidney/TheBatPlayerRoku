@@ -30,31 +30,31 @@ Function selection_getDashStations()
   m.DashStations = stations
 End Function
 
-Function selection_getLongtailStations()
-  url = "https://longtail.fm/api/external/stations"
-  stations = GetStationsAtUrl(url)
-  m.Screen.SetContentList(2, stations)
-  m.Screen.SetListVisible(2, true)
-  m.LongtailStations = stations
-End Function
+' Function selection_getLongtailStations()
+'   url = "https://longtail.fm/api/external/stations"
+'   stations = GetStationsAtUrl(url)
+'   m.Screen.SetContentList(2, stations)
+'   m.Screen.SetListVisible(2, true)
+'   m.LongtailStations = stations
+' End Function
 
-Function selection_setupBrowse()
-  itemsArray = CreateObject("roArray", 2, true)
+' Function selection_setupBrowse()
+'   itemsArray = CreateObject("roArray", 2, true)
 
-  browseItem = CreateObject("roAssociativeArray")
-  browseItem.name = "Browse"
-  browseItem.hdposterurl = "pkg:/images/SearchIcon-HD.png"
-  browseItem.sdposterurl = "pkg:/images/SearchIcon-SD.png"
-  itemsArray.push(browseItem)
+'   browseItem = CreateObject("roAssociativeArray")
+'   browseItem.name = "Browse"
+'   browseItem.hdposterurl = "pkg:/images/SearchIcon-HD.png"
+'   browseItem.sdposterurl = "pkg:/images/SearchIcon-SD.png"
+'   itemsArray.push(browseItem)
 
-  searchItem = CreateObject("roAssociativeArray")
-  searchItem.name = "Search"
-  searchItem.hdposterurl = "pkg:/images/BrowseIcon-HD.png"
-  searchItem.sdposterurl = "pkg:/images/BrowseIcon-SD.png"
-  itemsArray.push(searchItem)
+'   searchItem = CreateObject("roAssociativeArray")
+'   searchItem.name = "Search"
+'   searchItem.hdposterurl = "pkg:/images/BrowseIcon-HD.png"
+'   searchItem.sdposterurl = "pkg:/images/BrowseIcon-SD.png"
+'   itemsArray.push(searchItem)
 
-  m.Screen.SetContentList(6, itemsArray)
-End Function
+'   m.Screen.SetContentList(6, itemsArray)
+' End Function
 
 ' Function GetStationsAtUrl(url as String) as object
 '   stationsKey = makemdfive(url)

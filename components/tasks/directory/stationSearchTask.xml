@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name = "StationSearchTask" extends = "Task" >
+  
+    <script type="text/brightscript" uri="pkg:/components/tasks/directory/stationSearchTask.brs" />
+    <script type="text/brightscript" uri="pkg:/source/config.brs" />
+    <script type="text/brightscript" uri="pkg:/source/downloads.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+
+    <interface>
+        <field id = "query" type = "string" />
+        <field id = "stations" type = "node" />
+    </interface>
+    
+    <script type = "text/brightscript" >
+    <![CDATA[
+            sub init()
+                m.top.functionName = "search"
+            end sub
+    ]]>
+    </script>
+
+</component>

@@ -164,3 +164,30 @@ Function GetRequest() as Object
   
   return request
 End Function
+
+function UrlEncode(url as String) as String
+    ue = m.UrlEncoder
+    if ue = invalid
+        ue = CreateObject("roUrlTransfer")
+        m.UrlEncoder = ue
+    end if
+    return ue.UrlEncode(url)
+end function
+
+function UrlEscape(url as String) as String
+    ue = m.UrlEncoder
+    if ue = invalid
+        ue = CreateObject("roUrlTransfer")
+        m.UrlEncoder = ue
+    end if
+    return ue.escape(url)
+end function
+
+function UrlUnescape(url as String) as String
+    ue = m.UrlEncoder
+    if ue = invalid
+        ue = CreateObject("roUrlTransfer")
+        m.UrlEncoder = ue
+    end if
+    return ue.unescape(url)
+end function

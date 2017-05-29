@@ -136,33 +136,6 @@ function Now() as Object
     return this
 end function
 
-function UrlEncode(url as String) as String
-    ue = m.UrlEncoder
-    if ue = invalid
-        ue = CreateObject("roUrlTransfer")
-        m.UrlEncoder = ue
-    end if
-    return ue.UrlEncode(url)
-end function
-
-function UrlEscape(url as String) as String
-    ue = m.UrlEncoder
-    if ue = invalid
-        ue = CreateObject("roUrlTransfer")
-        m.UrlEncoder = ue
-    end if
-    return ue.escape(url)
-end function
-
-function UrlUnescape(url as String) as String
-    ue = m.UrlEncoder
-    if ue = invalid
-        ue = CreateObject("roUrlTransfer")
-        m.UrlEncoder = ue
-    end if
-    return ue.unescape(url)
-end function
-
 function MimeType(uri="" as String) as String
     map = m.MimeTypes
     if map = invalid

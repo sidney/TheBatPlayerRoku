@@ -1,3 +1,11 @@
+sub setupStations()
+    getMyStations()
+    getLongtailStations()
+    getFeaturedStations()
+
+    setupDirectoryButtons()
+end sub
+
 ' Saved/My stations
 sub getMyStations()
     m.getMyStationsTask = createObject("roSGNode", "GetStationsTask")
@@ -7,8 +15,23 @@ end sub
 
 sub myStationsUpdated(event)
     stations = event.getData()
+    m.content.insertChild(stations, 0)
+end sub
+
+' Longtail Stations
+sub getLongtailStations()
+    print "getLongtailStations()"
+
+    m.getLongtailStationsTask = createObject("roSGNode", "GetDirectoryStationsTask")
+    m.getLongtailStationsTask.url =  "https://longtail.fm/api/external/stations"
+    m.getLongtailStationsTask.title = "Stations from Longtail Music"
+    m.getLongtailStationsTask.observeField("stations", "longtailStationsUpdated")
+    m.getLongtailStationsTask.control = "RUN"
+end sub
+
+sub longtailStationsUpdated(event)
+    stations = event.getData()
     m.content.insertChild(stations, 2)
-    m.myStations = stations
 end sub
 
 ' Featured stations
@@ -24,6 +47,8 @@ end sub
 sub featuredStationsUpdated(event)
     stations = event.getData()
     m.content.insertChild(stations, 1)
-    m.featuredStations = stations
-    print stations
+end sub
+
+sub navigateToBrowse()
+    print "browse"
 end sub

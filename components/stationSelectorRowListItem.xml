@@ -16,6 +16,7 @@
       m.itemposter = m.top.findNode("itemPoster") 
       m.itemmask = m.top.findNode("itemMask")
       m.itemlabel = m.top.findNode("itemLabel")
+
       m.nowplayingview = m.top.findNode("nowPlayingView")
       m.nowplayinglabel = m.top.findNode("nowPlayingLabel")
     end sub
@@ -92,6 +93,7 @@
       horizAlign = "center" 
       width = "250" 
       opacity = "0.0"/>
+      
 
   </children>
 

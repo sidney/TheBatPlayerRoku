@@ -26,23 +26,12 @@ Sub showChannelSGScreen()
   m.global.addField("audio", "node", false)
   m.global.addField("station", "node", false)
   m.global.addField("song", "node", false)
-'   m.global.addField("metadataTask", "node", false)
-  'm.global.addField("displayNowPlayingScreen", "bool", false)
 
   screen.setMessagePort(GetPort())
-  m.scene = screen.CreateScene("StationSelectorScene")
+  m.scene = screen.CreateScene("RootPanelSet")
 
   screen.show()
-  'm.global.ObserveField("displayNowPlayingScreen", GetPort())
   m.global.ObserveField("station", GetPort())
-  'm.global.ObserveField("song", GetPort())
-
-  'metadataTask = createObject("roSGNode", "fetchStationMetadataTask")
-'   metadataTask.ObserveField("track", GetPort())
-'   metadataTask.control = "WAIT"
-  
-  'm.global.metadataTask = metadataTask
-  'GetGlobalAA().metadataTask = metadataTask
 
   StartEventLoop()
 End Sub
