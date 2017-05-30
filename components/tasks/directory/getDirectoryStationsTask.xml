@@ -34,6 +34,7 @@
         item.name = station.name
         item.image = station.image
         item.url = station.stream
+        item.description = station.description
         item.streamformat = station.format
         stationsContentNode.appendChild(item)
       end for

@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<component name = "RootPanelSet" extends = "Scene">
+<component name = "RootPanelSet" extends = "OverhangPanelSetScene">
+
+    <interface> 
+        <field id = "clearDialogs" type = "bool" onChange = "clearDialogs"/>
+    </interface>
+
     <script type = "text/brightscript">
         <![CDATA[
             sub init()
-                m.panelset = createObject("roSGNode", "PanelSet")
-                m.panel = m.panelset.createChild("StationSelectorPanel")
-                m.top.appendChild(m.panelset)
-                m.panel.setFocus(true)
+                m.panel = createObject("roSGNode", "StationSelectorPanel")
+                m.top.panelSet.appendChild(m.panel)
+
+                m.top.overhang.logoUri = "pkg:/images/bat.png"
+                m.top.SetFocus(true)
+            end sub
+
+            sub clearDialogs()
+                print "clearDialogs()"
+                m.top.dialog = invalid
             end sub
         ]]>
     </script>

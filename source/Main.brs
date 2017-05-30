@@ -44,6 +44,7 @@ End Sub
 
 Sub trackChanged(track)
     print "Main#trackChanged()"
+    m.scene.clearDialogs = true
 
     GetGlobalAA().track = track
     nowPlayingScreen = GetNowPlayingScreen()

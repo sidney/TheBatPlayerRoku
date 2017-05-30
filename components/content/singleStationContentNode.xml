@@ -4,5 +4,6 @@
         <field id="name" type="string" />
         <field id="image" type="string" />
         <field id="description" type="string" />
+        <field id="playlist" type="string" />
     </interface>
 </component>

@@ -125,7 +125,7 @@ Function HandleJSON(jsonString as String)
   end if
 
   if isnullorempty(track.artist) then
-    song.artist = station.name
+    track.artist = station.name
     shouldRefresh = true
   endif
 
