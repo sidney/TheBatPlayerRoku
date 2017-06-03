@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+  
+<component name = "GetStreamFromPlaylistTask" extends = "Task" >
+ 	<script type="text/brightscript" uri="pkg:/source/DataUtils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
+	<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
+
+  <interface>
+    <field id = "playlistURL" type = "string" onChange="getStreamFromPlaylist" />
+    <field id = "stream" type = "string" />
+  </interface>
+ 
+  <script type = "text/brightscript" >
+    <![CDATA[
+ 
+        sub init()
+            m.top.functionName = "getStreamFromPlaylist"
+        end sub
+
+        function getStreamFromPlaylist(event)
+            url = event.getData()
+
+            Request = GetRequest()
+            Request.SetUrl(url)
+            playlistString = Request.GetToString()
+            index = playlistString.Instr("File1=")
+
+            ' If File= doesn't exist treat as a m3u playlist
+            if index = -1
+                splitStringArray = playlistString.tokenize(CHR(10))
+                audiourl = splitStringArray[0]
+                if audiourl = invalid
+                    return invalid
+                end if
+
+                audiourl = audiourl.trim()
+
+                print "Parsed out: " + audiourl
+
+                m.top.stream =  audiourl
+            end if
+
+            ' Otherwise parse as a pls playlist
+            index = index + 6
+            endOfLine = playlistString.InStr(index, CHR(10))
+            numOfChars = endOfLine - index
+            audiourl = playlistString.Mid(index, numOfChars)
+            audiourl = audiourl.trim()
+
+            print "Parsed out: " + audiourl
+            if audiourl <> invalid
+                m.top.stream =  audiourl
+            end if
+
+        end function
+    ]]>
+  </script>
+ 
+</component>

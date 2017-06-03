@@ -19,24 +19,6 @@ Function StationSelectionScreen()
     GetLongtailStations: selection_getLongtailStations
     FetchingLongtailStations: false
 
-    SomaFMStations: invalid
-    GetSomaFMStations: selection_getSomaFMStations
-    FetchingSomaFmStations: false
-
-    FeaturedStations: invalid
-    GetFeaturedStations: selection_getFeaturedStations
-    FetchingFeturedStations: false
-
-    GabeStations: invalid
-    GetGabeStations: selection_getGabeStations
-    FetchingGabeStations: false
-
-    DashStations: invalid
-    GetDashStations: selection_getDashStations
-    FetchingDashStasions: false
-
-    SetupBrowse: selection_setupBrowse
-
     DisplayStationPopup: selection_showDirectoryPopup
     Handle: selection_handle
   }
@@ -72,7 +54,6 @@ Function StationSelectionScreen()
 
   GetGlobalAA().AddReplace("StationSelectionScreen", this)
 
-  this.setupBrowse()
   this.Screen.Show()
   this.RefreshStations()
 
@@ -262,6 +243,8 @@ Function selection_handle(msg as Object)
       else if item = 1
         ' Go to browse
         NavigateToBrowse()
+      else if item = 2
+        NavigateToFeaturedStations()
       end if
     else
       station = invalid
@@ -270,12 +253,6 @@ Function selection_handle(msg as Object)
         station = m.FeaturedStations[item]
       else if row = 2
         station = m.LongtailStations[item]
-      else if row = 3
-        station = m.DashStations[item]
-      else if row = 4
-        station = m.SomaFMStations[item]
-      else if row = 5
-        station = m.GabeStations[item]
       end if
 
       if station <> invalid
@@ -283,28 +260,6 @@ Function selection_handle(msg as Object)
       end if
 
     end if
-  else if msg.isListItemFocused()
-    ' Download the content for the next row in the directory'
-    if row = 6
-      m.Screen.SetDescriptionVisible(false)
-    else
-      m.Screen.SetDescriptionVisible(true)
-    end if
-
-    if row = 1 AND m.LongtailStations = invalid AND m.FetchingLongtailStations = false
-      m.FetchingLongtailStations = true
-      ' m.GetLongtailStations()
-    else if row = 2 AND m.DashStations = invalid AND m.FetchingDashStasions = false
-      m.FetchingDashStasions = true
-      'm.GetDashStations()
-    else if row = 3 AND m.SomaFMStations = invalid AND m.FetchingSomaFmStations = false
-      m.FetchingSomaFmStations = true
-      'm.GetSomaFMStations()
-    else if row = 4 AND m.GabeStations = invalid AND m.FetchingGabeStations = false
-      m.FetchingGabeStations = true
-      'm.GetGabeStations()
-    end if
-
 	end if
 
 End Function

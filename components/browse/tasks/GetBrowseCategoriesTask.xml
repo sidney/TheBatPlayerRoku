@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+  
+<component name = "GetBrowseCategoriesTask" extends = "Task" >
+    <script type="text/brightscript" uri="pkg:/source/Config.brs" />
+    <script type="text/brightscript" uri="pkg:/source/DataUtils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Session.brs" />
+    <script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
+
+  <interface>
+    <field id = "categories" type = "node" />
+  </interface>
+
+  <script type = "text/brightscript" >
+    <![CDATA[
+ 
+    sub init()
+      m.top.functionName = "getCategories"
+    end sub
+
+    Function getCategories() as Object
+        print "getCategories()"
+
+        categoriesJsonString = GetStationCollectionJsonFromCache()
+
+        if categoriesJsonString = invalid
+            print "Categories not in cache.  Fetching."
+            url = GetConfig().BatUtils + "categories"
+            Request = GetRequest()
+            Request.SetUrl(url)
+            categoriesJsonString = Request.GetToString()
+            RegWrite("StationCategories", categoriesJsonString, "Transient")
+        end if
+
+        categoriesArray = ParseJSON(categoriesJsonString)
+        categoriesContentNode = createObject("RoSGNode","ContentNode")
+
+        For Each category in categoriesArray
+            item = createObject("roSGNode", "StationBrowseCategory")
+            item.title = category.name
+            item.category_id = category.id
+            categoriesContentNode.appendChild(item)
+        End For
+
+        m.top.categories = categoriesContentNode
+    End Function
+
+    Function GetStationCollectionJsonFromCache() as Object
+        json = RegRead("StationCategories", "Transient")
+
+        if json = invalid
+            return invalid
+        end if
+
+        return json
+    End Function
+
+    sub GetPort() as Dynamic
+        return invalid
+    end sub
+ 
+    ]]>
+  </script>
+ 
+</component>

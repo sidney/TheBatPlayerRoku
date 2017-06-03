@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+  
+<component name = "GetBrowseCategoryStationsTask" extends = "Task" >
+    <script type="text/brightscript" uri="pkg:/source/Config.brs" />
+    <script type="text/brightscript" uri="pkg:/source/DataUtils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
+    <script type="text/brightscript" uri="pkg:/source/Session.brs" />
+    <script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
+
+  <interface>
+    <field id = "category_id" type = "integer" />
+    <field id = "stations" type = "node" />
+  </interface>
+
+  <script type = "text/brightscript" >
+    <![CDATA[
+ 
+    sub init()
+      m.top.functionName = "getStationsForCategory"
+    end sub
+
+    Function getStationsForCategory() as Object
+        print "Task#getStationsForCategory()"
+
+        url = GetConfig().BatUtils + "category?categoryId=" + ToStr(m.top.category_id)
+        Request = GetRequest()
+        Request.SetUrl(url)
+        jsonString = Request.GetToString()
+        stationsArray = ParseJSON(jsonString)
+
+        stationsContentNode = createObject("RoSGNode","ContentNode")
+
+        For Each station in stationsArray
+            image = "pkg:/images/album-placeholder.png"
+
+            if station.DoesExist("image") AND station.image <> invalid
+                image = station.image
+            else
+                encodedSearch = urlencode(station.name)
+                ' TODO: Save the result of this instead of the reference to the image to cut back on image searches
+                image = GetConfig().BatUtils + "imageSearch?query=" + encodedSearch + "&display=true"
+            end if
+
+            item = createObject("roSGNode", "SingleStationContentNode")
+            item.name = station.name
+            item.title = station.name
+            item.image = station.image
+            item.url = station.stream
+            item.streamformat = station.format
+            stationsContentNode.appendChild(item)
+
+            'item.Categories = [station.category]
+        End For
+
+        m.top.stations = stationsContentNode
+    End Function
+
+    sub GetPort() as Dynamic
+        return invalid
+    end sub
+ 
+    ]]>
+  </script>
+ 
+</component>

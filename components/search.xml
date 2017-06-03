@@ -11,8 +11,6 @@
     <![CDATA[
 
     sub init()
-    	' m.top.overhangTitle = "Search Results"
-
         list = m.top.findNode("stationlist")
         m.top.list = list
         m.top.list.observefield("itemFocused", "itemFocused")
@@ -27,7 +25,6 @@
     end sub
 
     sub showsearchresults()
-        print "showsearchresults()"
         m.top.list.content = m.top.stations
     end sub
 
@@ -45,9 +42,9 @@
         index = event.getData()
         station = m.top.stations.getChild(index)
 
-        stationPlayDialog = createObject("roSGNode", "StationPlayDialog")
-        stationPlayDialog.station = station
-        m.top.getParent().getParent().getParent().dialog = stationPlayDialog
+        ' stationDetails = createObject("roSGNode", "StationDetailPanel")
+        m.stationDetails = m.top.getParent().getParent().getParent().panelSet.createChild("StationDetailPanel")
+        m.stationDetails.station = station
     end sub
     ]]>
 

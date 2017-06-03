@@ -2,10 +2,6 @@
 
 <component name = "RootPanelSet" extends = "OverhangPanelSetScene">
 
-    <interface> 
-        <field id = "clearDialogs" type = "bool" onChange = "clearDialogs"/>
-    </interface>
-
     <script type = "text/brightscript">
         <![CDATA[
             sub init()
@@ -14,11 +10,6 @@
 
                 m.top.overhang.logoUri = "pkg:/images/bat.png"
                 m.top.SetFocus(true)
-            end sub
-
-            sub clearDialogs()
-                print "clearDialogs()"
-                m.top.dialog = invalid
             end sub
         ]]>
     </script>

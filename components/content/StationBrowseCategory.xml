@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="StationBrowseCategory" extends="ContentNode">
+    <interface>
+        <field id="name" type="string" />
+        <field id="category_id" type="integer" />
+    </interface>
+</component>

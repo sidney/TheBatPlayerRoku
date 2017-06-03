@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="BrowseStationListPanel" extends="ListPanel">
+	<interface>
+        <field id = "stations" type = "node" onChange="stationsSet" />
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		    sub init()
+                m.top.observeField("focusedChild", "focusChanged")
+
+                m.top.panelSize = "medium"
+                m.top.focusable = true
+                m.top.hasNextPanel = false
+            
+                list = m.top.findNode("stationlist")
+                list.content = m.top.stations
+                m.top.list = list
+                m.top.list.observefield("itemSelected", "itemSelected")
+            end sub
+
+            function focusChanged()
+                'if m.top.isInFocusChain()
+                    m.top.list.setFocus(true)
+                'end if
+            end function
+
+            function stationsSet(event)
+                stations = event.getData()
+                m.top.list.content = stations
+            end function
+
+            function itemSelected(event)
+                index = event.getData()
+                station = m.top.stations.getChild(index)
+                m.stationDetails = m.top.getParent().getParent().getParent().panelSet.createChild("StationDetailPanel")
+                m.stationDetails.station = station
+            end function
+        ]]>
+	</script>
+
+    <children>
+        <LabelList
+            id = "stationlist"
+            translation = "[160,92]"
+            itemSize = "[440,48]" >
+    
+                <ContentNode id = "moviemenucontent" role = "content" >
+                
+                    <ContentNode title = "Comedy" />
+                    <ContentNode title = "Drama" />
+                    <ContentNode title = "Action" />
+                    <ContentNode title = "Horror" />
+                
+                </ContentNode>    
+        </LabelList>
+
+    </children>
+
+</component>

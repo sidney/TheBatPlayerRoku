@@ -3,17 +3,11 @@ Sub RunUserInterface(aa as Object)
     InitFonts()
     SetTheme()
     'DownloadDefaultStationsIfNeeded()
-    '
-    'GetGlobalAA().IsStationSelectorDisplayed = true
-
+    
     'print "------ Starting web server ------"
     StartServerWithPort(GetPort())
 
-    'GetStationSelectionHeader()
-
-    'ListStations()
     InitBatPlayer()
-
     showChannelSGScreen()
     'StartEventLoop()
 End Sub
@@ -44,9 +38,10 @@ End Sub
 
 Sub trackChanged(track)
     print "Main#trackChanged()"
-    m.scene.clearDialogs = true
 
+    GetGlobalAA().global.song = track
     GetGlobalAA().track = track
+    
     nowPlayingScreen = GetNowPlayingScreen()
     nowPlayingScreen.RefreshNowPlayingScreen()
 End Sub

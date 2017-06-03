@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="FeaturedStationsPanel" extends="Panel">
+	<script type="text/brightscript" uri="pkg:/components/browse/FeaturedstationsPanel.brs" />
+	<script type="text/brightscript" uri="pkg:/source/Config.brs" />
+	<script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
+
+	<script type="text/brightscript">
+		<![CDATA[
+		    sub init()
+                m.top.observeField("focusedChild", "focusChanged")
+			    
+                m.content = createObject("roSGNode", "ContentNode")
+
+                m.top.panelSize = "fullSize"
+                m.top.isFullSize = true
+                m.top.focusable = true
+                'm.top.hasNextPanel = false
+            
+                m.rowlist = m.top.findNode("StationsRowList")
+                m.rowlist.content = m.content
+                m.rowlist.observefield("rowItemSelected", "rowItemSelected")
+
+                m.rowlist.SetFocus(true)
+
+                setupStations()
+            end sub
+
+            function focusChanged()
+                'if m.top.isInFocusChain()
+                    m.rowlist.setFocus(true)
+                'end if
+            end function
+        ]]>
+	</script>
+
+	<children>
+		
+		<Poster
+			id="headerPoster"
+			uri="pkg:/images/StationSelectionBackgroundTexture.png"
+			width="1280" height="720"
+			translation="[0,0]"
+			opacity="0.75"
+		/>
+
+		<RowList
+			id="StationsRowList"
+			translation="[ 40, 30 ]"
+			itemComponentName="StationSelectorRowListItem"
+			numRows="5"
+			itemSize="[ 1180, 350 ]"
+			rowItemSize="[ [290, 290] ]"
+			itemSpacing="[ 0, 20 ]"
+			showRowLabel="[ true ]"
+			drawFocusFeedback="true" 
+			vertFocusAnimationStyle="fixedFocusWrap"
+			rowFocusAnimationStyle="floatingFocus" 
+			/>
+			
+	</children>
+
+</component>

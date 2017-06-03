@@ -50,5 +50,14 @@ sub featuredStationsUpdated(event)
 end sub
 
 sub navigateToBrowse()
-    print "browse"
+    print "navigateToBrowse()"
+
+    m.categoryList = m.top.createChild("FeaturedStationsPanel")
+
+    m.top.getParent().getParent().getParent().panelSet.appendChild(m.categoryList)
 end sub
+
+function navigateToFeaturedStations()
+    m.featuredStationsPanel = m.top.createChild("FeaturedStationsPanel")
+    m.top.getParent().getParent().getParent().panelSet.appendChild(m.featuredStationsPanel)
+end function

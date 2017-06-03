@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="StationDetailPanel" extends="Panel" initialFocus="buttons">
+
+	<interface>
+        <field id = "station" type = "node" onChange = "stationChanged" />
+	</interface>
+
+    <script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils/imageUtils.brs" />
+
+	<script type="text/brightscript">
+		<![CDATA[
+		    sub init()
+                m.top.observeField("focusedChild", "focusChanged")
+
+                m.top.panelSize = "full"
+                m.top.isFullScreen = true
+                m.top.focusable = true
+			    m.top.leftPosition = 0
+
+                m.buttons = m.top.findNode("buttons")
+                m.buttons.observeField("buttonSelected", "buttonSelected")
+                m.buttons.buttons = ["Play", "Add to My Stations"]
+
+                m.description = m.top.findNode("descriptionLabel")
+                m.image = m.top.findNode("image")
+                m.backgroundImage = m.top.findNode("backgroundImage")
+                m.genre = m.top.findNode("genreLabel")
+
+                m.top.SetFocus(true)
+            end sub
+
+            sub stationChanged(event)
+                print "StationDetail#stationChanged(event)"
+                
+                m.top.overhangTitle = m.top.station.name
+                m.image.uri = m.top.station.image                
+                m.backgroundImage.uri = getBlurredBackgroundImageURL(m.top.station.image)
+
+                if m.top.station.description <> invalid
+                    m.description.text = m.top.station.description
+                end if
+
+                if m.top.station.genre <> invalid AND m.top.station.genre <> ""
+                    m.genreLabel.text = m.top.station.genre
+                end if
+
+            end sub
+
+            sub buttonSelected(event)
+                index = event.getData()
+
+                if index = 0
+                    stationDetail_playStation()
+                else if index = 1
+                    stationDetail_addStation()
+                end if
+            end sub
+
+            sub stationDetail_playStation()
+                if m.top.station.url <> invalid AND m.top.station.url <> ""
+                    PlayStation(m.top.station)
+                    return
+                end if
+
+                stationDetail_getAudioStreamFromPlaylist(m.top.station)
+            end sub
+
+            function stationDetail_getAudioStreamFromPlaylist(station)
+                print "stationDetail_getAudioStreamFromPlaylist(station)"
+
+                m.getAudioStreamTask = createObject("roSGNode", "GetStreamFromPlaylistTask")
+                m.playlistURL = station.playlist
+                m.getAudioStreamTask.observeField("stream", "streamURLFetched")
+                m.getAudioStreamTask.control = "RUN"
+            end function
+
+            function streamURLFetched(event)
+                print "streamURLFetched(event)"
+
+                url = event.getData()
+                m.top.station.url = url
+                print m.top.station
+
+                stationDetail_playStation()
+            end function
+
+            sub stationDetail_addStation()
+                AddStation(m.top.station)
+            end sub
+
+            function focusChanged()
+                print "focusChanged()"
+                'if m.top.isInFocusChain()
+                    m.buttons.setFocus(true)
+                'end if
+            end function
+        ]]>
+	</script>
+
+    <children>
+        <Poster
+            id = "backgroundImage"
+            width = "1920"
+            height = "1080" >
+            
+            <Rectangle
+                width = "1920"
+                height = "1080"
+                color = "0x000000CA" />
+        </Poster>
+
+        <LayoutGroup translation = "[ 600, 90 ]" itemSpacings = "[50]">
+
+            <Label
+                id = "descriptionLabel"
+                wrap = "true"
+                lineSpacing = "20"
+                width = "600"
+                maxLines = "9"
+            />
+
+            <Label
+                id = "genreLabel"
+                wrap = "true"
+                width = "600"
+            />
+        
+        </LayoutGroup>
+
+        <LayoutGroup translation = "[ 170, 50 ]" itemSpacings = "[50]">
+            <Poster
+                id = "image" 
+                width = "350"
+                height = "350"
+            />
+
+            <ButtonGroup
+                id = "buttons"
+            />
+        </LayoutGroup>
+
+    </children>
+</component>

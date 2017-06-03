@@ -10,9 +10,10 @@ sub PlayStation(station)
 		station.streamformat = format
 	end if
 
+	print station
 	m.global.audio.content = station
 	m.global.audio.control = "play"
-	ShowWaitingDialog(station)
+	'ShowWaitingDialog(station)
 
 	showNowPlayingScreen(station)
 end sub
@@ -26,14 +27,24 @@ sub AddStation(station)
 end sub
 
 sub ShowWaitingDialog(station)
-	print "ShowWaitingDialog(station)"
-	m.waitingDialog = createObject("roSGNode", "ProgressDialog")
-    m.waitingDialog.title = "Please wait while The Bat Player tries to find what is playing on " + station.name + "..."
+	m.global.observeField("song", "HideWaitingDialog")
 
-	if (m.top.getParent().dialog <> invalid)
+	waitingDialog = createObject("roSGNode", "ProgressDialog")
+    waitingDialog.title = "Please wait while The Bat Player tries to find what is playing on " + station.name + "..."
+
+	if m.top.getParent().DoesExist("dialog")
 		'm.top.getParent().dialog = m.waitingDialog
 	else
-    	m.top.getParent().getParent().getParent().dialog = m.waitingDialog
+    	m.top.getParent().getParent().getParent().dialog = waitingDialog
 	end if
 
+	'm.global.waitingDialog = waitingDialog
+
+	print m.global
 end sub
+
+function HideWiatingDialog()
+	print "HideWiatingDialog()"
+	'm.global.waitingDialog.close = true
+	'm.global.waitingDialog = invalid
+end function

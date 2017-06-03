@@ -45,8 +45,12 @@
 			searchButton = createObject("roSGNode", "ContentNode")
 			searchButton.title = "Search"
 
+			featuredStationsButton = createObject("roSGNode", "ContentNode")
+			featuredStationsButton.title = "Featured"
+
 			buttons.appendChild(browseButton)
 			buttons.appendChild(searchButton)
+			buttons.appendChild(featuredStationsButton)
 
 			m.rowlist.content.insertChild(buttons, 3)
 		end sub
@@ -63,6 +67,8 @@
 					navigateToSearch()
 				else if currentItem = 1
 					navigateToBrowse()
+				else if currentItem = 2
+					navigateToFeaturedStations()
 				end if
 				return
 			end if
@@ -83,9 +89,9 @@
 		end sub
 
 		sub showStationPlayDialog(station)
-			stationPlayDialog = createObject("roSGNode", "StationPlayDialog")
-			stationPlayDialog.station = station
-			m.top.getParent().getParent().getParent().dialog = stationPlayDialog
+			stationDetails = createObject("roSGNode", "StationDetailPanel")
+			stationDetails.station = station
+			m.top.getParent().getParent().getParent().panelSet.appendChild(stationDetails)
 		end sub
 
 		sub rowItemFocused(item)

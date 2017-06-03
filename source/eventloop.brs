@@ -295,10 +295,10 @@ function StartEventLoop()
 
 		' If there is a station determine if we need to be drawing the
 		' now playing screen.
-		if GetGlobalAA().station <> invalid
+		if GetGlobalAA().station <> invalid'' AND GetGlobalAA().DoesExist("track")
 			NowPlayingScreen = GetGlobalAA().SavedNowPlayingScreen
 
-			if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid'' AND NowPlayingScreen.DoesExist("song")
+			if NowPlayingScreen <> invalid AND NowPlayingScreen.screen <> invalid 
 				NowPlayingScreen.DrawScreen()
 			end if
 		end if

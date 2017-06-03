@@ -4,6 +4,8 @@ screensaver_title=Internet Radio
 screensaver_private=1
 splash_color=#9b0000
 
+ui_resolutions=hd
+
 mm_icon_focus_hd=pkg:/images/icon-hd.png
 mm_icon_side_hd=pkg:/images/icon-hd.png
 

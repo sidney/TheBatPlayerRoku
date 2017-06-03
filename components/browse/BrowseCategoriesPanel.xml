@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="BrowseCategoriesPanel" extends="ListPanel">
+	<interface>
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		    sub init()
+    		    m.top.observeField("focusedChild", "focusChanged")
+                m.top.backgroundURI = "pkg:/images/StationSelectionBackgroundTexture.png"
+
+                m.top.panelSize = "narrow"
+                m.top.focusable = true
+                m.top.leftOnly = true
+                'm.top.createNextPanelOnItemFocus = true
+                'm.top.hasNextPanel = true
+                'm.top.selectButtonMovesPanelForward = true
+                list = m.top.findNode("categorylist")
+                m.top.list = list
+                m.top.list.observefield("itemSelected", "itemSelected")
+
+                m.top.leftLabel = createObject("roSGNode", "Label")
+                m.top.leftLabel.text = "Categories"
+
+                m.top.list.setFocus(true)
+
+                getCategories()
+            end sub
+
+            function focusChanged()
+                'if m.top.isInFocusChain()
+                    m.top.list.setFocus(true)
+                'end if
+            end function
+
+            sub itemSelected(event)
+                index = event.getData()
+                category = m.categories.getChild(index)
+                getStationsForCategory(category.category_id)
+            end sub
+
+            function getCategories()
+                m.getCategoriesTask = createObject("roSGNode", "GetBrowseCategoriesTask")
+                m.getCategoriesTask.observeField("categories", "categoriesFetched")
+                m.getCategoriesTask.control = "RUN"
+            end function
+
+            function categoriesFetched(event)
+                m.categories = event.getData()
+                m.top.list.content = m.categories
+            end function
+
+            function getStationsForCategory(id)
+                m.getStationsTask = createObject("roSGNode", "GetBrowseCategoryStationsTask")
+                m.getStationsTask.category_id = id
+                m.getStationsTask.observeField("stations", "stationsFetched")
+                m.getStationsTask.control = "RUN"
+            end function
+
+            function stationsFetched(event)
+                stations = event.getData()
+                
+                if m.stationList = invalid
+                    m.stationList = m.top.getParent().createChild("BrowseStationListPanel")
+                end if
+
+                m.stationList.stations = stations
+            end function
+        ]]>
+	</script>
+
+    <children>
+        <LabelList
+            id = "categorylist"
+            translation = "[160,92]"
+            itemSize = "[440,48]" >
+    
+                <ContentNode id = "moviemenucontent" role = "content" >
+                
+                    <ContentNode title = "Comedy" />
+                    <ContentNode title = "Drama" />
+                    <ContentNode title = "Action" />
+                    <ContentNode title = "Horror" />
+                
+                </ContentNode>    
+        </LabelList>
+
+    </children>
+</component>
