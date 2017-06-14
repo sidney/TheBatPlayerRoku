@@ -6,7 +6,7 @@ sub setupStations()
 end sub
 
 function rowItemSelected(event)
-    print "rowItemSelected(event)"
+    ' print "rowItemSelected(event)"
 
 	currentItemLocation = event.getData()
 	currentRow = currentItemLocation[0]

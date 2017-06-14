@@ -20,10 +20,12 @@ Sub showChannelSGScreen()
   m.global.addField("station", "node", false)
   m.global.addField("song", "node", false)
   m.global.addField("panelSet", "node", false)
+  m.global.addField("scene", "node", false)
 
   screen.setMessagePort(GetPort())
   m.scene = screen.CreateScene("RootPanelSet")
-
+  m.global.scene = m.scene
+  
   screen.show()
   m.global.ObserveField("station", GetPort())
 
@@ -31,7 +33,7 @@ Sub showChannelSGScreen()
 End Sub
 
 Sub stationChanged(station)
-    print "stationChanged(station)"
+    ' print "stationChanged(station)"
     GetNowPlayingScreen()
     Get_Metadata(station, GetPort())
 End Sub

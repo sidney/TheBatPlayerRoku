@@ -21,7 +21,7 @@
     end sub
 
     Function getStationsForCategory() as Object
-        print "Task#getStationsForCategory()"
+        ' print "Task#getStationsForCategory()"
 
         url = GetConfig().BatUtils + "category?categoryId=" + ToStr(m.top.category_id)
         Request = GetRequest()

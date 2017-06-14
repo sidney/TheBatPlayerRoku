@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="StationDetailPanel" extends="Panel" initialFocus="buttons">
+<component name="StationDetailPanel" extends="Group" initialFocus="buttons">
 
 	<interface>
         <field id = "station" type = "node" onChange = "stationChanged" />
@@ -11,14 +11,7 @@
 	<script type="text/brightscript">
 		<![CDATA[
 		    sub init()
-                ' m.top.observeField("focusedChild", "focusChanged")
-                
-                'm.top.isFullScreen = true
-			    m.top.panelSize = "full"
-			    m.top.leftPosition = 0
-			    m.top.leftOnly = true
-                m.top.selectButtonMovesPanelForward = false
-                m.top.focusable = true
+                m.top.observeField("focusedChild", "focusChanged")
 
                 m.buttons = m.top.findNode("buttons")
                 m.buttons.observeField("buttonSelected", "buttonSelected")
@@ -33,7 +26,7 @@
             end sub
 
             sub stationChanged(event)
-                print "StationDetail#stationChanged(event)"
+                ' print "StationDetail#stationChanged(event)"
                 
                 m.top.overhangTitle = m.top.station.name
                 m.image.uri = m.top.station.image                
@@ -47,7 +40,7 @@
                     m.genreLabel.text = m.top.station.genre
                 end if
 
-                m.buttons.SetFocus(true)
+                m.top.SetFocus(true)
 
             end sub
 
@@ -84,8 +77,6 @@
 
                 url = event.getData()
                 m.top.station.url = url
-                print m.top.station
-
                 stationDetail_playStation()
             end function
 
@@ -95,23 +86,26 @@
 
             function focusChanged()
                 print "StationDetailPanel#focusChanged()"
-                'if m.top.isInFocusChain()
-                    'm.buttons.setFocus(true)
-                'end if
+                ' if m.top.isInFocusChain()
+                    ' m.buttons.setFocus(true)
+                ' end if
             end function
 
-		' function onKeyEvent(key as String, press as Boolean) as Boolean
-		' ' 	print "StationDetail#onKeyEvent"
+		function onKeyEvent(key as String, press as Boolean) as Boolean
+			print "StationDetail#onKeyEvent"
                 
-		' 	if key = "back"
-		' 		m.top.getParent().removeChild(m.top)
-        '         'm.global.panelSet.panelSet.setFocus(true)
-        '         'm.top = invalid
-		' 		return true		
-		' 	end if
+			if key = "back"
+                m.top.unobserveField("focusedChild", "focusChanged")
 
-		' 	return false
-        ' end function
+                parent = m.top.getParent()
+                parent.setFocus(true)
+				parent.removeChild(m.top)
+                'm.top = invalid
+				return true		
+			end if
+
+			return false
+        end function
         ]]>
 	</script>
 

@@ -20,7 +20,7 @@ end sub
 
 ' Longtail Stations
 sub getLongtailStations()
-    print "getLongtailStations()"
+    ' print "getLongtailStations()"
 
     m.getLongtailStationsTask = createObject("roSGNode", "GetDirectoryStationsTask")
     m.getLongtailStationsTask.url =  "https://longtail.fm/api/external/stations"
@@ -36,7 +36,7 @@ end sub
 
 ' Featured stations
 sub getFeaturedStations()
-    print "getFeaturedStations()"
+    ' print "getFeaturedStations()"
     m.getFeaturedStationsTask = createObject("roSGNode", "GetDirectoryStationsTask")
     m.getFeaturedStationsTask.url = "https://batutils.thebatplayer.fm/featured"
     m.getFeaturedStationsTask.title = "Featured Stations"
@@ -51,21 +51,18 @@ end sub
 
 sub navigateToBrowse()
     print "navigateToBrowse()"
-
-    m.categoryList = m.top.createChild("BrowseCategoriesPanel")
-    m.top.nextPanel = m.categoryList
+    m.childScreen = m.top.createChild("BrowseCategoriesPanel")
+    m.childScreen.setFocus(true)
 end sub
 
 function navigateToFeaturedStations()
-    m.featuredStationsPanel = m.top.createChild("FeaturedStationsPanel")
-    m.top.nextPanel = m.featuredStationsPanel
-    m.featuredStationsPanel.setFocus(true)
+    m.childScreen = m.top.createChild("FeaturedStationsPanel")
+    m.childScreen.setFocus(true)
 end function
 
 function showStationPlayDialog(station)
-    print "showStationPlayDialog(station)"
-    stationDetails = createObject("roSGNode", "StationDetailPanel")
-    stationDetails.station = station
-    m.top.nextPanel = stationDetails
-    stationDetails.setFocus(true)
+    ' print "showStationPlayDialog(station)"
+    m.childScreen = m.global.scene.createChild("StationDetailPanel")
+    m.childScreen.station = station
+    m.childScreen.setFocus(true)
 end function

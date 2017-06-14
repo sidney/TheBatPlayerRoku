@@ -1,5 +1,5 @@
 Function GetStationsAtUrl(url as String) as object
-    print "GetStationsAtUrl"
+    ' print "GetStationsAtUrl"
   stationsKey = makemdfive(url)
   stationsJsonArray = GetStationCollection(stationsKey)
 

@@ -20,7 +20,7 @@
     end sub
 
     Function getCategories() as Object
-        print "getCategories()"
+        ' print "getCategories()"
 
         categoriesJsonString = GetStationCollectionJsonFromCache()
 

@@ -1,5 +1,5 @@
 sub navigateToSearch()
-    print "navigateToSearch()"
+    ' print "navigateToSearch()"
     m.keyboarddialog = createObject("roSGNode", "KeyboardDialog")
     m.keyboarddialog.title= "Search for stations"
     m.keyboarddialog.visible = true
@@ -31,7 +31,7 @@ sub performStationSearch()
 end sub
 
 sub navigateToSearchResults(event)
-    print "navigateToSearchResults(event)"
+    ' print "navigateToSearchResults(event)"
 
     searchQuery = m.keyboarddialog.text
 
