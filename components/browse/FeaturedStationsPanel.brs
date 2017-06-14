@@ -5,7 +5,6 @@ sub setupStations()
     getGabeStations()
 end sub
 
-
 function rowItemSelected(event)
     print "rowItemSelected(event)"
 
@@ -21,8 +20,11 @@ function rowItemSelected(event)
 
 	station = rowData.getChild(currentItem)
 
-    m.stationDetails = m.top.getParent().getParent().getParent().panelSet.createChild("StationDetailPanel")
+    m.stationDetails = createObject("roSGNode", "StationDetailPanel")
     m.stationDetails.station = station
+    'm.top.appendChild(stationDetails)
+    m.top.nextPanel = m.stationDetails
+    m.stationDetails.setFocus(true)
 end function
 
 ' Featured Stations

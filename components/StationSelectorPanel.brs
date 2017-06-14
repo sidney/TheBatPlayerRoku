@@ -52,12 +52,20 @@ end sub
 sub navigateToBrowse()
     print "navigateToBrowse()"
 
-    m.categoryList = m.top.createChild("FeaturedStationsPanel")
-
-    m.top.getParent().getParent().getParent().panelSet.appendChild(m.categoryList)
+    m.categoryList = m.top.createChild("BrowseCategoriesPanel")
+    m.top.nextPanel = m.categoryList
 end sub
 
 function navigateToFeaturedStations()
     m.featuredStationsPanel = m.top.createChild("FeaturedStationsPanel")
-    m.top.getParent().getParent().getParent().panelSet.appendChild(m.featuredStationsPanel)
+    m.top.nextPanel = m.featuredStationsPanel
+    m.featuredStationsPanel.setFocus(true)
+end function
+
+function showStationPlayDialog(station)
+    print "showStationPlayDialog(station)"
+    stationDetails = createObject("roSGNode", "StationDetailPanel")
+    stationDetails.station = station
+    m.top.nextPanel = stationDetails
+    stationDetails.setFocus(true)
 end function

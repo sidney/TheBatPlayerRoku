@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<component name = "RootPanelSet" extends = "OverhangPanelSetScene">
-
+<component name = "RootPanelSet" extends = "OverhangPanelSetScene" initialFocus="StationSelectorPanel">
     <script type = "text/brightscript">
         <![CDATA[
             sub init()
-                m.panel = createObject("roSGNode", "StationSelectorPanel")
-                m.top.panelSet.appendChild(m.panel)
-
                 m.top.overhang.logoUri = "pkg:/images/bat.png"
-                m.top.SetFocus(true)
+                m.global.panelSet = m.top.panelSet
+
+                audio = createObject("roSGNode", "Audio")
+    			m.global.audio = audio
+
+                m.stationSelectorScreen = m.top.panelSet.createChild("StationSelectorPanel")
+                m.stationSelectorScreen.id = "StationSelectorPanel"
+                m.stationSelectorScreen.translation = [ 40, 30 ]
+                    
+                m.top.panelSet.appendChild(m.stationSelectorScreen)
+                m.top.ObserveField("focusedChild", "focusChanged")
+			    m.stationSelectorScreen.setFocus(true)                
             end sub
+
+		function focusChanged()
+            print "RootPanelSet#focusChanged"
+
+            'm.rowlist.setFocus(true)
+			' if m.top.panelSet.isInFocusChain()
+			' 	m.top.panelSet.setFocus(true)
+			' end if
+			' if m.global.panelSet <> invalid AND NOT m.global.panelSet.isGoingBack
+			' 	m.rowlist.setFocus(true)
+			' end if
+		end function
+
         ]]>
     </script>
+
+
 </component>

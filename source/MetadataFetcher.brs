@@ -5,8 +5,7 @@ Sub Get_Metadata(station as Object, port as Object)
 		return
 	end if
 
-	print "FETCH!"
-    GetJSONAtUrl(station.url)
+  GetJSONAtUrl(station.url)
 End Sub
 
 Function GetJSONAtUrl(url as String)

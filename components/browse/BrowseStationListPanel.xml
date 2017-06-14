@@ -33,8 +33,9 @@
             function itemSelected(event)
                 index = event.getData()
                 station = m.top.stations.getChild(index)
-                m.stationDetails = m.top.getParent().getParent().getParent().panelSet.createChild("StationDetailPanel")
+                m.stationDetails = m.top.createChild("StationDetailPanel")
                 m.stationDetails.station = station
+                m.top.nextPanel = m.stationDetails
             end function
         ]]>
 	</script>

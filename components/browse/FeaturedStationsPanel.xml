@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="FeaturedStationsPanel" extends="Panel">
+<component name="FeaturedStationsPanel" extends="GridPanel" initialFocus="StationsRowList">
 	<script type="text/brightscript" uri="pkg:/components/browse/FeaturedstationsPanel.brs" />
 	<script type="text/brightscript" uri="pkg:/source/Config.brs" />
 	<script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
@@ -11,17 +11,19 @@
 			    
                 m.content = createObject("roSGNode", "ContentNode")
 
-                m.top.panelSize = "fullSize"
-                m.top.isFullSize = true
+			    m.top.panelSize = "full"
+			    m.top.leftPosition = 0
+			    m.top.leftOnly = true
+                m.top.selectButtonMovesPanelForward = false
                 m.top.focusable = true
-                'm.top.hasNextPanel = false
             
                 m.rowlist = m.top.findNode("StationsRowList")
                 m.rowlist.content = m.content
                 m.rowlist.observefield("rowItemSelected", "rowItemSelected")
 
                 m.rowlist.SetFocus(true)
-
+				m.top.grid = m.rowlist
+				
                 setupStations()
             end sub
 
@@ -30,6 +32,19 @@
                     m.rowlist.setFocus(true)
                 'end if
             end function
+
+		function onKeyEvent(key as String, press as Boolean) as Boolean
+		' 	print "FeaturedStationsPanel#onKeyEvent"
+                
+			if key = "back"
+				m.top.removeChild(m.top.nextPanel)
+				m.top.nextPanel = invalid
+				return true		
+			end if
+
+			return false
+        end function
+			
         ]]>
 	</script>
 

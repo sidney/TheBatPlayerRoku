@@ -41,6 +41,6 @@ sub navigateToSearchResults(event)
     
     m.searchResultsScreen = createObject("roSGNode", "SearchResultsPanel")
     m.searchResultsScreen.overhangTitle = "Search results: " + searchQuery
-    m.top.getParent().getParent().getParent().panelSet.appendChild(m.searchResultsScreen)
+    m.global.panelSet.appendChild(m.searchResultsScreen)
     m.searchResultsScreen.stations = stations
 end sub

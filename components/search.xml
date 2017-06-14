@@ -43,7 +43,7 @@
         station = m.top.stations.getChild(index)
 
         ' stationDetails = createObject("roSGNode", "StationDetailPanel")
-        m.stationDetails = m.top.getParent().getParent().getParent().panelSet.createChild("StationDetailPanel")
+        m.stationDetails = m.global.panelSet.createChild("StationDetailPanel")
         m.stationDetails.station = station
     end sub
     ]]>

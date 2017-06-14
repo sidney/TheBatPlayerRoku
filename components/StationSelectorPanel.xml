@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="StationSelectorPanel" extends="Panel" initialFocus="exampleRowList">
+<component name="StationSelectorPanel" extends="GridPanel">
 
 	<script type="text/brightscript" uri="pkg:/components/StationSelectorPanel.brs" />
 	<script type="text/brightscript" uri="pkg:/components/search.brs" />
@@ -13,26 +13,37 @@
 		sub init()
 			m.top.panelSize = "full"
 			m.top.leftPosition = 0
-			m.top.isFullScreen = true
+			m.top.leftOnly = true
+			'm.top.isFullScreen = true
+
 			m.top.overhangTitle = "The Bat Player"
 			m.top.focusable = true
-			m.content = createObject("roSGNode", "ContentNode")
+			m.top.hasNextPanel = true
+			m.top.selectButtonMovesPanelForward = false
 
-			m.rowlist = m.top.findNode("StationsRowList")
-			m.rowlist.ObserveField("rowItemFocused", "rowItemFocused")
-			m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
+			m.rowlist = m.top.findNode("rowList")
+			m.rowlist.itemComponentName="StationSelectorRowListItem"
+			m.rowlist.numRows = 5
+			m.rowlist.itemSize = [ 1180, 350 ]
+			m.rowlist.rowItemSize = [ [290, 290] ]
+			m.rowlist.itemSpacing = [ 0, 20 ]
+			m.rowlist.showRowLabel = [ true ]
+			m.rowlist.drawFocusFeedback = true
+			m.rowlist.vertFocusAnimationStyle="fixedFocusWrap"
+			m.rowlist.rowFocusAnimationStyle="floatingFocus" 
+
+			m.top.grid = m.rowlist
+
+			m.content = createObject("roSGNode", "ContentNode")
 			m.rowlist.content = m.content
 
-		    m.top.observeField("focusedChild", "focusChanged")
+            m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
+            m.top.ObserveField("focusedChild", "focusChanged")
 
-	    	m.rowlist.SetFocus(true)
-			m.currentRow = 0
-			m.currentItem = 0
-
-		    audio = createObject("roSGNode", "Audio")
-			m.global.audio = audio
 
 			setupStations()
+
+			m.rowlist.setFocus(true)
 		end sub
 
 		sub setupDirectoryButtons()
@@ -52,69 +63,74 @@
 			buttons.appendChild(searchButton)
 			buttons.appendChild(featuredStationsButton)
 
-			m.rowlist.content.insertChild(buttons, 3)
+			m.content.insertChild(buttons, 3)
 		end sub
 
 		sub rowItemSelected(item)
 			print "rowItemSelected"
-
-			currentItemLocation = item.getData()
-			currentRow = currentItemLocation[0]
-			currentItem = currentItemLocation[1]
-
-			if currentRow = 3
-				if currentItem = 0
-					navigateToSearch()
-				else if currentItem = 1
-					navigateToBrowse()
-				else if currentItem = 2
-					navigateToFeaturedStations()
-				end if
-				return
-			end if
-
-			rowData = m.rowlist.content.getChild(currentRow)
-			if rowData = invalid
-				return
-			end if
-
-			station = rowData.getChild(currentItem)
-
-			if currentRow = 0
-				PlayStation(station)
-			else
-				showStationPlayDialog(station)
-			end if
 			
-		end sub
+				currentItemLocation = item.getData()
+				currentRow = currentItemLocation[0]
+				currentItem = currentItemLocation[1]
 
-		sub showStationPlayDialog(station)
-			stationDetails = createObject("roSGNode", "StationDetailPanel")
-			stationDetails.station = station
-			m.top.getParent().getParent().getParent().panelSet.appendChild(stationDetails)
+				if currentRow = 3
+					if currentItem = 0
+						navigateToSearch()
+					else if currentItem = 1
+						navigateToBrowse()
+					else if currentItem = 2
+						navigateToFeaturedStations()
+					end if
+					return
+				end if
+
+				rowData = m.rowlist.content.getChild(currentRow)
+				if rowData = invalid
+					return
+				end if
+
+				station = rowData.getChild(currentItem)
+
+				if currentRow = 0
+					PlayStation(station)
+				else
+					showStationPlayDialog(station)
+				end if
 		end sub
 
 		sub rowItemFocused(item)
-			index = item.getData()
-			m.currentRow = index[0]
-			m.currentItem = index[1]
-
-			focusedCell = item.getData()
-			cell = item.getRoSGNode()
+			'cell = item.getRoSGNode()
 			'if cell <> invalid
 			'	cell.itemlabel.text = index[0].ToStr()
 			'end if
 		end sub
 
 		function focusChanged()
-			print "focusChanged()"
-			'if m.top.isInFocusChain()
+			'print "StationSelectorPanel#focusChanged"
+			
+			if m.top.isInFocusChain()
 				m.rowlist.setFocus(true)
-			'end if
+			end if
+		' 	' if m.global.panelSet <> invalid AND NOT m.global.panelSet.isGoingBack
+		' 	' 	m.rowlist.setFocus(true)
+		' 	' end if
 		end function
+
+		function onKeyEvent(key as String, press as Boolean) as Boolean
+			print "onKeyEvent"
+                
+			if key = "back"
+				m.top.removeChild(m.top.nextPanel)
+				m.top.nextPanel = invalid
+				return true		
+			end if
+
+			return false
+        end function
 
 		]]>
 	</script>
+
 	<children>
 		
 		<Poster
@@ -126,18 +142,10 @@
 		/>
 
 		<RowList
-			id="StationsRowList"
-			translation="[ 40, 30 ]"
-			itemComponentName="StationSelectorRowListItem"
-			numRows="5"
-			itemSize="[ 1180, 350 ]"
-			rowItemSize="[ [290, 290] ]"
-			itemSpacing="[ 0, 20 ]"
-			showRowLabel="[ true ]"
-			drawFocusFeedback="true" 
-			vertFocusAnimationStyle="fixedFocusWrap"
-			rowFocusAnimationStyle="floatingFocus" 
-			/>
+			id="rowList"
+			translation="[0,0]"
+		/>
 			
 	</children>
+	
 </component>

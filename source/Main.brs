@@ -9,7 +9,6 @@ Sub RunUserInterface(aa as Object)
 
     InitBatPlayer()
     showChannelSGScreen()
-    'StartEventLoop()
 End Sub
 
 Sub showChannelSGScreen()
@@ -20,6 +19,7 @@ Sub showChannelSGScreen()
   m.global.addField("audio", "node", false)
   m.global.addField("station", "node", false)
   m.global.addField("song", "node", false)
+  m.global.addField("panelSet", "node", false)
 
   screen.setMessagePort(GetPort())
   m.scene = screen.CreateScene("RootPanelSet")
@@ -39,7 +39,7 @@ End Sub
 Sub trackChanged(track)
     print "Main#trackChanged()"
 
-    GetGlobalAA().global.song = track
+    'GetGlobalAA().global.song = track
     GetGlobalAA().track = track
     
     nowPlayingScreen = GetNowPlayingScreen()

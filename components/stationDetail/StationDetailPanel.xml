@@ -11,12 +11,14 @@
 	<script type="text/brightscript">
 		<![CDATA[
 		    sub init()
-                m.top.observeField("focusedChild", "focusChanged")
-
-                m.top.panelSize = "full"
-                m.top.isFullScreen = true
-                m.top.focusable = true
+                ' m.top.observeField("focusedChild", "focusChanged")
+                
+                'm.top.isFullScreen = true
+			    m.top.panelSize = "full"
 			    m.top.leftPosition = 0
+			    m.top.leftOnly = true
+                m.top.selectButtonMovesPanelForward = false
+                m.top.focusable = true
 
                 m.buttons = m.top.findNode("buttons")
                 m.buttons.observeField("buttonSelected", "buttonSelected")
@@ -27,7 +29,7 @@
                 m.backgroundImage = m.top.findNode("backgroundImage")
                 m.genre = m.top.findNode("genreLabel")
 
-                m.top.SetFocus(true)
+                m.buttons.setFocus(true)
             end sub
 
             sub stationChanged(event)
@@ -44,6 +46,8 @@
                 if m.top.station.genre <> invalid AND m.top.station.genre <> ""
                     m.genreLabel.text = m.top.station.genre
                 end if
+
+                m.buttons.SetFocus(true)
 
             end sub
 
@@ -90,11 +94,24 @@
             end sub
 
             function focusChanged()
-                print "focusChanged()"
+                print "StationDetailPanel#focusChanged()"
                 'if m.top.isInFocusChain()
-                    m.buttons.setFocus(true)
+                    'm.buttons.setFocus(true)
                 'end if
             end function
+
+		' function onKeyEvent(key as String, press as Boolean) as Boolean
+		' ' 	print "StationDetail#onKeyEvent"
+                
+		' 	if key = "back"
+		' 		m.top.getParent().removeChild(m.top)
+        '         'm.global.panelSet.panelSet.setFocus(true)
+        '         'm.top = invalid
+		' 		return true		
+		' 	end if
+
+		' 	return false
+        ' end function
         ]]>
 	</script>
 
