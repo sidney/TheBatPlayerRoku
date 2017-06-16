@@ -24,6 +24,7 @@ Sub showChannelSGScreen()
 
   screen.setMessagePort(GetPort())
   m.scene = screen.CreateScene("RootPanelSet")
+  m.scene.backExitsScene = false
   m.global.scene = m.scene
   
   screen.show()
@@ -41,9 +42,7 @@ End Sub
 Sub trackChanged(track)
     print "Main#trackChanged()"
 
-    'GetGlobalAA().global.song = track
     GetGlobalAA().track = track
-    
     nowPlayingScreen = GetNowPlayingScreen()
     nowPlayingScreen.RefreshNowPlayingScreen()
 End Sub

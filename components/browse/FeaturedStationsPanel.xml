@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component name="FeaturedStationsPanel" extends="Group" initialFocus="StationsRowList">
 	<script type="text/brightscript" uri="pkg:/components/browse/FeaturedstationsPanel.brs" />
+	<script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
 	<script type="text/brightscript" uri="pkg:/source/Config.brs" />
 	<script type="text/brightscript" uri="pkg:/source/Downloads.brs" />
 
@@ -15,8 +16,7 @@
                 m.rowlist.content = m.content
                 m.rowlist.observefield("rowItemSelected", "rowItemSelected")
 
-                m.rowlist.SetFocus(true)
-				print m.rowlist
+                m.top.SetFocus(true)
 				
                 setupStations()
             end sub
@@ -27,18 +27,20 @@
                 end if
             end function
 
-		function onKeyEvent(key as String, press as Boolean) as Boolean
-			print "FeaturedStations#onKeyEvent"
-                
+		function onKeyEvent(key as String, press as Boolean) as Boolean                
+			handled = false
+
 			if key = "back"
 				if m.childScreen <> invalid
+					print "FeaturedStations#onKeyEvent"
 					m.top.removeChild(m.childScreen)
 					m.childScreen = invalid
-					return true
+					m.rowlist.setFocus(true)
+					handled = true
 				end if
 			end if
 
-			return false
+			return handled
         end function
 			
         ]]>

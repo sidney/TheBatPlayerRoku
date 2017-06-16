@@ -25,6 +25,18 @@
                 m.buttons.setFocus(true)
             end sub
 
+            ' function onKeyEvent(key as String, press as Boolean) as Boolean
+            '     print "StationDetails#onKeyEvent"
+            '     ' print key
+            '     ' if key = "back"
+            '     '     parent = m.top.getParent()
+            '     '     parent.removeChild(m.top)
+            '     '     parent.setFocus(true)
+            '     '     return true
+            '     ' end if
+            '     return false
+            ' end function
+
             sub stationChanged(event)
                 ' print "StationDetail#stationChanged(event)"
                 
@@ -40,7 +52,7 @@
                     m.genreLabel.text = m.top.station.genre
                 end if
 
-                m.top.SetFocus(true)
+                m.buttons.SetFocus(true)
 
             end sub
 
@@ -86,30 +98,22 @@
 
             function focusChanged()
                 print "StationDetailPanel#focusChanged()"
-                ' if m.top.isInFocusChain()
-                    ' m.buttons.setFocus(true)
-                ' end if
+                
+                if m.top.isInFocusChain()
+                    m.buttons.setFocus(true)
+                end if
             end function
 
-		function onKeyEvent(key as String, press as Boolean) as Boolean
-			print "StationDetail#onKeyEvent"
-                
-			if key = "back"
-                m.top.unobserveField("focusedChild", "focusChanged")
 
-                parent = m.top.getParent()
-                parent.setFocus(true)
-				parent.removeChild(m.top)
-                'm.top = invalid
-				return true		
-			end if
-
-			return false
-        end function
         ]]>
 	</script>
 
     <children>
+    <Rectangle
+        width = "1920"
+        height = "1080"
+        color = "0x444444" />
+
         <Poster
             id = "backgroundImage"
             width = "1920"

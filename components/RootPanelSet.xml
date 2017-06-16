@@ -12,30 +12,29 @@
 
                 m.stationSelectorScreen = m.top.createChild("StationSelectorPanel")
                 m.stationSelectorScreen.id = "StationSelectorPanel"
-                ' m.stationSelectorScreen.translation = [ 40, 30 ]
-                
-                ' size = createObject("roDeviceInfo").GetDisplaySize()
-                ' print size
-
-                ' m.stationSelectorScreen.width = size.w
-                ' m.stationSelectorScreen.height = size.h
 
                 m.top.appendChild(m.stationSelectorScreen)
-                m.top.ObserveField("focusedChild", "focusChanged")
+                ' m.top.ObserveField("focusedChild", "focusChanged")
+
 			    m.stationSelectorScreen.setFocus(true)                
             end sub
 
-		function focusChanged()
-            ' print "RootPanelSet#focusChanged"
+		' function focusChanged()
+        '     ' print "RootPanelSet#focusChanged"
 
-            'm.rowlist.setFocus(true)
-			' if m.top.panelSet.isInFocusChain()
-			' 	m.top.panelSet.setFocus(true)
-			' end if
-			' if m.global.panelSet <> invalid AND NOT m.global.panelSet.isGoingBack
-			' 	m.rowlist.setFocus(true)
-			' end if
-		end function
+        '     'm.rowlist.setFocus(true)
+		' 	' if m.top.panelSet.isInFocusChain()
+		' 	' 	m.top.panelSet.setFocus(true)
+		' 	' end if
+		' 	' if m.global.panelSet <> invalid AND NOT m.global.panelSet.isGoingBack
+		' 	' 	m.rowlist.setFocus(true)
+		' 	' end if
+		' end function
+
+        function onKeyEvent(key as String, press as Boolean) as Boolean
+            print "!!!!!!ROOT#onKeyEvent"
+            return false
+        end function
 
         ]]>
     </script>

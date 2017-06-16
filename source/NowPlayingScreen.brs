@@ -147,7 +147,7 @@ End Function
 
 'Called whenever the data for the screen changes (song)
 Function nowplaying_UpdateScreen()
-  print "UpdateScreen()"
+  ' print "UpdateScreen()"
 	
   ' NowPlayingScreen = GetNowPlayingScreen()
   song = GetGlobalAA().track

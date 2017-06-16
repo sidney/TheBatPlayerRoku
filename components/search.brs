@@ -9,19 +9,19 @@ sub navigateToSearch()
     m.key = m.keyboarddialog.keyboard
     m.key.showTextEditBox = true
 
-    m.top.getParent().getParent().getParent().dialog = m.keyboarddialog
-     m.keyboarddialog.setFocus(true)
+    m.global.scene.dialog = m.keyboarddialog
+    m.keyboarddialog.setFocus(true)
 end sub
 
 sub performStationSearch()
     searchQuery = m.keyboarddialog.text
 
-    m.top.getParent().getParent().getParent().dialog = invalid
+    m.global.scene.dialog = invalid
     m.keyeyboarddialog = invalid
 
     m.searchWaitingDialog = createObject("roSGNode", "ProgressDialog")
     m.searchWaitingDialog.title = "Searching for " + searchQuery + "..."
-    m.top.getParent().getParent().getParent().dialog = m.searchWaitingDialog
+    m.global.scene.dialog = m.searchWaitingDialog
 
     m.searchTask = createObject("roSGNode", "StationSearchTask")
     m.searchTask.ObserveField("stations", "navigateToSearchResults")
@@ -35,12 +35,10 @@ sub navigateToSearchResults(event)
 
     searchQuery = m.keyboarddialog.text
 
-    m.top.getParent().getParent().getParent().dialog = invalid
+    m.global.scene.dialog = invalid
     m.searchWaitingDialog = invalid
     stations = event.getData()
     
-    m.searchResultsScreen = createObject("roSGNode", "SearchResultsPanel")
-    m.searchResultsScreen.overhangTitle = "Search results: " + searchQuery
-    m.global.panelSet.appendChild(m.searchResultsScreen)
-    m.searchResultsScreen.stations = stations
+    m.childScreen = m.top.createChild("SearchResultsPanel")
+    m.childScreen.stations = stations
 end sub

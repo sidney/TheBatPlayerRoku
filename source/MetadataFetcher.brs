@@ -23,7 +23,7 @@ Function GetJSONAtUrl(url as String)
 
     url = UrlEncode(url)
     metadataUrl = GetConfig().Batserver + "metadata/" + url
-    print "Checking for JSON at " metadataUrl
+    'print "Checking for JSON at " metadataUrl
     Request.SetUrl(metadataUrl)
     GetGlobalAA().jsontransfer = Request
     response = Request.GetToString()

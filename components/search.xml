@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="SearchResultsPanel" extends="ListPanel" initialFocus="exampleRowList">
+<component name="SearchResultsPanel" extends="Group" initialFocus="exampleRowList">
 
  <interface> 
     <field id = "stations" type = "node" onChange = "setsearchresults"/>
@@ -11,21 +11,19 @@
     <![CDATA[
 
     sub init()
-        list = m.top.findNode("stationlist")
-        m.top.list = list
-        m.top.list.observefield("itemFocused", "itemFocused")
-        m.top.list.observefield("itemSelected", "itemSelected")
+        m.list = m.top.findNode("stationlist")
+        
+        m.list.observefield("itemFocused", "itemFocused")
+        m.list.observefield("itemSelected", "itemSelected")
 
-        m.top.focusable = true
-        m.top.list.setFocus(true)
+        m.list.setFocus(true)
         m.top.observefield("stations", "showsearchresults")
         
         m.stationimage = m.top.findNode("stationimage")
-
     end sub
 
     sub showsearchresults()
-        m.top.list.content = m.top.stations
+        m.list.content = m.top.stations
     end sub
 
     sub itemFocused(event)
@@ -42,27 +40,49 @@
         index = event.getData()
         station = m.top.stations.getChild(index)
 
-        ' stationDetails = createObject("roSGNode", "StationDetailPanel")
-        m.stationDetails = m.global.panelSet.createChild("StationDetailPanel")
-        m.stationDetails.station = station
+        m.childScreen = m.top.createChild("StationDetailPanel")
+        m.childScreen.station = station
     end sub
+
+    function onKeyEvent(key as String, press as Boolean) as Boolean                
+        handled = false
+
+        if key = "back"
+            print "Search#onKeyEvent"
+
+            if m.childScreen <> invalid
+                m.top.removeChild(m.childScreen)
+                m.childScreen = invalid
+                m.top.setFocus(true)
+                handled = true
+            end if
+        end if
+
+        return handled
+    end function
     ]]>
 
   </script>
 
 <children>
+
+    <Poster
+        id="headerPoster"
+        uri="pkg:/images/StationSelectionBackgroundTexture.png"
+        width="1280" height="720"
+        translation="[0,0]"
+        opacity="1.0"/>
+
     <LabelList
     id = "stationlist"
     translation = "[160,92]"
-    itemSize = "[1000,48]" >
-    </LabelList>
+    itemSize = "[1000,48]"/>
 
     <Poster 
       id = "stationimage"
       translation = "[ 600, 20 ]" 
       width = "400" 
-      height = "400" 
-      />
+      height = "400" />
 </children>
 
 </component>

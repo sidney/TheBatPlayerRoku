@@ -12,7 +12,7 @@
 		<![CDATA[
 		sub init()
 			m.rowlist = m.top.findNode("rowList")
-			m.rowlist.itemComponentName="StationSelectorRowListItem"
+			m.rowlist.itemComponentName = "StationSelectorRowListItem"
 			m.rowlist.numRows = 5
 			m.rowlist.itemSize = [ 1180, 350 ]
 			m.rowlist.rowItemSize = [ [290, 290] ]
@@ -26,11 +26,11 @@
 			m.rowlist.content = m.content
 
             m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
-            m.top.ObserveField("focusedChild", "focusChanged")
+            'm.top.ObserveField("focusedChild", "focusChanged")
 
 			setupStations()
 
-			m.rowlist.setFocus(true)
+			'm.top.setFocus(true)
 		end sub
 
 		sub setupDirectoryButtons()
@@ -92,13 +92,13 @@
 			'end if
 		end sub
 
-		function focusChanged()
-			print "StationSelectorPanel#focusChanged"
+		' function focusChanged()
+		' 	print "StationSelectorPanel#focusChanged"
 			
-			'if m.top.isInFocusChain()
-				m.rowlist.setFocus(true)
-			'end if
-		end function
+		' 	if m.top.isInFocusChain()
+		' 		m.rowlist.setFocus(true)
+		' 	end if
+		' end function
 
 		function onKeyEvent(key as String, press as Boolean) as Boolean
 			print "StationSelector#onKeyEvent"
@@ -106,8 +106,9 @@
 			if key = "back"
 				if m.childScreen <> invalid
 					print "REMOVING"
-					m.global.scene.removeChild(m.childScreen)
+					m.top.removeChild(m.childScreen)
 					m.childScreen = invalid
+					m.rowlist.setFocus(true)
 					return true
 				end if
 			end if

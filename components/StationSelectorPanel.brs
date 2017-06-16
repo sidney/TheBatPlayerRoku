@@ -59,10 +59,3 @@ function navigateToFeaturedStations()
     m.childScreen = m.top.createChild("FeaturedStationsPanel")
     m.childScreen.setFocus(true)
 end function
-
-function showStationPlayDialog(station)
-    ' print "showStationPlayDialog(station)"
-    m.childScreen = m.global.scene.createChild("StationDetailPanel")
-    m.childScreen.station = station
-    m.childScreen.setFocus(true)
-end function

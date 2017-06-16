@@ -26,25 +26,16 @@ sub AddStation(station)
 	print "ADD STATION"
 end sub
 
-sub ShowWaitingDialog(station)
-	m.global.observeField("song", "HideWaitingDialog")
-
-	waitingDialog = createObject("roSGNode", "ProgressDialog")
-    waitingDialog.title = "Please wait while The Bat Player tries to find what is playing on " + station.name + "..."
-
-	if m.top.getParent().DoesExist("dialog")
-		'm.top.getParent().dialog = m.waitingDialog
-	else
-    	m.top.getParent().getParent().getParent().dialog = waitingDialog
-	end if
-
-	'm.global.waitingDialog = waitingDialog
-
-	print m.global
-end sub
-
-function HideWiatingDialog()
-	print "HideWiatingDialog()"
-	'm.global.waitingDialog.close = true
-	'm.global.waitingDialog = invalid
+function showStationPlayDialog(station)
+    ' print "showStationPlayDialog(station)"
+    m.childScreen = m.top.createChild("StationDetailPanel")
+    m.childScreen.station = station
+    m.childScreen.setFocus(true)
 end function
+
+sub ShowWaitingDialog(station)
+	' m.global.observeField("song", "HideWaitingDialog")
+	dialog = createObject("roSGNode", "ProgressDialog")
+    dialog.title = "Please wait while The Bat Player tries to find what is playing on " + station.name + "..."
+	m.global.scene.dialog = dialog
+end sub

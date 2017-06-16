@@ -6,8 +6,6 @@ sub setupStations()
 end sub
 
 function rowItemSelected(event)
-    ' print "rowItemSelected(event)"
-
 	currentItemLocation = event.getData()
 	currentRow = currentItemLocation[0]
     currentItem = currentItemLocation[1]
@@ -19,12 +17,7 @@ function rowItemSelected(event)
     end if
 
 	station = rowData.getChild(currentItem)
-
-    m.stationDetails = createObject("roSGNode", "StationDetailPanel")
-    m.stationDetails.station = station
-    'm.top.appendChild(stationDetails)
-    m.top.nextPanel = m.stationDetails
-    m.stationDetails.setFocus(true)
+    showStationPlayDialog(station)
 end function
 
 ' Featured Stations
