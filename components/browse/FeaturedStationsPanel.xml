@@ -61,9 +61,14 @@
 
 		<BatPlayerRowList
 			id="StationsRowList"
-			translation="[100,200]"
-			/>
-			
+			translation="[100,130]"/>
+
+
+		<BatOverhang
+			title="Featured Stations"
+			showOptions="false"
+			id="overhang"/>	
+
 	</children>
 
 </component>

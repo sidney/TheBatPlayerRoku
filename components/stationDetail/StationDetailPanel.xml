@@ -21,6 +21,7 @@
                 m.image = m.top.findNode("image")
                 m.backgroundImage = m.top.findNode("backgroundImage")
                 m.genre = m.top.findNode("genreLabel")
+                m.overhang = m.top.findNode("overhang")
 
                 m.top.setFocus(true)
             end sub
@@ -28,7 +29,7 @@
             sub stationChanged(event)
                 ' print "StationDetail#stationChanged(event)"
                 
-                m.top.overhangTitle = m.top.station.name
+                m.overhang.title = m.top.station.name
                 m.image.uri = m.top.station.image                
                 m.backgroundImage.uri = getBlurredBackgroundImageURL(m.top.station.image)
 
@@ -113,7 +114,7 @@
                 color = "0x000000CA" />
         </Poster>
 
-        <LayoutGroup translation = "[ 600, 90 ]" itemSpacings = "[50]">
+        <LayoutGroup translation = "[ 600, 170 ]" itemSpacings = "[10]">
 
             <Label
                 id = "descriptionLabel"
@@ -128,10 +129,19 @@
                 wrap = "true"
                 width = "600"
             />
+
+         <Label
+                id = "longtailDescriptionLabel"
+                wrap = "true"
+                lineSpacing = "20"
+                width = "600"
+                maxLines = "9"
+                text = "This station is a part of Longtail Music, a loosely connected network of independent internet radio stations.  Visit http://longtail.fm to learn more and find some stations you're sure to love."
+            />
         
         </LayoutGroup>
 
-        <LayoutGroup translation = "[ 170, 50 ]" itemSpacings = "[50]">
+        <LayoutGroup translation = "[ 170, 150 ]" itemSpacings = "[50]">
             <Poster
                 id = "image" 
                 width = "350"
@@ -140,6 +150,11 @@
 
             <ButtonGroup id = "buttons" />
         </LayoutGroup>
+
+
+		<BatOverhang
+			showOptions="false"
+			id="overhang"/>	
 
     </children>
 </component>

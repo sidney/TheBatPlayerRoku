@@ -4,6 +4,7 @@
 	<script type="text/brightscript" uri="pkg:/components/StationSelectorPanel.brs" />
 	<script type="text/brightscript" uri="pkg:/components/search.brs" />
 	<script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
+	<script type="text/brightscript" uri="pkg:/source/utils/DeviceUtils.brs" />
 
 	<interface>
 	</interface>
@@ -82,13 +83,16 @@
 			'end if
 		end sub
 
-		' function focusChanged()
-		' 	print "StationSelectorPanel#focusChanged"
-			
-		' 	if m.top.isInFocusChain()
-		' 		m.rowlist.setFocus(true)
-		' 	end if
-		' end function
+		function showSetupDialog()
+			m.webServerInstructionsLabel = m.top.findNode("webServerInstructionsLabel")
+			ipAddress = DeviceIPAddress()
+			message = "To add stations or setup The Bat Player visit http://" + ipAddress + ":9999 with your computer's web browser."
+
+			dialog = createObject("roSGNode", "Dialog")
+			dialog.title = "Setup The Bat Player"
+			dialog.message = message
+			m.global.scene.dialog = dialog
+		end function
 
 		function onKeyEvent(key as String, press as Boolean) as Boolean
 			print "StationSelector#onKeyEvent"
@@ -102,6 +106,11 @@
 				end if
 			end if
 
+			if key = "options"
+				showSetupDialog()
+				return true
+			end if
+
 			return false
         end function
 
@@ -109,10 +118,6 @@
 	</script>
 
 	<children>
-      <Rectangle 
-        color = "0x000000FF" 
-        width = "1280" 
-        height = "220" >
 
 		<Poster
 			id="headerPoster"
@@ -124,8 +129,14 @@
 
 		<BatPlayerRowList
 			id="rowList"
-			translation="[100,200]"
+			showRowCounter = "[true, true, true, false]"
+			translation="[100,130]"
 		/>
+
+		<BatOverhang
+			id="overhang"
+		/>
+
 			
 	</children>
 	

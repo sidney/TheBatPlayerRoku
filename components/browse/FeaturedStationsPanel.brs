@@ -2,6 +2,7 @@ sub setupStations()
     getFeaturedStations()
     getLongtailStations()
     getDashStations()
+    getSOMAFMStations()
     getGabeStations()
 end sub
 
@@ -71,6 +72,22 @@ sub dashStationsUpdated(event)
 end sub
 
 
+' SOMA FM Stations
+function getSOMAFMStations()
+    url = GetConfig().BatUtils + "somafm"
+
+    m.somaFMStationsTask = createObject("roSGNode", "GetDirectoryStationsTask")
+    m.somaFMStationsTask.url =  url
+    m.somaFMStationsTask.title = "Stations from SOMA FM"
+    m.somaFMStationsTask.observeField("stations", "somaStationsUpdated")
+    m.somaFMStationsTask.control = "RUN"
+end function
+
+funtion somaStationsUpdated()
+    stations = event.getData()
+    m.content.insertChild(stations, 3)
+end function
+
 
 ' Gabe Stations
 sub getGabeStations()
@@ -85,5 +102,5 @@ end sub
 
 sub gabeStationsUpdated(event)
     stations = event.getData()
-    m.content.insertChild(stations, 3)
+    m.content.insertChild(stations, 4)
 end sub

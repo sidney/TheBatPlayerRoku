@@ -11,7 +11,6 @@
 	<script type="text/brightscript">
 		<![CDATA[
 		sub init()
-			m.top.showRowCounter=true
 			m.top.rowLabelOffset=[50,0]
 			m.top.vertFocusAnimationStyle="fixedFocusWrap"
 			m.top.rowFocusAnimationStyle="floatingFocus"
@@ -19,7 +18,7 @@
 			m.top.numRows = 5
 			m.top.itemSize = [ 1180, 350 ]
 			m.top.rowItemSize = [ [260, 270] ]
-			m.top.itemSpacing = [ 0, 0 ]
+			m.top.itemSpacing = [ 5, 0 ]
 			m.top.showRowLabel = [ true ]
 			m.top.drawFocusFeedback = false
 		end sub

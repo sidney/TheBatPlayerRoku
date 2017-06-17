@@ -41,4 +41,5 @@ sub navigateToSearchResults(event)
     
     m.childScreen = m.top.createChild("SearchResultsPanel")
     m.childScreen.stations = stations
+    m.childScreen.searchQuery = searchQuery
 end sub

@@ -26,7 +26,7 @@
     end sub
 
     sub showfocus()
-      scale = 1 + (m.top.focusPercent * 0.22)
+      scale = 1 + (m.top.focusPercent * 0.21)
       m.itemposter.scale = [scale, scale]
   
       m.itemlabel.opacity = RlMax(m.top.focusPercent * 0.8, 0.2)
