@@ -3,7 +3,7 @@ sub setupStations()
     getLongtailStations()
     getDashStations()
     getSOMAFMStations()
-    getGabeStations()
+    'getGabeStations()
 end sub
 
 function rowItemSelected(event)
@@ -83,7 +83,7 @@ function getSOMAFMStations()
     m.somaFMStationsTask.control = "RUN"
 end function
 
-funtion somaStationsUpdated()
+function somaStationsUpdated(event)
     stations = event.getData()
     m.content.insertChild(stations, 3)
 end function
