@@ -33,7 +33,8 @@
       m.itemmask.opacity = 0.75 - (m.top.focusPercent * 0.75)
 
       labelYPosition = RlMax(265 * m.top.focusPercent, 250)
-      m.itemlabel.translation = [ 0, labelYPosition ]
+      labelXPostion = RlMax(10 * m.top.focusPercent, 5)
+      m.itemlabel.translation = [ labelXPostion, labelYPosition ]
 
       if m.top.focusPercent = 1
         m.itemlabel.scrollSpeed = 100
@@ -59,7 +60,7 @@
       translation = "[ 30, 20 ]" 
       width = "220" 
       height = "220" 
-      scaleRotateCenter = "[ 160.0, 160.0 ]" >
+      scaleRotateCenter = "[ 110.0, 160.0 ]" >
   
       <Rectangle 
         id = "itemMask" 
@@ -72,7 +73,7 @@
 
     <ScrollingLabel 
       id = "itemLabel" 
-      translation = "[ 0, 250 ]" 
+      translation = "[ 5, 250 ]" 
       horizAlign = "center" 
       scrollSpeed = "0"
       scaleRotateCenter = "[ 110.0, 110.0 ]"
