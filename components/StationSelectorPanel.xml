@@ -109,7 +109,11 @@
 	</script>
 
 	<children>
-		
+      <Rectangle 
+        color = "0x000000FF" 
+        width = "1280" 
+        height = "220" >
+
 		<Poster
 			id="headerPoster"
 			uri="pkg:/images/StationSelectionBackgroundTexture.png"
