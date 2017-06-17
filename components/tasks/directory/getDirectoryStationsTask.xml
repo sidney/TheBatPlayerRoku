@@ -36,6 +36,7 @@
         item.name = station.name
         item.image = station.image
         item.url = station.stream
+        item.playlist = station.playlist
         item.description = station.description
         item.streamformat = station.format
         item.isLongtailStation = m.top.isLongtailStation

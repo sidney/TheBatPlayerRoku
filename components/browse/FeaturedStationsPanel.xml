@@ -22,9 +22,9 @@
             end sub
 
             function focusChanged()
-                if m.top.isInFocusChain()
-                    m.rowlist.setFocus(true)
-                end if
+                ' if m.top.isInFocusChain()
+                '     m.rowlist.setFocus(true)
+                ' end if
             end function
 
 		function onKeyEvent(key as String, press as Boolean) as Boolean                
@@ -62,7 +62,6 @@
 		<BatPlayerRowList
 			id="StationsRowList"
 			translation="[100,130]"/>
-
 
 		<BatOverhang
 			title="Featured Stations"

@@ -71,7 +71,7 @@
                 print "stationDetail_getAudioStreamFromPlaylist(station)"
 
                 m.getAudioStreamTask = createObject("roSGNode", "GetStreamFromPlaylistTask")
-                m.playlistURL = station.playlist
+                m.getAudioStreamTask.playlistURL = station.playlist
                 m.getAudioStreamTask.observeField("stream", "streamURLFetched")
                 m.getAudioStreamTask.control = "RUN"
             end function

@@ -6,7 +6,7 @@
 	<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/GeneralUtils.brs" />
 
   <interface>
-    <field id = "playlistURL" type = "string" onChange="getStreamFromPlaylist" />
+    <field id = "playlistURL" type = "string" />
     <field id = "stream" type = "string" />
   </interface>
  
@@ -17,11 +17,11 @@
             m.top.functionName = "getStreamFromPlaylist"
         end sub
 
-        function getStreamFromPlaylist(event)
-            url = event.getData()
+        function getStreamFromPlaylist()
+            print "getStreamFromPlaylist(event)"
 
             Request = GetRequest()
-            Request.SetUrl(url)
+            Request.SetUrl(m.top.playlistURL)
             playlistString = Request.GetToString()
             index = playlistString.Instr("File1=")
 
@@ -52,6 +52,10 @@
                 m.top.stream =  audiourl
             end if
 
+        end function
+
+        function GetPort() as dynamic
+            return invalid
         end function
     ]]>
   </script>
