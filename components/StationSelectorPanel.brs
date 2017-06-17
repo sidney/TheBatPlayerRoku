@@ -25,6 +25,7 @@ sub getLongtailStations()
     m.getLongtailStationsTask = createObject("roSGNode", "GetDirectoryStationsTask")
     m.getLongtailStationsTask.url =  "https://longtail.fm/api/external/stations"
     m.getLongtailStationsTask.title = "Stations from Longtail Music"
+    m.getLongtailStationsTask.isLongtailStation = true
     m.getLongtailStationsTask.observeField("stations", "longtailStationsUpdated")
     m.getLongtailStationsTask.control = "RUN"
 end sub
