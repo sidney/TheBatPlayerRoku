@@ -1,48 +1,48 @@
-Sub SetTheme()
-    app = CreateObject("roAppManager")
-    theme = CreateObject("roAssociativeArray")
+' Sub SetTheme()
+'     app = CreateObject("roAppManager")
+'     theme = CreateObject("roAssociativeArray")
 
-    theme.OverhangOffsetSD_X = "0"
-    theme.OverhangOffsetSD_Y = "0"
+'     theme.OverhangOffsetSD_X = "0"
+'     theme.OverhangOffsetSD_Y = "0"
 
-    theme.GridScreenOverhangHeightHD = "200"
-    theme.GridScreenOverhangHeightSD = "150"
+'     theme.GridScreenOverhangHeightHD = "200"
+'     theme.GridScreenOverhangHeightSD = "150"
 
-    theme.GridScreenDescriptionOffsetHD = "(-20,203)"
-    theme.GridScreenDescriptionOffsetSD = "(20,120)"
+'     theme.GridScreenDescriptionOffsetHD = "(-20,203)"
+'     theme.GridScreenDescriptionOffsetSD = "(20,120)"
 
-  	theme.GridScreenDescriptionTitleColor = "#FFFFFF"
-  	theme.GridScreenDescriptionSynopsisColor = "#000000"
+'   	theme.GridScreenDescriptionTitleColor = "#FFFFFF"
+'   	theme.GridScreenDescriptionSynopsisColor = "#000000"
 
-    theme.GridScreenLogoHD = "tmp:/headerImage.jpg"
-    theme.GridScreenLogoSD = "tmp:/headerImage.jpg"
+'     theme.GridScreenLogoHD = "tmp:/headerImage.jpg"
+'     theme.GridScreenLogoSD = "tmp:/headerImage.jpg"
 
-    theme.GridScreenLogoOffsetHD_X = "0"
-    theme.GridScreenLogoOffsetHD_Y = "0"
+'     theme.GridScreenLogoOffsetHD_X = "0"
+'     theme.GridScreenLogoOffsetHD_Y = "0"
 
-    theme.GridScreenBackgroundColor = "#000000"
-    theme.GridScreenDescriptionImageHD = "pkg:/images/speechbubble-hd.png"
-    theme.GridScreenDescriptionImageSD = "pkg:/images/speechbubble-sd.png"
+'     theme.GridScreenBackgroundColor = "#000000"
+'     theme.GridScreenDescriptionImageHD = "pkg:/images/speechbubble-hd.png"
+'     theme.GridScreenDescriptionImageSD = "pkg:/images/speechbubble-sd.png"
 
-    theme.PosterScreenLine1Text = "#CC0000"
-    theme.PosterScreenLine2Text = "#cA6c6c"
+'     theme.PosterScreenLine1Text = "#CC0000"
+'     theme.PosterScreenLine2Text = "#cA6c6c"
 
-  	theme.GridScreenFocusBorderHD = "pkg:/images/StationSelectionBorder-HD.png"
-  	theme.GridScreenBorderOffsetHD = "(-5,-5)"
+'   	theme.GridScreenFocusBorderHD = "pkg:/images/StationSelectionBorder-HD.png"
+'   	theme.GridScreenBorderOffsetHD = "(-5,-5)"
 
-  	theme.GridScreenFocusBorderSD = "pkg:/images/StationSelectionBorder-SD.png"
-  	theme.GridScreenBorderOffsetSD = "(-8,-5)"
+'   	theme.GridScreenFocusBorderSD = "pkg:/images/StationSelectionBorder-SD.png"
+'   	theme.GridScreenBorderOffsetSD = "(-8,-5)"
 
-    theme.BackgroundColor = "#000000"
-    theme.ListItemText = "#CC0000"
-    theme.ButtonMenuNormalText = "#BBBBBB"
+'     theme.BackgroundColor = "#000000"
+'     theme.ListItemText = "#CC0000"
+'     theme.ButtonMenuNormalText = "#BBBBBB"
 
-    theme.OverhangPrimaryLogoHD = "pkg:/images/header-placeholder.jpg"
-    theme.OverhangPrimaryLogoOffsetHD_Y = "0"
+'     theme.OverhangPrimaryLogoHD = "pkg:/images/header-placeholder.jpg"
+'     theme.OverhangPrimaryLogoOffsetHD_Y = "0"
 
-    app.SetTheme(theme)
+'     app.SetTheme(theme)
 
-End Sub
+' End Sub
 
 Function InitFonts()
 	m.reg = CreateObject("roFontRegistry")
@@ -60,6 +60,20 @@ Function InitFonts()
   'print reg.GetFamilies()
 
   'GetGlobalAA().AddReplace("FontRegistry", reg)
+End Function
+
+Function StationDetailFont() as Object
+  font  = CreateObject("roSGNode", "Font")
+  font.uri = "pkg:/fonts/Lato-Medium.ttf"
+  font.size = 25
+  return font
+End Function
+
+Function StationCellFont() as Object
+  font  = CreateObject("roSGNode", "Font")
+  font.uri = "pkg:/fonts/Lato-Medium.ttf"
+  font.size = 27
+  return font
 End Function
 
 Function GetMediumFont() as Object

@@ -7,10 +7,9 @@
 	<script type="text/brightscript">
 		<![CDATA[
 		sub init()
-			m.top.color="0x11111166"
 			m.top.logoBaselineOffset=12
 			m.top.optionsAvailable=true
-			m.top.logoUri="pkg:/images/bat.png"
+			m.top.logoUri="pkg:/images/whitebat.png"
 			m.top.title="The Bat Player"
 			m.top.showOptions=true
 			m.top.optionsText="Setup"

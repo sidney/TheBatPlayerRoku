@@ -1,7 +1,6 @@
 Sub RunUserInterface(aa as Object)
     'DeleteRegistry()
     InitFonts()
-    SetTheme()
     'DownloadDefaultStationsIfNeeded()
     StartServerWithPort(GetPort())
     showChannelSGScreen()

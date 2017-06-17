@@ -4,7 +4,8 @@
 	<script type="text/brightscript" uri="pkg:/components/StationSelectorPanel.brs" />
 	<script type="text/brightscript" uri="pkg:/components/search.brs" />
 	<script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
-
+  	<script type="text/brightscript" uri="pkg:/source/stylesheet.brs" />
+	  
 	<interface>
 	</interface>
 
@@ -21,6 +22,8 @@
 			m.top.itemSpacing = [ 5, 0 ]
 			m.top.showRowLabel = [ true ]
 			m.top.drawFocusFeedback = false
+
+			m.top.rowLabelFont = StationCellFont()
 		end sub
 		]]>
 	</script>

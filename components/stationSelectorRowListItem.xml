@@ -2,6 +2,7 @@
  
 <component name = "StationSelectorRowListItem" extends = "Group" >
  	<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/MathUtils.brs" />
+  <script type="text/brightscript" uri="pkg:/source/stylesheet.brs" />
 
   <interface> 
     <field id = "itemContent" type = "node" onChange = "showcontent"/>
@@ -16,7 +17,9 @@
     sub init()
       m.itemposter = m.top.findNode("itemPoster") 
       m.itemmask = m.top.findNode("itemMask")
+      
       m.itemlabel = m.top.findNode("itemLabel")
+      m.itemlabel.font = StationCellFont()
     end sub
 
     sub showcontent()
