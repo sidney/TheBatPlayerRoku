@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component name="SearchResultsPanel" extends="Group" initialFocus="exampleRowList">
+<component name="SearchResultsPanel" extends="Group" initialFocus="stationlist">
 
  <interface> 
     <field id = "stations" type = "node" onChange = "setsearchresults"/>
@@ -42,9 +42,15 @@
 
         m.childScreen = m.top.createChild("StationDetailPanel")
         m.childScreen.station = station
+        m.childScreen.setFocus(true)
     end sub
 
-    function onKeyEvent(key as String, press as Boolean) as Boolean                
+    function onKeyEvent(key as String, press as Boolean) as Boolean
+
+        if NOT press
+            return true
+        end if
+
         handled = false
 
         if key = "back"
@@ -53,7 +59,7 @@
             if m.childScreen <> invalid
                 m.top.removeChild(m.childScreen)
                 m.childScreen = invalid
-                m.top.setFocus(true)
+                m.list.setFocus(true)
                 handled = true
             end if
         end if

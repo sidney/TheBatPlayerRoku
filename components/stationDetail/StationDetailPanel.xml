@@ -22,20 +22,8 @@
                 m.backgroundImage = m.top.findNode("backgroundImage")
                 m.genre = m.top.findNode("genreLabel")
 
-                m.buttons.setFocus(true)
+                m.top.setFocus(true)
             end sub
-
-            ' function onKeyEvent(key as String, press as Boolean) as Boolean
-            '     print "StationDetails#onKeyEvent"
-            '     ' print key
-            '     ' if key = "back"
-            '     '     parent = m.top.getParent()
-            '     '     parent.removeChild(m.top)
-            '     '     parent.setFocus(true)
-            '     '     return true
-            '     ' end if
-            '     return false
-            ' end function
 
             sub stationChanged(event)
                 ' print "StationDetail#stationChanged(event)"
@@ -52,7 +40,7 @@
                     m.genreLabel.text = m.top.station.genre
                 end if
 
-                m.buttons.SetFocus(true)
+                ' m.buttons.SetFocus(true)
 
             end sub
 
@@ -150,9 +138,7 @@
                 height = "350"
             />
 
-            <ButtonGroup
-                id = "buttons"
-            />
+            <ButtonGroup id = "buttons" />
         </LayoutGroup>
 
     </children>

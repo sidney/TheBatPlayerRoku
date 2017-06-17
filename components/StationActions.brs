@@ -34,7 +34,6 @@ function showStationPlayDialog(station)
 end function
 
 sub ShowWaitingDialog(station)
-	' m.global.observeField("song", "HideWaitingDialog")
 	dialog = createObject("roSGNode", "ProgressDialog")
     dialog.title = "Please wait while The Bat Player tries to find what is playing on " + station.name + "..."
 	m.global.scene.dialog = dialog

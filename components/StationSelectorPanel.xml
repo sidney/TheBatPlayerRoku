@@ -12,16 +12,6 @@
 		<![CDATA[
 		sub init()
 			m.rowlist = m.top.findNode("rowList")
-			m.rowlist.itemComponentName = "StationSelectorRowListItem"
-			m.rowlist.numRows = 5
-			m.rowlist.itemSize = [ 1180, 350 ]
-			m.rowlist.rowItemSize = [ [290, 290] ]
-			m.rowlist.itemSpacing = [ 0, 20 ]
-			m.rowlist.showRowLabel = [ true ]
-			m.rowlist.drawFocusFeedback = true
-			m.rowlist.vertFocusAnimationStyle="fixedFocusWrap"
-			m.rowlist.rowFocusAnimationStyle="floatingFocus" 
-
 			m.content = createObject("roSGNode", "ContentNode")
 			m.rowlist.content = m.content
 
@@ -105,7 +95,6 @@
 			
 			if key = "back"
 				if m.childScreen <> invalid
-					print "REMOVING"
 					m.top.removeChild(m.childScreen)
 					m.childScreen = invalid
 					m.rowlist.setFocus(true)
@@ -129,9 +118,9 @@
 			opacity="0.75"
 		/>
 
-		<RowList
+		<BatPlayerRowList
 			id="rowList"
-			translation="[0,0]"
+			translation="[100,200]"
 		/>
 			
 	</children>

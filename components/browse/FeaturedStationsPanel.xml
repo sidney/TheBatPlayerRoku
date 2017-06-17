@@ -28,11 +28,14 @@
             end function
 
 		function onKeyEvent(key as String, press as Boolean) as Boolean                
+			if NOT press
+				return true
+			end if
+
 			handled = false
 
 			if key = "back"
 				if m.childScreen <> invalid
-					print "FeaturedStations#onKeyEvent"
 					m.top.removeChild(m.childScreen)
 					m.childScreen = invalid
 					m.rowlist.setFocus(true)
@@ -56,18 +59,9 @@
 			opacity="1.0"
 		/>
 
-		<RowList
+		<BatPlayerRowList
 			id="StationsRowList"
-			translation="[ 40, 30 ]"
-			itemComponentName="StationSelectorRowListItem"
-			numRows="5"
-			itemSize="[ 1180, 350 ]"
-			rowItemSize="[ [290, 290] ]"
-			itemSpacing="[ 0, 20 ]"
-			showRowLabel="[ true ]"
-			drawFocusFeedback="true" 
-			vertFocusAnimationStyle="fixedFocusWrap"
-			rowFocusAnimationStyle="floatingFocus" 
+			translation="[100,200]"
 			/>
 			
 	</children>

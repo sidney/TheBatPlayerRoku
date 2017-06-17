@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="BatPlayerRowList" extends="RowList" >
+
+	<script type="text/brightscript" uri="pkg:/components/StationSelectorPanel.brs" />
+	<script type="text/brightscript" uri="pkg:/components/search.brs" />
+	<script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
+
+	<interface>
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		sub init()
+			m.top.showRowCounter=true
+			m.top.rowLabelOffset=[50,0]
+			m.top.vertFocusAnimationStyle="fixedFocusWrap"
+			m.top.rowFocusAnimationStyle="floatingFocus"
+			m.top.itemComponentName = "StationSelectorRowListItem"
+			m.top.numRows = 5
+			m.top.itemSize = [ 1180, 350 ]
+			m.top.rowItemSize = [ [260, 270] ]
+			m.top.itemSpacing = [ 0, 0 ]
+			m.top.showRowLabel = [ true ]
+			m.top.drawFocusFeedback = false
+		end sub
+		]]>
+	</script>
+</component>        

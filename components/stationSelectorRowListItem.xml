@@ -1,7 +1,8 @@
 <?xml version = "1.0" encoding = "utf-8" ?>
  
 <component name = "StationSelectorRowListItem" extends = "Group" >
- 
+ 	<script type="text/brightscript" uri="pkg:/source/roku-lib/RokuLib/util/MathUtils.brs" />
+
   <interface> 
     <field id = "itemContent" type = "node" onChange = "showcontent"/>
     <field id = "focusPercent" type = "float" onChange = "showfocus"/> 
@@ -16,9 +17,6 @@
       m.itemposter = m.top.findNode("itemPoster") 
       m.itemmask = m.top.findNode("itemMask")
       m.itemlabel = m.top.findNode("itemLabel")
-
-      m.nowplayingview = m.top.findNode("nowPlayingView")
-      m.nowplayinglabel = m.top.findNode("nowPlayingLabel")
     end sub
 
     sub showcontent()
@@ -28,19 +26,25 @@
     end sub
 
     sub showfocus()
-      scale = 1 + (m.top.focusPercent * 0.09)
+      scale = 1 + (m.top.focusPercent * 0.22)
       m.itemposter.scale = [scale, scale]
-      
-      ' Re-enable when I figure out the now playing stuff
-      'm.nowplayinglabel.opacity = m.top.focusPercent * 0.8
-      'm.nowplayingview.height = m.top.focusPercent * 90
-      'nowPlayingLabel = m.top.findNode("nowPlayingLabel")
-      'nowPlayingLabel.text = "JKJDKFSJ"
+  
+      m.itemlabel.opacity = RlMax(m.top.focusPercent * 0.8, 0.2)
+      m.itemmask.opacity = 0.75 - (m.top.focusPercent * 0.75)
+
+      labelYPosition = RlMax(265 * m.top.focusPercent, 250)
+      m.itemlabel.translation = [ 0, labelYPosition ]
+
+      if m.top.focusPercent = 1
+        m.itemlabel.scrollSpeed = 100
+      else
+        m.itemlabel.scrollSpeed = 0
+      end if
+
     end sub
 
     sub showrowfocus()
-      m.itemmask.opacity = 0.75 - (m.top.rowFocusPercent * 0.75)
-      m.itemlabel.opacity = m.top.rowFocusPercent
+      m.itemlabel.opacity = 0.2
     end sub
 
     ]]>
@@ -52,47 +56,27 @@
     <Poster 
       id = "itemPoster"
       uri="https://batplayerrokuheader.imgix.net/selection_bat_logo-HD.png?fm=jpg&amp;q=90&amp;txtfont=Helvetica+Neue&amp;txtclr=aaffffff&amp;txtalign=center&amp;txtsize=25&amp;txtfit=max&amp;txtpad=45&amp;txt=Configure%20your%20Bat%20Player%20on%20the%20web%20at%20http%3A%2F%2F10.0.1.83%3A9999&amp;w=1280"
-      translation = "[ 30, 10 ]" 
-      width = "250" 
-      height = "250" 
-      scaleRotateCenter = "[ 250.0, 250.0 ]" >
+      translation = "[ 30, 20 ]" 
+      width = "220" 
+      height = "220" 
+      scaleRotateCenter = "[ 160.0, 160.0 ]" >
   
       <Rectangle 
         id = "itemMask" 
         color = "0x000000FF" 
         opacity = "0.75" 
-        width = "250" 
-        height = "250" 
+        width = "220" 
+        height = "220" 
         scaleRotateCenter = "[ 256.0, 144.0 ]"/>
-
-      <Rectangle 
-        id = "nowPlayingView" 
-        color = "0x000000" 
-        opacity = "0.9" 
-        width = "250" 
-        height = "0" 
-        translation = "[ 0, 90 ]" 
-        >
-      
-      <Label 
-      id = "nowPlayingLabel" 
-      text = "Now Playing"
-      translation = "[ 0, 0 ]" 
-      horizAlign = "center" 
-      vertAlign = "center"
-      width = "250"
-      height = "80"
-      opacity = "0.0"/>
-      </Rectangle>
-
     </Poster>
 
-    <Label 
+    <ScrollingLabel 
       id = "itemLabel" 
-      translation = "[ 0, 270 ]" 
+      translation = "[ 0, 250 ]" 
       horizAlign = "center" 
-      width = "250" 
-      opacity = "0.0"/>
+      scrollSpeed = "0"
+      scaleRotateCenter = "[ 110.0, 110.0 ]"
+      maxWidth = "260" />
       
 
   </children>
