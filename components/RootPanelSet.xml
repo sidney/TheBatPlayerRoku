@@ -4,9 +4,6 @@
     <script type = "text/brightscript">
         <![CDATA[
             sub init()
-                ' m.top.overhang.logoUri = "pkg:/images/bat.png"
-                ' m.global.panelSet = m.top.panelSet
-
                 audio = createObject("roSGNode", "Audio")
     			m.global.audio = audio
 
@@ -32,7 +29,6 @@
 		' end function
 
         function onKeyEvent(key as String, press as Boolean) as Boolean
-            print "!!!!!!ROOT#onKeyEvent"
             return false
         end function
 

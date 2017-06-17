@@ -5,9 +5,7 @@ Sub HandleSaveRequestForStations(request as Object)
 	print "Saving Data: " + data
 	RegWrite("stations", data, "batplayer")
 
-	if GetGlobalAA().IsStationSelectorDisplayed = true
-		RefreshStationScreen()
-	end if
+	reloadStations()
 
 End Sub
 

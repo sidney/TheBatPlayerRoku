@@ -3,11 +3,7 @@ Sub RunUserInterface(aa as Object)
     InitFonts()
     SetTheme()
     'DownloadDefaultStationsIfNeeded()
-    
-    'print "------ Starting web server ------"
     StartServerWithPort(GetPort())
-
-    InitBatPlayer()
     showChannelSGScreen()
 End Sub
 
@@ -21,6 +17,7 @@ Sub showChannelSGScreen()
   m.global.addField("song", "node", false)
   m.global.addField("panelSet", "node", false)
   m.global.addField("scene", "node", false)
+  m.global.addField("reloadStations", "boolean", true)
 
   screen.setMessagePort(GetPort())
   m.scene = screen.CreateScene("RootPanelSet")
@@ -47,18 +44,9 @@ Sub trackChanged(track)
     nowPlayingScreen.RefreshNowPlayingScreen()
 End Sub
 
-Function InitBatPlayer()
-    'BumpOrResetSavedDirectoryCacheValue()
-
-	'GetGlobalAA().lastSongTitle = ""
-    'Analytics = GetSession().Analytics
-    'Analytics.AddEvent("Application Launched")
-
-    ' print "------ Initializing LastFM ------"
-    ' InitLastFM()
-    ' print "------ Initializing fonts ------"
+Function reloadStations()
+    m.global.reloadStations = true
 End Function
-
 
 Function DownloadDefaultStationsIfNeeded()
     storedStations = RegRead("stations", "batplayer")

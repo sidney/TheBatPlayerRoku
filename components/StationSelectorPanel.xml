@@ -17,7 +17,7 @@
 			m.rowlist.content = m.content
 
             m.rowlist.ObserveField("rowItemSelected", "rowItemSelected")
-            'm.top.ObserveField("focusedChild", "focusChanged")
+            m.global.ObserveField("reloadStations", "reloadStations")
 
 			setupStations()
 
@@ -92,6 +92,11 @@
 			dialog.title = "Setup The Bat Player"
 			dialog.message = message
 			m.global.scene.dialog = dialog
+		end function
+
+		function reloadStations(event)
+			print "reloadStations(event)"
+			setupStations()
 		end function
 
 		function onKeyEvent(key as String, press as Boolean) as Boolean
