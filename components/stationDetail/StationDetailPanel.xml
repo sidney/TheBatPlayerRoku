@@ -22,6 +22,7 @@
                 m.backgroundImage = m.top.findNode("backgroundImage")
                 m.genre = m.top.findNode("genreLabel")
                 m.overhang = m.top.findNode("overhang")
+                m.longtailDescriptionLabel = m.top.findNode("longtailDescriptionLabel")
 
                 m.top.setFocus(true)
             end sub
@@ -41,7 +42,9 @@
                     m.genreLabel.text = m.top.station.genre
                 end if
 
-                ' m.buttons.SetFocus(true)
+                if m.top.station.isLongtailStation <> invalid AND m.top.station.isLongtailStation = true
+                    m.longtailDescriptionLabel.visible = true
+                end if
 
             end sub
 
@@ -137,6 +140,7 @@
                 width = "600"
                 maxLines = "9"
                 text = "This station is a part of Longtail Music, a loosely connected network of independent internet radio stations.  Visit http://longtail.fm to learn more and find some stations you're sure to love."
+                visible="false"
             />
         
         </LayoutGroup>

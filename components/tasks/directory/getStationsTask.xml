@@ -13,7 +13,6 @@
  
     sub init()
       m.top.functionName = "taskGetStations"
-      m.top.addField("stations", "object", true)
     end sub
  
     sub taskGetStations()

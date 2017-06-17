@@ -13,6 +13,7 @@
     <field id = "stations" type = "node" />
     <field id = "title" type = "string" />
     <field id = "url" type = "url" />
+    <field id = "isLongtailStation" type = "boolean" />
   </interface>
  
   <script type = "text/brightscript" >
@@ -20,6 +21,7 @@
  
     sub init()
       m.top.functionName = "taskGetStations"
+      m.top.isLongtailStation = false
     end sub
  
     sub taskGetStations()
@@ -36,6 +38,7 @@
         item.url = station.stream
         item.description = station.description
         item.streamformat = station.format
+        item.isLongtailStation = m.top.isLongtailStation
         stationsContentNode.appendChild(item)
       end for
  

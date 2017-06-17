@@ -1,4 +1,6 @@
 sub PlayStation(station)
+	print "PlayStation(station)"
+	
 	headers = createObject("roArray", 2, true)
 	headers.push("Icy-MetaData:0")
 	headers.push("User-Agent:The Bat Player/Roku")

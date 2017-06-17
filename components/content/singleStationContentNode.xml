@@ -6,5 +6,6 @@
         <field id="genre" type="string" />
         <field id="description" type="string" />
         <field id="playlist" type="string" />
+        <field id="isLongtailStation" type="boolean" />
     </interface>
 </component>
