@@ -4,7 +4,7 @@
     <script type = "text/brightscript">
         <![CDATA[
             sub init()
-                audio = createObject("roSGNode", "Audio")
+                audio = createObject("roSGNode", "AudioPlayer")
     			m.global.audio = audio
 
                 m.stationSelectorScreen = m.top.createChild("StationSelectorPanel")

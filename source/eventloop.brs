@@ -112,41 +112,41 @@ Sub HandleTimers()
 End Sub
 
 
-Sub HandleAudioPlayerEvent(msg as Object)
-	if type(msg) = "roAudioPlayerEvent"  then	' event from audio player
-	Audio = GetGlobalAA().AudioPlayer
-	Station = Audio.station
-	song = GetGlobalAA().SongObject
+' Sub HandleAudioPlayerEvent(msg as Object)
+' 	if type(msg) = "roAudioPlayerEvent"  then	' event from audio player
+' 	Audio = GetGlobalAA().AudioPlayer
+' 	Station = Audio.station
+' 	song = GetGlobalAA().SongObject
 
-	    if msg.isStatusMessage() then
-	        'message = msg.getMessage()
-	    else if msg.isListItemSelected() then
-	        Station.failCounter = 0
-	    else if msg.isRequestSucceeded() OR msg.isRequestFailed()
-	    	if Audio.failCounter < 5 then
+' 	    if msg.isStatusMessage() then
+' 	        'message = msg.getMessage()
+' 	    else if msg.isListItemSelected() then
+' 	        Station.failCounter = 0
+' 	    else if msg.isRequestSucceeded() OR msg.isRequestFailed()
+' 	    	if Audio.failCounter < 5 then
 
-				if Audio.FailCounter > 2
-					url = Station.url
-					print "Attempting to sanitize url: " + url
-					url = SanitizeStreamUrl(url)
-					Audio.updateStreamUrl(url)
-				end if
+' 				if Audio.FailCounter > 2
+' 					url = Station.url
+' 					print "Attempting to sanitize url: " + url
+' 					url = SanitizeStreamUrl(url)
+' 					Audio.updateStreamUrl(url)
+' 				end if
 
-	        	print "FullResult: End of Stream. " + Station.url + "  Restarting.  Failures: " + str(Audio.failCounter)
-	        	Audio.AudioPlayer.stop()
-	        	Audio.AudioPlayer.play()
-						Audio.Audioplayer.Seek(-180000)
-	        	Audio.failCounter = Audio.failCounter + 1
-	        else
-	        	BatLog("Failed playing station: " + Station.url)
-            GetGlobalAA().SongObject = invalid
-	        	Audio.AudioPlayer.stop()
-	        	Audio.failCounter = 0
-	        	ListStations()
-	        end if
-	    endif
-	endif
-End Sub
+' 	        	print "FullResult: End of Stream. " + Station.url + "  Restarting.  Failures: " + str(Audio.failCounter)
+' 	        	Audio.AudioPlayer.stop()
+' 	        	Audio.AudioPlayer.play()
+' 						Audio.Audioplayer.Seek(-180000)
+' 	        	Audio.failCounter = Audio.failCounter + 1
+' 	        else
+' 	        	BatLog("Failed playing station: " + Station.url)
+'             GetGlobalAA().SongObject = invalid
+' 	        	Audio.AudioPlayer.stop()
+' 	        	Audio.failCounter = 0
+' 	        	ListStations()
+' 	        end if
+' 	    endif
+' 	endif
+' End Sub
 
 Sub HandleDownloadEvents(msg)
 
@@ -271,7 +271,6 @@ function StartEventLoop()
 		    msgType = type(msg)
 
 			HandleNowPlayingScreenEvent(msg)
-			'HandleAudioPlayerEvent(msg)
 
 			if msgType = "roSGNodeEvent"
 				' Display Now Playing screen

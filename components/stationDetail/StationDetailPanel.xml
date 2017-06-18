@@ -8,6 +8,7 @@
     <script type="text/brightscript" uri="pkg:/components/StationActions.brs" />
     <script type="text/brightscript" uri="pkg:/source/utils/imageUtils.brs" />
     <script type="text/brightscript" uri="pkg:/source/stylesheet.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
 
 	<script type="text/brightscript">
 		<![CDATA[
@@ -38,7 +39,6 @@
 
             sub stationChanged(event)
                 ' print "StationDetail#stationChanged(event)"
-                print m.top.station
 
                 m.overhang.title = m.top.station.name
                 m.image.uri = m.top.station.image                
@@ -89,9 +89,12 @@
             function streamURLFetched(event)
                 print "streamURLFetched(event)"
 
+                m.getAudioStreamTask.control = "STOP"
+                m.getAudioStreamTask = invalid
+
                 url = event.getData()
                 m.top.station.url = url
-                stationDetail_playStation()
+                PlayStation(m.top.station)
             end function
 
             sub stationDetail_addStation()

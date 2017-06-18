@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="AudioPlayer" extends="Audio">
+    <script type="text/brightscript" uri="pkg:/components/AudioPlayer.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+
+	<interface>
+        <field id = "errorString" type = "string" />
+        <field id = "statusString" type = "string" />
+	</interface>
+
+	<script type="text/brightscript">
+		<![CDATA[
+		    sub init()
+                m.top.ObserveField("state", "audioplayer_stateChanged")
+                m.top.ObserveField("control", "audioplayer_controlChanged")
+                m.errorCounter = 0
+                m.maxErrors = 5
+            end sub
+        ]]>
+
+    </script>
+</component>

@@ -38,7 +38,6 @@
     end sub
 
     function setTitle(event)
-        print "setTitle(event)"
         m.overhang.title = "Search results: " + event.getData()
     end function
 

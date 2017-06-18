@@ -35,7 +35,7 @@
 
                 audiourl = audiourl.trim()
 
-                print "Parsed out: " + audiourl
+                print "Parsed out m3u: " + audiourl
 
                 m.top.stream =  audiourl
             end if
@@ -47,7 +47,7 @@
             audiourl = playlistString.Mid(index, numOfChars)
             audiourl = audiourl.trim()
 
-            print "Parsed out: " + audiourl
+            print "Parsed out pls: " + audiourl
             if audiourl <> invalid
                 m.top.stream =  audiourl
             end if

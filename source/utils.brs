@@ -178,3 +178,12 @@ Function GetTruncatedString(str as String) as String
 
   return str.left(maxLength) + "..."
 End function
+
+Function CapitalizeString(str) as String  
+  firstCharacter = str.left(1)
+  capitalizedFirstCharacter = Ucase(firstCharacter)
+  restOfString = str.mid(1)
+  newString = capitalizedFirstCharacter + restOfString
+
+  return newString
+End Function
